@@ -32,7 +32,6 @@ import static com.nucleuschess.Color.WHITE;
  */
 public final class Board {
 
-    private final char[] files = "abcdefgh".toCharArray(); // can later be moved as a local variable if not needed elsewhere
     private final Set<Position> positions;
 
     public Board() {
@@ -56,11 +55,19 @@ public final class Board {
         return positions;
     }
 
+    public final Position[] getEmptyPositions() {
+        return positions.stream().filter(Position::isEmpty).toArray(Position[]::new);
+    }
+
+    public boolean isInCheck(Color color) {
+        return false; // implement
+    }
+
     private void setupBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Color color = (i % 2 == 0) ? (j % 2 == 0 ? BLACK : WHITE) : (j % 2 == 0 ? WHITE : BLACK);
-                this.positions.add(new Position(files[i], j + 1, color));
+                this.positions.add(new Position(PositionUtility.getFile(i), j + 1, color));
             }
         }
 

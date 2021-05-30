@@ -55,6 +55,17 @@ public final class Position {
 
     public final void setPiece(Piece piece) {
         this.piece = piece;
-        piece.setPosition(this);
+
+        if (piece != null) {
+            piece.setPosition(this);
+        }
+    }
+
+    public final void setEmpty() {
+        setPiece(null);
+    }
+
+    public boolean isEmpty() {
+        return piece == null;
     }
 }

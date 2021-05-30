@@ -1,7 +1,9 @@
 package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
+import com.nucleuschess.board.Board;
 import com.nucleuschess.board.Position;
+import com.nucleuschess.move.Move;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -24,5 +26,10 @@ public final class King extends Piece {
 
     public King(Color color) {
         super(color);
+    }
+
+    @Override
+    public boolean check(Board board, Move move) {
+        return false;
     }
 }

@@ -1,11 +1,4 @@
-package com.nucleuschess.piece;
-
-import com.nucleuschess.Color;
-import com.nucleuschess.board.Board;
-import com.nucleuschess.board.Position;
-import com.nucleuschess.move.Move;
-
-/*
+package com.nucleuschess.move;/*
   Copyright (C) 2020-2021, Wouter Kistemaker.
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as published
@@ -18,18 +11,11 @@ import com.nucleuschess.move.Move;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-public final class Knight extends Piece {
 
-    public Knight(Color color, Position position) {
-        super(color, position);
-    }
+import com.nucleuschess.board.Board;
 
-    public Knight(Color color) {
-        super(color);
-    }
+public interface MoveChecker {
 
-    @Override
-    public boolean check(Board board, Move move) {
-        return false;
-    }
+    boolean check(Board board, Move move);
+
 }

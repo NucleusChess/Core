@@ -1,7 +1,10 @@
 package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
+import com.nucleuschess.board.Board;
 import com.nucleuschess.board.Position;
+import com.nucleuschess.board.PositionUtility;
+import com.nucleuschess.move.Move;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -24,5 +27,47 @@ public final class Pawn extends Piece {
 
     public Pawn(Color color) {
         super(color);
+    }
+
+    @Override
+    public boolean check(Board board, Move move) {
+        final Position from = move.getFrom();
+        final Position to = move.getTo();
+
+        final int fromFile = PositionUtility.getFileNumber(from.getFile());
+        final int toFile = PositionUtility.getFileNumber(to.getFile());
+
+        final int forwardSteps = to.getRank() - from.getRank();
+        final int sideSteps = toFile - fromFile;
+
+        // if you are in check and have to deal with this.
+        if (board.isInCheck(getColor())) {
+            // TODO FIND CHECK-BLOCKING MOVES
+            return false;
+        }
+
+        // pawns can't move backwards
+        if (forwardSteps < 0 || forwardSteps > 2) {
+            return false;
+        }
+
+        // moves 2 squares or more but already had the first two steps
+        if (forwardSteps == 2 && hasMoved()) {
+            return false;
+        }
+
+        // pawns cannot phase through other pieces
+        if (forwardSteps == 2 && !board.getPosition(to.getFile(), toFile - 1).isEmpty()) {
+            return false;
+        }
+
+        // TODO if pinned (scan other attackers)
+
+        // squares is already occupied
+        if (!to.isEmpty()) {
+            return false;
+        }
+
+        return sideSteps <= 1 && sideSteps >= -1;
     }
 }
