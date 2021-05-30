@@ -1,6 +1,6 @@
 package com.nucleuschess;
 
-import com.nucleuschess.object.Board;
+import com.nucleuschess.board.Board;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.

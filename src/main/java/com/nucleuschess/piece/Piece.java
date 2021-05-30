@@ -1,6 +1,4 @@
-package com.nucleuschess.object;
-
-/*
+package com.nucleuschess.piece;/*
   Copyright (C) 2020-2021, Wouter Kistemaker.
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as published
@@ -14,33 +12,13 @@ package com.nucleuschess.object;
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-/**
- * A class holding the basic information of a square on a chessboard.
- *
- * @since 1.0-SNAPSHOT
- * @author Wouter Kistemaker
- */
-public final class Position {
+import com.nucleuschess.board.Position;
+import com.nucleuschess.Color;
 
-    private final char file;
-    private final int rank;
-    private final Color color;
+public interface Piece {
 
-    public Position(char file, int rank, Color color) {
-        this.file = file;
-        this.rank = rank;
-        this.color = color;
-    }
+    Color getColor();
 
-    public final char getFile() {
-        return file;
-    }
+    Position getPosition();
 
-    public final int getRank() {
-        return rank;
-    }
-
-    public final Color getColor() {
-        return color;
-    }
 }
