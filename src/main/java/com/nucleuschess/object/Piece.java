@@ -1,8 +1,4 @@
-package com.nucleuschess;
-
-import com.nucleuschess.object.Board;
-
-/*
+package com.nucleuschess.object;/*
   Copyright (C) 2020-2021, Wouter Kistemaker.
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as published
@@ -15,13 +11,11 @@ import com.nucleuschess.object.Board;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-public final class Core {
 
-    public static void main(String[] args) {
-        final Board board = new Board();
-        final int size = board.getPositions().size();
+public interface Piece {
 
-        System.out.println("The total amount of squares is " + size); // 64, correct! =)
-    }
+    Color getColor();
+
+    Position getPosition();
 
 }

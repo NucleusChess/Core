@@ -1,6 +1,4 @@
-package com.nucleuschess;
-
-import com.nucleuschess.object.Board;
+package com.nucleuschess.object;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -15,13 +13,34 @@ import com.nucleuschess.object.Board;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-public final class Core {
 
-    public static void main(String[] args) {
-        final Board board = new Board();
-        final int size = board.getPositions().size();
+/**
+ * A class holding the basic information of a square on a chessboard.
+ *
+ * @since 1.0-SNAPSHOT
+ * @author Wouter Kistemaker
+ */
+public final class Position {
 
-        System.out.println("The total amount of squares is " + size); // 64, correct! =)
+    private final char file;
+    private final int rank;
+    private final Color color;
+
+    public Position(char file, int rank, Color color) {
+        this.file = file;
+        this.rank = rank;
+        this.color = color;
     }
 
+    public char getFile() {
+        return file;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public Color getColor() {
+        return color;
+    }
 }
