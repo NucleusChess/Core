@@ -32,15 +32,15 @@ public final class Position {
         this.color = color;
     }
 
-    public char getFile() {
+    public final char getFile() {
         return file;
     }
 
-    public int getRank() {
+    public final int getRank() {
         return rank;
     }
 
-    public Color getColor() {
+    public final Color getColor() {
         return color;
     }
 }
