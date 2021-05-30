@@ -1,10 +1,13 @@
 package com.nucleuschess.board;
 
 import com.nucleuschess.Color;
+import com.nucleuschess.piece.*;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.nucleuschess.Color.BLACK;
 import static com.nucleuschess.Color.WHITE;
 
 /*
@@ -24,43 +27,72 @@ import static com.nucleuschess.Color.WHITE;
 /**
  * Class representing the Chess-board, with all the squares gathered in a {@link Set<Position>}
  *
- * @since 1.0-SNAPSHOT
  * @author Wouter Kistemaker
+ * @since 1.0-SNAPSHOT
  */
 public final class Board {
 
     private final char[] files = "abcdefgh".toCharArray(); // can later be moved as a local variable if not needed elsewhere
     private final Set<Position> positions;
 
-    public Board(){
+    public Board() {
         this.positions = new HashSet<>();
         this.setupBoard();
     }
 
-    public final Position getPosition(char file, int rank){
-        return positions.stream().filter(p-> p.getFile() == file && p.getRank() == rank).findFirst().orElseThrow(NullPointerException::new);
+    public final Position getPosition(char file, int rank) {
+        return positions.stream().filter(p -> p.getFile() == file && p.getRank() == rank).findFirst().orElseThrow(NullPointerException::new);
     }
 
-    public final Position[] getPositions(char file){
-        return positions.stream().filter(p->p.getFile()==file).toArray(Position[]::new);
+    public final Position[] getPositions(char file) {
+        return positions.stream().filter(p -> p.getFile() == file).toArray(Position[]::new);
     }
 
-    public final Position[] getPositions(int rank){
-        return positions.stream().filter(p->p.getRank()==rank).toArray(Position[]::new);
+    public final Position[] getPositions(int rank) {
+        return positions.stream().filter(p -> p.getRank() == rank).toArray(Position[]::new);
     }
 
     public final Set<Position> getPositions() {
         return positions;
     }
 
-    private void setupBoard(){
+    private void setupBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                Color color = ( i % 2 == 0) ? (j % 2 == 0 ? Color.BLACK : WHITE) : (j % 2 == 0 ? WHITE : Color.BLACK);
-                this.positions.add(new Position(files[i], j+1, color));
+                Color color = (i % 2 == 0) ? (j % 2 == 0 ? BLACK : WHITE) : (j % 2 == 0 ? WHITE : BLACK);
+                this.positions.add(new Position(files[i], j + 1, color));
             }
         }
-        // TODO setup board with the standard piece positions.
+
+        // PAWNS
+        Arrays.stream(getPositions(2)).forEach(p -> p.setPiece(new Pawn(WHITE)));
+        Arrays.stream(getPositions(7)).forEach(p -> p.setPiece(new Pawn(BLACK)));
+
+        // ROOKS
+        this.getPosition('a', 1).setPiece(new Rook(WHITE));
+        this.getPosition('h', 1).setPiece(new Rook(WHITE));
+        this.getPosition('a', 8).setPiece(new Rook(BLACK));
+        this.getPosition('h', 8).setPiece(new Rook(BLACK));
+
+        // BISHOPS
+        this.getPosition('c', 1).setPiece(new Bishop(WHITE));
+        this.getPosition('f', 1).setPiece(new Bishop(WHITE));
+        this.getPosition('c', 8).setPiece(new Bishop(BLACK));
+        this.getPosition('f', 8).setPiece(new Bishop(BLACK));
+
+        // KNIGHTS
+        this.getPosition('b', 1).setPiece(new Knight(WHITE));
+        this.getPosition('g', 1).setPiece(new Knight(WHITE));
+        this.getPosition('b', 8).setPiece(new Knight(BLACK));
+        this.getPosition('g', 8).setPiece(new Knight(BLACK));
+
+        // KINGS
+        this.getPosition('e', 1).setPiece(new King(WHITE));
+        this.getPosition('e', 8).setPiece(new King(WHITE));
+
+        // QUEENS
+        this.getPosition('d', 1).setPiece(new Queen(WHITE));
+        this.getPosition('d', 8).setPiece(new Queen(BLACK));
     }
 
 }

@@ -15,8 +15,8 @@ package com.nucleuschess;/*
 /**
  * Simple enumerator to simplify distinguishing the two most important colors of the game of chess, Black & White.
  *
- * @since 1.0-SNAPSHOT
  * @author Wouter Kistemaker
+ * @since 1.0-SNAPSHOT
  */
 public enum Color {
 

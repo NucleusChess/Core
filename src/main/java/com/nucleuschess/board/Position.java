@@ -20,8 +20,8 @@ import com.nucleuschess.piece.Piece;
 /**
  * A class holding the basic information of a square on a chessboard.
  *
- * @since 1.0-SNAPSHOT
  * @author Wouter Kistemaker
+ * @since 1.0-SNAPSHOT
  */
 public final class Position {
 
@@ -55,5 +55,6 @@ public final class Position {
 
     public final void setPiece(Piece piece) {
         this.piece = piece;
+        piece.setPosition(this);
     }
 }
