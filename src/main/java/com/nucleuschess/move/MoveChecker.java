@@ -13,9 +13,39 @@ package com.nucleuschess.move;/*
 */
 
 import com.nucleuschess.board.Board;
+import com.nucleuschess.board.PositionUtility;
+import com.nucleuschess.piece.Knight;
 
 public interface MoveChecker {
 
     boolean check(Board board, Move move);
+
+    default boolean isHorizontal(Move move) {
+        final int fromFile = PositionUtility.getFileNumber(move.getFrom().getFile());
+        final int toFile = PositionUtility.getFileNumber(move.getTo().getFile());
+        return move.getFrom().getRank() == move.getTo().getRank() && fromFile != toFile;
+    }
+
+    default boolean isVertical(Move move) {
+        if (isHorizontal(move)) return false;
+
+        return move.getTo().getRank() != move.getFrom().getRank();
+    }
+
+    default boolean isDiagonal(Move move) {
+        if (isHorizontal(move)) return false;
+        if (isVertical(move)) return false;
+
+        final int fromFile = PositionUtility.getFileNumber(move.getFrom().getFile());
+        final int toFile = PositionUtility.getFileNumber(move.getTo().getFile());
+        final int horizontalSteps = Math.abs(toFile - fromFile);
+        final int verticalSteps = Math.abs(move.getTo().getRank() - move.getFrom().getRank());
+
+        return (fromFile / toFile == 1 && horizontalSteps / verticalSteps == 1);
+    }
+
+    default boolean isKnightMove(Move move) {
+        return move.getPiece() instanceof Knight && !isHorizontal(move) && !isVertical(move) && !isDiagonal(move);
+    }
 
 }

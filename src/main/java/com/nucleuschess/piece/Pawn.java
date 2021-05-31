@@ -64,10 +64,11 @@ public final class Pawn extends Piece {
         // TODO if pinned (scan other attackers)
 
         // squares is already occupied
+        // TODO fix this will prevent pawns from capturing
         if (!to.isEmpty()) {
             return false;
         }
-
+        // pawns cannot move files more than 1 step
         return sideSteps <= 1 && sideSteps >= -1;
     }
 }
