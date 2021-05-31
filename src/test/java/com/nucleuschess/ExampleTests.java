@@ -2,7 +2,7 @@ package com.nucleuschess;
 
 import org.junit.jupiter.api.*;
 
-//@Disabled
+@Disabled
 public final class ExampleTests {
 
     @BeforeAll
