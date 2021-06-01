@@ -8,16 +8,21 @@ public class BasicEndpoint {
 
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println("Connected, sessionID = " + session.getId());
+        System.out.println("[" + session.getId() + "] Connected");
+    }
+
+    @OnMessage
+    public void onMessage(Session session, String message) {
+        System.out.println("[" + session.getId() + "] " + message);
     }
 
     @OnClose
     public void onClose(Session session, CloseReason reason) {
-        System.out.println("Session " + session.getId() + " closed: " + reason);
+        System.out.println("[" + session.getId() + "] Disconnected: " + reason);
     }
 
     @OnError
     public void onError(Session session, Throwable ex) {
-        ex.printStackTrace();
+        ex.printStackTrace(System.err);
     }
 }
