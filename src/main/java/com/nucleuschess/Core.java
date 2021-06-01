@@ -1,38 +1,32 @@
 package com.nucleuschess;
 
-import jakarta.websocket.DeploymentException;
+import com.nucleuschess.net.BasicEndpoint;
 import org.glassfish.tyrus.server.Server;
 
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
 
-public final class Core {
+public class Core {
 
     public static void main(String[] args) {
-        final Server server = new Server("localhost", 9000, "/", null, Endpoint.class);
+        final Server server = new Server("localhost", 9000, "/", null, BasicEndpoint.class);
 
         try {
+            Thread.currentThread().setContextClassLoader(Core.class.getClassLoader());
             server.start();
+
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             server.stop();
-        }
-    }
-
-    @ServerEndpoint("/")
-    private static final class Endpoint {
-        @OnOpen
-        public void onOpen(Session session) {
-            System.out.println("Connected, sessionID = " + session.getId());
-        }
-
-        @OnClose
-        public void onClose(Session session, CloseReason reason) {
-            System.out.println("Session " + session.getId() + " closed: " + reason);
         }
     }
 }

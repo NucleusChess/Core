@@ -1,21 +1,39 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 group 'com.nucleuschess'
 version '1.0-SNAPSHOT'
 
+mainClassName = 'com.nucleuschess.Core'
+
 repositories {
+    jcenter()
     mavenCentral()
 }
 
 dependencies {
     implementation 'javax.websocket:javax.websocket-api:1.1'
+    implementation 'org.glassfish.tyrus:tyrus-container-grizzly-server:2.0.0'
     implementation 'org.glassfish.tyrus:tyrus-server:2.0.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes 'Manifest-Version': 1.0,
+                   'Main-Class': 'com.nucleuschess.Core'
+    }
+}
+
+shadowJar {
+    minimize()
 }
