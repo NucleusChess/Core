@@ -1,21 +1,38 @@
 package com.nucleuschess;
 
-/*
-  Copyright (C) 2020-2021, Wouter Kistemaker.
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU Affero General Public License as published
-  by the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU Affero General Public License for more details.
-  You should have received a copy of the GNU Affero General Public License
-  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+import jakarta.websocket.DeploymentException;
+import org.glassfish.tyrus.server.Server;
+
+import javax.websocket.CloseReason;
+import javax.websocket.OnClose;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
+
 public final class Core {
 
     public static void main(String[] args) {
+        final Server server = new Server("localhost", 9000, "/", null, Endpoint.class);
+
+        try {
+            server.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            server.stop();
+        }
     }
 
+    @ServerEndpoint("/")
+    private static final class Endpoint {
+        @OnOpen
+        public void onOpen(Session session) {
+            System.out.println("Connected, sessionID = " + session.getId());
+        }
+
+        @OnClose
+        public void onClose(Session session, CloseReason reason) {
+            System.out.println("Session " + session.getId() + " closed: " + reason);
+        }
+    }
 }
