@@ -29,6 +29,11 @@ public final class King extends Piece {
     }
 
     @Override
+    public String getCode() {
+        return "K";
+    }
+
+    @Override
     public boolean check(Board board, Move move) {
         return false;
     }

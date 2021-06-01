@@ -28,7 +28,6 @@ public interface MoveChecker {
 
     default boolean isVertical(Move move) {
         if (isHorizontal(move)) return false;
-
         return move.getTo().getRank() != move.getFrom().getRank();
     }
 
@@ -47,5 +46,4 @@ public interface MoveChecker {
     default boolean isKnightMove(Move move) {
         return move.getPiece() instanceof Knight && !isHorizontal(move) && !isVertical(move) && !isDiagonal(move);
     }
-
 }

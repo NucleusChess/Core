@@ -4,7 +4,7 @@ import com.nucleuschess.Color;
 import com.nucleuschess.piece.*;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static com.nucleuschess.Color.BLACK;
@@ -35,12 +35,16 @@ public final class Board {
     private final Set<Position> positions;
 
     public Board() {
-        this.positions = new HashSet<>();
+        this.positions = new LinkedHashSet<>();
         this.setupBoard();
     }
 
     public final Position getPosition(char file, int rank) {
         return positions.stream().filter(p -> p.getFile() == file && p.getRank() == rank).findFirst().orElseThrow(NullPointerException::new);
+    }
+
+    public final Position getPosition(int file, int rank) {
+        return getPosition(PositionUtility.getFile(file), rank);
     }
 
     public final Position[] getPositions(char file) {
@@ -64,10 +68,10 @@ public final class Board {
     }
 
     private void setupBoard() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                Color color = (i % 2 == 0) ? (j % 2 == 0 ? BLACK : WHITE) : (j % 2 == 0 ? WHITE : BLACK);
-                this.positions.add(new Position(PositionUtility.getFile(i), j + 1, color));
+        for (int i = 1; i < 9; i++) { // more convenient, we use the numbers 1-8 since these are the actual file numbers
+            for (int j = 1; j < 9; j++) { // same thing applies here
+                Color color = ((i - 1) % 2 == 0) ? ((j - 1) % 2 == 0 ? BLACK : WHITE) : ((j - 1) % 2 == 0 ? WHITE : BLACK);
+                this.positions.add(new Position(PositionUtility.getFile(i), j, color));
             }
         }
 

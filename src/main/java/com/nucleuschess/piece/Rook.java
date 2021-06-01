@@ -29,6 +29,11 @@ public final class Rook extends Piece {
     }
 
     @Override
+    public String getCode() {
+        return "R";
+    }
+
+    @Override
     public boolean check(Board board, Move move) {
         return false;
     }

@@ -31,6 +31,12 @@ public abstract class Piece implements MoveChecker {
         this.color = color;
     }
 
+    public final String getName() {
+        return getClass().getSimpleName();
+    }
+
+    public abstract String getCode();
+
     public Color getColor() {
         return color;
     }

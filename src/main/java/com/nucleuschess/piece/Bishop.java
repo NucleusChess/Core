@@ -29,6 +29,11 @@ public final class Bishop extends Piece {
     }
 
     @Override
+    public String getCode() {
+        return "B";
+    }
+
+    @Override
     public boolean check(Board board, Move move) {
         // Bishops can only move diagonal
         if (!isDiagonal(move)) return false;

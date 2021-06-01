@@ -25,7 +25,7 @@ public final class PositionUtility {
             throw new IllegalArgumentException("Invalid file specified: " + i);
         }
 
-        return files[i + 1];
+        return files[i - 1]; // so if we specify file 2 means searching at index 1 in the array
     }
 
     public static char[] getFiles(int... ints) {
@@ -34,7 +34,7 @@ public final class PositionUtility {
         int index = 0;
 
         for (int i : ints) {
-            files[index] = files[i];
+            files[index] = files[i - 1];
             index++;
         }
 

@@ -29,6 +29,11 @@ public final class Knight extends Piece {
     }
 
     @Override
+    public String getCode() {
+        return "N";
+    }
+
+    @Override
     public boolean check(Board board, Move move) {
         return false;
     }

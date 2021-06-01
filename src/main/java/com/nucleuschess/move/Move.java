@@ -26,10 +26,10 @@ public final class Move {
     private final Position to;
     private final boolean isCapture;
 
-    public Move(int number, Color color, Piece piece, Position from, Position to, boolean isCapture) {
+    public Move(int number, Piece piece, Position from, Position to, boolean isCapture) {
         this.number = number;
-        this.color = color;
         this.piece = piece;
+        this.color = piece.getColor();
         this.from = from;
         this.to = to;
         this.isCapture = isCapture;

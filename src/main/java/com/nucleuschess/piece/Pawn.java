@@ -30,6 +30,11 @@ public final class Pawn extends Piece {
     }
 
     @Override
+    public String getCode() {
+        return "P";
+    }
+
+    @Override
     public boolean check(Board board, Move move) {
         final Position from = move.getFrom();
         final Position to = move.getTo();

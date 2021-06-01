@@ -1,7 +1,5 @@
 package com.nucleuschess;
 
-import com.nucleuschess.board.Board;
-
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
   This program is free software: you can redistribute it and/or modify
@@ -18,10 +16,6 @@ import com.nucleuschess.board.Board;
 public final class Core {
 
     public static void main(String[] args) {
-        final Board board = new Board();
-        final int size = board.getPositions().size();
-
-        System.out.println("The total amount of squares is " + size); // 64, correct! =)
     }
 
 }
