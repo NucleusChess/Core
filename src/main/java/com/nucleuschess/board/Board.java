@@ -67,6 +67,19 @@ public final class Board {
         return false; // implement
     }
 
+    public Position[] getPositionsHorizontally(int rank, int startFile, int endFile) {
+        return positions.stream().filter(p -> p.getRank() == rank)
+                .filter(p -> PositionUtility.getFileNumber(p.getFile()) >= startFile)
+                .filter(p -> PositionUtility.getFileNumber(p.getFile()) <= endFile).toArray(Position[]::new);
+    }
+
+    public Position[] getPositionsVertically(int file, int startRank, int endRank) {
+        return positions.stream().filter(p -> PositionUtility.getFileNumber(p.getFile()) == file)
+                .filter(p -> p.getRank() >= startRank)
+                .filter(p -> p.getRank() <= endRank).toArray(Position[]::new);
+
+    }
+
     private void setupBoard() {
         for (int i = 1; i < 9; i++) { // more convenient, we use the numbers 1-8 since these are the actual file numbers
             for (int j = 1; j < 9; j++) { // same thing applies here

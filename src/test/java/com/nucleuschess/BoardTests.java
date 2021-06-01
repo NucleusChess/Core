@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /*
@@ -74,6 +75,61 @@ public class BoardTests {
             Assertions.assertEquals(expected[i - 1], builder.toString());
         }
     }
-}
 
-// rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1
+    @Test
+    public void checkFile() {
+        final Position[] positions = board.getPositions('d');
+
+        Assertions.assertNotNull(positions);
+        Assertions.assertEquals(positions.length, 8);
+
+        final String expected = "QPOOOOPQ";
+
+        final StringBuilder result = new StringBuilder();
+        Arrays.stream(positions).forEach(p -> result.append(p.isEmpty() ? "O" : p.getPiece().getCode()));
+
+        Assertions.assertEquals(expected, result.toString());
+    }
+
+    @Test
+    public void checkRank() {
+        final Position[] positions = board.getPositions(1);
+
+        Assertions.assertNotNull(positions);
+        Assertions.assertEquals(positions.length, 8);
+
+        final String expected = "RNBQKBNR";
+
+        final StringBuilder result = new StringBuilder();
+        Arrays.stream(positions).forEach(p -> result.append(p.isEmpty() ? "O" : p.getPiece().getCode()));
+
+        Assertions.assertEquals(expected, result.toString());
+    }
+
+    @Test
+    public void checkPartialFile() {
+
+        final Position[] positions = board.getPositionsVertically(3, 3, 7);
+        Assertions.assertNotNull(positions);
+        Assertions.assertEquals(5, positions.length);
+
+        final String expected = "OOOOP";
+        final StringBuilder result = new StringBuilder();
+
+        Arrays.stream(positions).forEach(p -> result.append(p.isEmpty() ? "O" : p.getPiece().getCode()));
+        Assertions.assertEquals(expected, result.toString());
+    }
+
+    @Test
+    public void checkPartialRank() {
+        final Position[] positions = board.getPositionsHorizontally(8, 3, 8);
+        Assertions.assertNotNull(positions);
+        Assertions.assertEquals(6, positions.length);
+
+        final String expected = "BQKBNR";
+        final StringBuilder result = new StringBuilder();
+
+        Arrays.stream(positions).forEach(p -> result.append(p.isEmpty() ? "O" : p.getPiece().getCode()));
+        Assertions.assertEquals(expected, result.toString());
+    }
+}
