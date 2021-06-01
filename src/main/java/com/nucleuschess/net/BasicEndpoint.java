@@ -4,8 +4,6 @@ import com.nucleuschess.Core;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 
-import java.io.IOException;
-
 @ServerEndpoint("/")
 public class BasicEndpoint {
 
