@@ -44,7 +44,7 @@ public final class PositionUtility {
     public static int getFileNumber(char c) {
         for (int i = 0; i < files.length; i++) {
             if (files[i] == c) {
-                return i;
+                return i + 1;
             }
         }
         throw new IllegalArgumentException("Cannot find number for file " + c);
