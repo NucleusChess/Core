@@ -77,7 +77,6 @@ public final class Board {
         return positions.stream().filter(p -> PositionUtility.getFileNumber(p.getFile()) == file)
                 .filter(p -> p.getRank() >= startRank)
                 .filter(p -> p.getRank() <= endRank).toArray(Position[]::new);
-
     }
 
     private void setupBoard() {

@@ -35,6 +35,8 @@ public final class Knight extends Piece {
 
     @Override
     public boolean check(Board board, Move move) {
-        return false;
+        if (!isKnightMove(move)) return false;
+
+        return true;
     }
 }

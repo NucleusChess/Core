@@ -2,6 +2,7 @@ package com.nucleuschess.move;
 
 import com.nucleuschess.Color;
 import com.nucleuschess.board.Position;
+import com.nucleuschess.board.PositionUtility;
 import com.nucleuschess.piece.Piece;
 
 /*
@@ -53,6 +54,14 @@ public final class Move {
 
     public Position getTo() {
         return to;
+    }
+
+    public int getHorizontalSteps() {
+        return Math.abs(from.getRank() - to.getRank());
+    }
+
+    public int getVerticalSteps() {
+        return Math.abs(PositionUtility.getFileNumber(from.getFile()) - PositionUtility.getFileNumber(to.getFile()));
     }
 
     public boolean isCapture() {
