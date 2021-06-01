@@ -35,9 +35,9 @@ public final class Rook extends Piece {
 
     @Override
     public boolean check(Board board, Move move) {
-
         // rooks can only move horizontally and vertically
         if (!isHorizontal(move) && !isVertical(move)) return false;
+
 
         return true;
     }

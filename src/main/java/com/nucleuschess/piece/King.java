@@ -35,6 +35,9 @@ public final class King extends Piece {
 
     @Override
     public boolean check(Board board, Move move) {
-        return false;
+        if (move.getHorizontalSteps() > 1) return false;
+        if (move.getVerticalSteps() > 1) return false;
+
+        return true;
     }
 }

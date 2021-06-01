@@ -35,6 +35,7 @@ public final class Queen extends Piece {
 
     @Override
     public boolean check(Board board, Move move) {
-        return false;
+        if (!isHorizontal(move) || !isVertical(move) || !isDiagonal(move)) return false;
+        return true;
     }
 }
