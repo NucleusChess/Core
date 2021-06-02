@@ -1,10 +1,17 @@
 package com.nucleuschess.board;
 
+import com.google.gson.JsonObject;
 import com.nucleuschess.Color;
+import com.nucleuschess.Core;
+import com.nucleuschess.move.Move;
 import com.nucleuschess.piece.*;
+import jakarta.websocket.Session;
 
+import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.nucleuschess.Color.BLACK;
@@ -118,4 +125,27 @@ public final class Board {
         this.getPosition('d', 8).setPiece(new Queen(BLACK));
     }
 
+    // -----------------------------------------------------------------
+
+    public void move(String userID, String piece, String position) {
+        final Optional<Session> optSession = Core.getSessions().stream().filter(s -> s.getId().equalsIgnoreCase(userID)).findAny();
+
+        if (optSession.isEmpty()) {
+            throw new IllegalStateException("No session for specified user-id.");
+        }
+
+        try {
+            final JsonObject obj = new JsonObject();
+            obj.addProperty("position", position);
+            obj.addProperty("piece", piece);
+            obj.addProperty("color", optSession.get().getUserProperties().get("color").toString());
+
+            final String json = Core.getGson().toJson(obj);
+
+            optSession.get().getBasicRemote().sendText(json);
+            System.out.println("Sent move (" + position + ", " + piece + ") to " + userID);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

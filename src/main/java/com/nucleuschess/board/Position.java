@@ -45,6 +45,10 @@ public final class Position {
         return rank;
     }
 
+    public final String getCode() {
+        return rank + "" + file;
+    }
+
     public final Color getColor() {
         return color;
     }
