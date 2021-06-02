@@ -37,6 +37,9 @@ public final class Rook extends Piece {
     public boolean check(Board board, Move move) {
         // rooks can only move horizontally and vertically
         if (!isHorizontal(move) && !isVertical(move)) return false;
-        return true;
+        if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom().getRank(), move.getFrom().getFileNumber(), move.getTo().getFileNumber())) {
+            return false;
+        }
+        return !isVertical(move) || !board.hasObstructionVertically(move.getFrom().getFileNumber(), move.getFrom().getRank(), move.getTo().getRank());
     }
 }

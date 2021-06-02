@@ -25,7 +25,7 @@ public class BasicEndpoint {
             final JsonObject obj = Core.getGson().fromJson(message, JsonObject.class);
 
             if (obj.get("position").getAsString().equalsIgnoreCase("e4")) {
-                Core.getBoard().move(session.getId(), "pawn", "e5");
+                Core.getBoard().move(session.getId(), "pawn", "c5"); // Cuz we love Sicilian Defense
             }
         }
     }
