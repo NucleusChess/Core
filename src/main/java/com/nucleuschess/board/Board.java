@@ -3,16 +3,14 @@ package com.nucleuschess.board;
 import com.google.gson.JsonObject;
 import com.nucleuschess.Color;
 import com.nucleuschess.Core;
-import com.nucleuschess.move.Move;
 import com.nucleuschess.piece.*;
+import com.nucleuschess.util.ObservableSet;
 import jakarta.websocket.Session;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static com.nucleuschess.Color.BLACK;
 import static com.nucleuschess.Color.WHITE;
@@ -39,11 +37,24 @@ import static com.nucleuschess.Color.WHITE;
  */
 public final class Board {
 
-    private final Set<Position> positions;
+    private final ObservableSet<Position> positions;
 
     public Board() {
-        this.positions = new LinkedHashSet<>();
+        this.positions = new ObservableSet<>();
         this.setupBoard();
+
+        positions.addHandler(set -> {
+            print();
+        });
+
+        // Comically, this is supposed to fire the observable-handlers. Except it doesn't because the Set does not change but the object inside the set does.
+        Executors.newSingleThreadScheduledExecutor().schedule(() -> {
+            getPosition('e', 4).setPiece(new Pawn(BLACK));
+            getPosition('e', 2).setPiece(null);
+
+            getPosition('e', 5).setPiece(new Pawn(WHITE));
+            getPosition('e', 7).setPiece(null);
+        }, 5, TimeUnit.SECONDS);
     }
 
     public final Position getPosition(char file, int rank) {
@@ -63,7 +74,7 @@ public final class Board {
     }
 
     public final Set<Position> getPositions() {
-        return positions;
+        return new HashSet<>(positions);
     }
 
     public final Position[] getEmptyPositions() {
@@ -147,5 +158,28 @@ public final class Board {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void print() {
+        System.out.println("===================");
+
+        for (int i = 1, j = 8; i <= 8; i++, j--) {
+            System.out.print("| ");
+            Position[] positions = getPositions(i);
+
+            Arrays.stream(positions).forEach(p -> {
+                if (p.getPiece() == null) {
+                    System.out.print("- ");
+                    return;
+                }
+
+                System.out.print(p.getPiece().getCode() + " ");
+            });
+
+            System.out.println("| " + j);
+        }
+
+        System.out.println("===================");
+        System.out.println("  A B C D E F G H ");
     }
 }

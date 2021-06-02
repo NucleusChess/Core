@@ -24,6 +24,7 @@ public class Core {
             server.start();
 
             board = new Board();
+            board.print();
 
             while (true) {
                 try {
