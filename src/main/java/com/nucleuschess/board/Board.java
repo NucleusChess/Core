@@ -97,6 +97,40 @@ public final class Board {
                 .filter(p -> p.getRank() <= endRank).toArray(Position[]::new);
     }
 
+    public boolean hasObstructionHorizontally(int rank, int startFile, int endFile) {
+        return hasObstruction0(getPositionsHorizontally(rank, startFile, endFile));
+    }
+
+    public boolean hasObstructionVertically(int file, int startRank, int endRank) {
+        return hasObstruction0(getPositionsVertically(file, startRank, endRank));
+    }
+
+    public boolean hasObstructionDiagonally(Position start, Position end) {
+        int xChange = end.getFileNumber() - start.getFileNumber();
+        int yChange = end.getRank() - start.getRank();
+
+        int steps = Math.abs(start.getRank() - end.getRank());
+        int[] direction = getDirection(xChange, yChange);
+
+        for (int i = 0; i < steps; i++) {
+            final Position position = getPosition(start.getFileNumber() + direction[0], start.getRank() + direction[1]);
+            if (!position.isEmpty()) return true;
+        }
+        return false;
+    }
+
+    private boolean hasObstruction0(Position[] positions) {
+        if (positions.length == 2) return false;
+        return Arrays.stream(Arrays.copyOfRange(positions, 1, positions.length - 2)).anyMatch(p -> !p.isEmpty());
+    }
+
+    private int[] getDirection(int diffX, int diffY) {
+        int x = diffX >= 0 ? 1 : 0;
+        int y = diffY >= 0 ? 1 : 0;
+
+        return new int[]{x, y};
+    }
+
     private void setupBoard() {
         for (int i = 1; i < 9; i++) { // more convenient, we use the numbers 1-8 since these are the actual file numbers
             for (int j = 1; j < 9; j++) { // same thing applies here
@@ -134,6 +168,8 @@ public final class Board {
         // QUEENS
         this.getPosition('d', 1).setPiece(new Queen(WHITE));
         this.getPosition('d', 8).setPiece(new Queen(BLACK));
+
+        this.getPositions().stream().filter(p -> !p.isEmpty()).forEach(p -> p.getPiece().setHasMoved(false));
     }
 
     // -----------------------------------------------------------------

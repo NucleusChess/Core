@@ -41,6 +41,10 @@ public final class Position {
         return file;
     }
 
+    public final int getFileNumber() {
+        return PositionUtility.getFileNumber(file);
+    }
+
     public final int getRank() {
         return rank;
     }
@@ -53,8 +57,9 @@ public final class Position {
         return color;
     }
 
-    public final Piece getPiece() {
-        return piece;
+    @SuppressWarnings("unchecked")
+    public final <T extends Piece> T getPiece() {
+        return (T) piece;
     }
 
     public final void setPiece(Piece piece) {

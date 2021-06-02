@@ -51,18 +51,16 @@ public final class Pawn extends Piece {
             return false;
         }
 
+        if (sideSteps > 1) return false;
+        if (sideSteps < -1) return false;
+
+        if (forwardSteps == 2) {
+            if (hasMoved()) return false;
+            if (!board.getPosition(to.getFile(), toFile - 1).isEmpty()) return false;
+            return true;
+        }
         // pawns can't move backwards
         if (forwardSteps < 0 || forwardSteps > 2) {
-            return false;
-        }
-
-        // moves 2 squares or more but already had the first two steps
-        if (forwardSteps == 2 && hasMoved()) {
-            return false;
-        }
-
-        // pawns cannot phase through other pieces
-        if (forwardSteps == 2 && !board.getPosition(to.getFile(), toFile - 1).isEmpty()) {
             return false;
         }
 
@@ -73,7 +71,7 @@ public final class Pawn extends Piece {
         if (!to.isEmpty()) {
             return false;
         }
-        // pawns cannot move files more than 1 step
-        return sideSteps <= 1 && sideSteps >= -1;
+
+        return true;
     }
 }

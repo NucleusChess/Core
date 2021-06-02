@@ -2,10 +2,11 @@ package com.nucleuschess;
 
 import com.nucleuschess.board.Board;
 import com.nucleuschess.board.Position;
+import com.nucleuschess.move.Move;
+import com.nucleuschess.piece.Pawn;
 import com.nucleuschess.piece.Piece;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import com.nucleuschess.piece.Rook;
+import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -23,6 +24,8 @@ import java.util.Random;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BoardTests {
 
     private static Board board;
@@ -39,6 +42,7 @@ public class BoardTests {
     }
 
     @Test
+    @Order(1)
     public void checkPieces() {
         final int[] ranks = {1, 2, 7, 8};
         final int rank = ranks[random.nextInt(ranks.length)];
@@ -52,6 +56,7 @@ public class BoardTests {
     }
 
     @Test
+    @Order(2)
     public void checkBoard() {
         Assertions.assertNotNull(board);
         final String[] expected = {
@@ -131,5 +136,44 @@ public class BoardTests {
 
         Arrays.stream(positions).forEach(p -> result.append(p.isEmpty() ? "O" : p.getPiece().getCode()));
         Assertions.assertEquals(expected, result.toString());
+    }
+
+    @Test
+    public void testPawn() {
+        final Position from = board.getPosition(4, 2); // D4
+        final Pawn piece = from.getPiece();
+        final Move move = new Move(1, piece, from, board.getPosition(4, 4), false);
+
+        Assertions.assertTrue(piece.check(board, move));
+    }
+
+    @Test
+    public void testHorizontalRookCollision() {
+        final Position from = board.getPosition(1, 1); // A1
+        final Rook piece = from.getPiece();
+        final Move move = new Move(1, piece, from, board.getPosition(5, 1), false);
+
+        Assertions.assertTrue(piece.check(board, move));
+    }
+
+    @Test
+    public void testVerticalRookCollision() {
+        final Position from = board.getPosition(1, 1); // A1
+        final Rook piece = from.getPiece();
+        final Move move = new Move(1, piece, from, board.getPosition(1, 6), false);
+
+        Assertions.assertTrue(piece.check(board, move));
+    }
+
+    @Test
+    public void testNormalRookMovement() {
+        final Position from = board.getPosition(1, 1); // A1
+        final Rook piece = from.getPiece();
+        final Move move = new Move(1, piece, from, board.getPosition(1, 6), false);
+
+        board.getPosition(1, 2).setEmpty();
+
+        Assertions.assertTrue(board.getPosition(1, 2).isEmpty());
+        Assertions.assertTrue(piece.check(board, move));
     }
 }

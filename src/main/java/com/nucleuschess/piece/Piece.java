@@ -53,4 +53,9 @@ public abstract class Piece implements MoveChecker {
     public boolean hasMoved() {
         return hasMoved;
     }
+
+    @Deprecated
+    public void setHasMoved(boolean moved) {
+        this.hasMoved = moved;
+    }
 }
