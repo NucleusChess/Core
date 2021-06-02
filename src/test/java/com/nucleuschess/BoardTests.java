@@ -173,6 +173,7 @@ public class BoardTests {
 
         board.getPosition(1, 2).setEmpty();
 
+        Assertions.assertTrue(board.getPosition(1, 2).isEmpty());
         Assertions.assertTrue(piece.check(board, move));
     }
 }

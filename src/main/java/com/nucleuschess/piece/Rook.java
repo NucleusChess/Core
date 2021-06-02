@@ -40,6 +40,7 @@ public final class Rook extends Piece {
         if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom().getRank(), move.getFrom().getFileNumber(), move.getTo().getFileNumber())) {
             return false;
         }
+
         return !isVertical(move) || !board.hasObstructionVertically(move.getFrom().getFileNumber(), move.getFrom().getRank(), move.getTo().getRank());
     }
 }

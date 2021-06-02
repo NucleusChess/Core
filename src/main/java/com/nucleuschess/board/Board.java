@@ -89,7 +89,7 @@ public final class Board {
     }
 
     public boolean hasObstructionVertically(int file, int startRank, int endRank) {
-        return hasObstruction0(getPositionsHorizontally(file, startRank, endRank));
+        return hasObstruction0(getPositionsVertically(file, startRank, endRank));
     }
 
     public boolean hasObstructionDiagonally(Position start, Position end) {
@@ -108,7 +108,7 @@ public final class Board {
 
     private boolean hasObstruction0(Position[] positions) {
         if (positions.length == 2) return false;
-        return Arrays.stream(Arrays.copyOfRange(positions, 1, positions.length - 2)).allMatch(Position::isEmpty);
+        return Arrays.stream(Arrays.copyOfRange(positions, 1, positions.length - 2)).anyMatch(p -> !p.isEmpty());
     }
 
     private int[] getDirection(int diffX, int diffY) {
