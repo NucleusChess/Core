@@ -18,6 +18,13 @@ import com.nucleuschess.move.Move;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+/**
+ * Class representing the Rook, which can move horizontally and vertically
+ *
+ * @author Wouter Kistemaker
+ * @since 1.0-SNAPSHOT
+ */
 public final class Rook extends Piece {
 
     public Rook(Color color, Position position) {
