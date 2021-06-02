@@ -18,6 +18,13 @@ import com.nucleuschess.move.Move;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+/**
+ * Class representing the Queen, which can move horizontally and vertically and diagonally
+ *
+ * @author Wouter Kistemaker
+ * @since 1.0-SNAPSHOT
+ */
 public final class Queen extends Piece {
 
     public Queen(Color color, Position position) {
