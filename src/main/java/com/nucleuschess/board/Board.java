@@ -207,7 +207,7 @@ public final class Board {
                     return;
                 }
 
-                System.out.print(p.getPiece().getCode() + " ");
+                System.out.print(p.getPiece().getPosition().getCode() + " ");
             });
 
             System.out.println("| " + j);

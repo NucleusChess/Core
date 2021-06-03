@@ -50,7 +50,7 @@ public final class Position {
     }
 
     public final String getCode() {
-        return rank + "" + file;
+        return file + "" + rank;
     }
 
     public final Color getColor() {
