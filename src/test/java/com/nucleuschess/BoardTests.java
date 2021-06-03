@@ -83,6 +83,7 @@ public class BoardTests {
     }
 
     @Test
+    @Order(3)
     public void checkFile() {
         final Position[] positions = board.getPositions('d');
 
@@ -113,6 +114,7 @@ public class BoardTests {
     }
 
     @Test
+    @Order(4)
     public void checkPartialFile() {
 
         final Position[] positions = board.getPositionsVertically(3, 3, 7);
