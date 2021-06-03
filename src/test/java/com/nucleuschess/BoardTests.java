@@ -176,4 +176,19 @@ public class BoardTests {
         Assertions.assertTrue(board.getPosition(1, 2).isEmpty());
         Assertions.assertTrue(piece.check(board, move));
     }
+
+    @Test
+    public void testOpening() {
+
+        final Position from = board.getPosition(5, 2); // E-pawn
+        final Pawn pawn = from.getPiece();
+
+        final Move move = new Move(1, pawn, from, board.getPosition(5, 4), false);
+        if (pawn.check(board, move)) {
+            from.setEmpty();
+            board.getPosition(5, 4).setPiece(pawn);
+        }
+
+        board.print();
+    }
 }
