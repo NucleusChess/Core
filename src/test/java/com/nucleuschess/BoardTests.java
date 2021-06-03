@@ -153,7 +153,7 @@ public class BoardTests {
         final Rook piece = from.getPiece();
         final Move move = new Move(1, piece, from, board.getPosition(5, 1), false);
 
-        Assertions.assertTrue(piece.check(board, move));
+        Assertions.assertFalse(piece.check(board, move));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class BoardTests {
         final Rook piece = from.getPiece();
         final Move move = new Move(1, piece, from, board.getPosition(1, 6), false);
 
-        Assertions.assertTrue(piece.check(board, move));
+        Assertions.assertFalse(piece.check(board, move));
     }
 
     @Test
