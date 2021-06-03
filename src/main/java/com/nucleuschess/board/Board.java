@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.nucleuschess.Color;
 import com.nucleuschess.Core;
 import com.nucleuschess.piece.*;
-import com.nucleuschess.util.ObservableSet;
+import com.nucleuschess.util.observer.ObservableSet;
 import jakarta.websocket.Session;
 
 import java.io.IOException;
@@ -43,9 +43,7 @@ public final class Board {
         this.positions = new ObservableSet<>();
         this.setupBoard();
 
-        positions.addHandler(set -> {
-            print();
-        });
+        positions.addHandler(p -> print());
 
         // Comically, this is supposed to fire the observable-handlers. Except it doesn't because the Set does not change but the object inside the set does.
         Executors.newSingleThreadScheduledExecutor().schedule(() -> {

@@ -1,4 +1,4 @@
-package com.nucleuschess.util;
+package com.nucleuschess.util.observer;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -27,9 +27,5 @@ public class Observable<T> {
 
     private void update() {
         handlers.forEach(h -> h.handle(t));
-    }
-
-    public interface Handler<T> {
-        void handle(T t);
     }
 }
