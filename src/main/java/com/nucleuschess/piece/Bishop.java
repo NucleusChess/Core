@@ -37,7 +37,6 @@ public final class Bishop extends Piece {
     public boolean check(Board board, Move move) {
         // Bishops can only move diagonal
         if (!isDiagonal(move)) return false;
-
-        return true;
+        return !board.hasObstructionDiagonally(move.getFrom(), move.getTo());
     }
 }

@@ -42,7 +42,14 @@ public final class Queen extends Piece {
 
     @Override
     public boolean check(Board board, Move move) {
-        if (!isHorizontal(move) || !isVertical(move) || !isDiagonal(move)) return false;
-        return true;
+
+        if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom().getRank(), move.getFrom().getFileNumber(), move.getTo().getFileNumber())) {
+            return false;
+        }
+
+        if (isVertical(move) && board.hasObstructionVertically(move.getFrom().getFileNumber(), move.getFrom().getRank(), move.getTo().getRank())) {
+            return false;
+        }
+        return !isDiagonal(move) || !board.hasObstructionDiagonally(move.getFrom(), move.getTo());
     }
 }

@@ -38,6 +38,7 @@ public final class King extends Piece {
     public boolean check(Board board, Move move) {
         if (move.getHorizontalSteps() > Magic.MAX_KING_STEPS_SIDEWARDS) return false;
         if (move.getVerticalSteps() > Magic.MAX_KING_STEPS_FORWARD) return false;
+        if (!move.getTo().isEmpty()) return false;
 
         return true;
     }
