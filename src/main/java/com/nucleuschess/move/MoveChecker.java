@@ -14,7 +14,6 @@ package com.nucleuschess.move;/*
 
 import com.nucleuschess.board.Board;
 import com.nucleuschess.board.PositionUtility;
-import com.nucleuschess.piece.Knight;
 
 public interface MoveChecker {
 

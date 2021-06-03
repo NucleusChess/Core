@@ -26,5 +26,10 @@ public class Magic {
     public static int MAX_KING_STEPS_FORWARD = 1;
     public static int MAX_KING_STEPS_SIDEWARDS = 1;
 
+    public static int MAX_KNIGHT_STEPS_FORWARD = 2;
+    public static int MAX_KNIGHT_STEPS_SIDEWARDS = 2;
+    public static int MIN_KNIGHT_STEPS_FORWARD = 1;
+    public static int MIN_KNIGHT_STEPS_SIDEWARDS = 1;
+
 
 }

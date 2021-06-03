@@ -182,7 +182,6 @@ public class BoardTests {
 
     @Test
     public void testOpening() {
-
         final Position from = board.getPosition(5, 2); // E-pawn
         final Pawn pawn = from.getPiece();
 
