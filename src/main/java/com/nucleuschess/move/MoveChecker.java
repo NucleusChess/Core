@@ -42,8 +42,4 @@ public interface MoveChecker {
 
         return (fromFile / toFile == 1 && horizontalSteps / verticalSteps == 1);
     }
-
-    default boolean isKnightMove(Move move) {
-        return move.getPiece() instanceof Knight && !isHorizontal(move) && !isVertical(move) && !isDiagonal(move);
-    }
 }

@@ -35,8 +35,6 @@ public final class Knight extends Piece {
 
     @Override
     public boolean check(Board board, Move move) {
-        if (!isKnightMove(move)) return false;
-
-        return true;
+        return !super.isHorizontal(move) && !super.isVertical(move) && !super.isDiagonal(move);
     }
 }
