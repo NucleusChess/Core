@@ -3,7 +3,7 @@ package com.nucleuschess.util.observer;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class Observable<T> {
+public final class Observable<T> {
 
     private final Set<Handler<T>> handlers = new LinkedHashSet<>();
     private T t;
