@@ -187,6 +187,10 @@ public class BoardTests {
         if (pawn.check(board, move)) {
             from.setEmpty();
             board.getPosition(5, 4).setPiece(pawn);
+            board.getPosition(5, 2).setPiece(null);
+
+            board.getPosition(5, 5).setPiece(pawn);
+            board.getPosition(5, 7).setPiece(null);
         }
 
         board.print();
