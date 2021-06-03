@@ -17,6 +17,8 @@ package com.nucleuschess.board;
 import com.nucleuschess.Color;
 import com.nucleuschess.piece.Piece;
 
+import java.util.Objects;
+
 /**
  * A class holding the basic information of a square on a chessboard.
  *

@@ -161,7 +161,7 @@ public final class Board {
 
         // KINGS
         this.getPosition('e', 1).setPiece(new King(WHITE));
-        this.getPosition('e', 8).setPiece(new King(WHITE));
+        this.getPosition('e', 8).setPiece(new King(BLACK));
 
         // QUEENS
         this.getPosition('d', 1).setPiece(new Queen(WHITE));
@@ -195,11 +195,17 @@ public final class Board {
     }
 
     public void print() {
+        class Ansi {
+            private static final String RED = "\u001B[31m";
+            private static final String BLUE = "\u001B[34m";
+            private static final String RESET = "\u001B[0m";
+        }
+
         System.out.println("===================");
 
         for (int i = 1, j = 8; i <= 8; i++, j--) {
             System.out.print("| ");
-            Position[] positions = getPositions(i);
+            Position[] positions = getPositions(j);
 
             Arrays.stream(positions).forEach(p -> {
                 if (p.getPiece() == null) {
@@ -207,7 +213,7 @@ public final class Board {
                     return;
                 }
 
-                System.out.print(p.getPiece().getPosition().getCode() + " ");
+                System.out.print((p.getPiece().getColor() == BLACK ? Ansi.BLUE : Ansi.RED) + p.getPiece().getCode() + " " + Ansi.RESET);
             });
 
             System.out.println("| " + j);

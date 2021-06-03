@@ -3,6 +3,7 @@ package com.nucleuschess;
 import com.nucleuschess.board.Board;
 import com.nucleuschess.board.Position;
 import com.nucleuschess.move.Move;
+import com.nucleuschess.piece.Knight;
 import com.nucleuschess.piece.Pawn;
 import com.nucleuschess.piece.Piece;
 import com.nucleuschess.piece.Rook;
@@ -186,11 +187,14 @@ public class BoardTests {
         final Move move = new Move(1, pawn, from, board.getPosition(5, 4), false);
         if (pawn.check(board, move)) {
             from.setEmpty();
-            board.getPosition(5, 4).setPiece(pawn);
-            board.getPosition(5, 2).setPiece(null);
+            board.getPosition('e', 4).setPiece(pawn);
+            board.getPosition('e', 2).setPiece(null);
 
-            board.getPosition(5, 5).setPiece(pawn);
-            board.getPosition(5, 7).setPiece(null);
+            board.getPosition('c', 5).setPiece(new Pawn(Color.BLACK));
+            board.getPosition('f', 3).setPiece(new Knight(Color.WHITE));
+            board.getPosition('d', 6).setPiece(new Pawn(Color.BLACK));
+            board.getPosition('d', 4).setPiece(new Pawn(Color.WHITE));
+            board.getPosition('d', 4).setPiece(new Pawn(Color.BLACK));
         }
 
         board.print();
