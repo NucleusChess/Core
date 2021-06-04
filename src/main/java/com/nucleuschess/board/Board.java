@@ -183,7 +183,7 @@ public final class Board {
             final JsonObject obj = new JsonObject();
             obj.addProperty("position", position);
             obj.addProperty("piece", piece);
-            obj.addProperty("color", optSession.get().getUserProperties().get("color").toString());
+            obj.addProperty("color", "BLACK");
 
             final String json = Core.getGson().toJson(obj);
 

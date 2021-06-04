@@ -12,8 +12,6 @@ public class BasicEndpoint {
     @OnOpen
     public void onOpen(Session session) {
         Core.addSession(session);
-        session.getUserProperties().put("color", Math.random() <= .5 ? Color.BLACK : Color.WHITE);
-
         System.out.println("[" + session.getId() + "] Connected");
     }
 
@@ -24,8 +22,22 @@ public class BasicEndpoint {
         if (message.matches("\\{.+}")) {
             final JsonObject obj = Core.getGson().fromJson(message, JsonObject.class);
 
-            if (obj.get("position").getAsString().equalsIgnoreCase("e4")) {
-                Core.getBoard().move(session.getId(), "pawn", "c5"); // Cuz we love Sicilian Defense
+            switch (obj.get("position").getAsString()) {
+                case "e4":
+                    Core.getBoard().move(session.getId(), "P", "c5");
+                    break;
+                case "f3":
+                    Core.getBoard().move(session.getId(), "P", "d6");
+                    break;
+                case "cxd4":
+                    Core.getBoard().move(session.getId(), "P", "c5");
+                    break;
+                case "Nxd4":
+                    Core.getBoard().move(session.getId(), "N", "f5");
+                    break;
+                case "c3":
+                    Core.getBoard().move(session.getId(), "P", "a6");
+                    break;
             }
         }
     }
