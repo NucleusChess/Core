@@ -17,19 +17,18 @@ package com.nucleuschess.util;
 /**
  * Class containing the magic constants used in this repository
  */
-public class Magic {
+public interface Magic {
 
-    public static final int MIN_PAWN_STEPS_FORWARD = 1;
-    public static final int MAX_PAWN_STEPS_FORWARD = 2;
-    public static final int MAX_PAWN_STEPS_SIDEWARDS = 1;
+    int MIN_PAWN_STEPS_FORWARD = 1;
+    int MAX_PAWN_STEPS_FORWARD = 2;
+    int MAX_PAWN_STEPS_SIDEWARDS = 1;
 
-    public static final int MAX_KING_STEPS_FORWARD = 1;
-    public static final int MAX_KING_STEPS_SIDEWARDS = 1;
+    int MAX_KING_STEPS_FORWARD = 1;
+    int MAX_KING_STEPS_SIDEWARDS = 1;
 
-    public static final int MAX_KNIGHT_STEPS_FORWARD = 2;
-    public static final int MAX_KNIGHT_STEPS_SIDEWARDS = 2;
-    public static final int MIN_KNIGHT_STEPS_FORWARD = 1;
-    public static final int MIN_KNIGHT_STEPS_SIDEWARDS = 1;
-
+    int MAX_KNIGHT_STEPS_FORWARD = 2;
+    int MAX_KNIGHT_STEPS_SIDEWARDS = 2;
+    int MIN_KNIGHT_STEPS_FORWARD = 1;
+    int MIN_KNIGHT_STEPS_SIDEWARDS = 1;
 
 }
