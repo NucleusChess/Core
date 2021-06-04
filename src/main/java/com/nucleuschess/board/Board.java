@@ -3,6 +3,8 @@ package com.nucleuschess.board;
 import com.google.gson.JsonObject;
 import com.nucleuschess.Color;
 import com.nucleuschess.Core;
+import com.nucleuschess.move.Move;
+import com.nucleuschess.move.checker.*;
 import com.nucleuschess.piece.*;
 import jakarta.websocket.Session;
 
@@ -36,13 +38,38 @@ public final class Board {
 
     private final Map<Position, Piece> positionPieceMap;
 
+    private final BishopMoveChecker bishopChecker;
+    private final KingMoveChecker kingChecker;
+    private final KnightMoveChecker knightChecker;
+    private final PawnMoveChecker pawnChecker;
+    private final QueenMoveChecker queenChecker;
+    private final RookMoveChecker rookChecker;
+
     public Board() {
         this.positionPieceMap = new HashMap<>();
+
+        this.bishopChecker = new BishopMoveChecker(this);
+        this.kingChecker = new KingMoveChecker(this);
+        this.knightChecker = new KnightMoveChecker(this);
+        this.pawnChecker = new PawnMoveChecker(this);
+        this.queenChecker = new QueenMoveChecker(this);
+        this.rookChecker = new RookMoveChecker(this);
+
+
         this.setupBoard();
     }
 
     public boolean isEmpty(Position position) {
         return positionPieceMap.get(position) == null;
+    }
+
+    public boolean check(Piece piece, Move move) {
+        if (piece instanceof Bishop) return bishopChecker.check((Bishop) piece, move);
+        if (piece instanceof King) return kingChecker.check((King) piece, move);
+        if (piece instanceof Knight) return knightChecker.check((Knight) piece, move);
+        if (piece instanceof Pawn) return pawnChecker.check((Pawn) piece, move);
+        if (piece instanceof Queen) return queenChecker.check((Queen) piece, move);
+        return rookChecker.check((Rook) piece, move);
     }
 
     /**
@@ -55,6 +82,13 @@ public final class Board {
         }
 
         final Position from = positionPieceMap.entrySet().stream().filter(e -> e.getValue().equals(piece)).map(Map.Entry::getKey).findFirst().orElseThrow();
+        final Move move = new Move(1, piece, from, to, false);
+
+        if (!check(piece, move)) {
+            System.out.println("Illegal move attempted to make");
+            return;
+        }
+
         this.setEmpty(from);
         setPiece(piece, to);
     }

@@ -1,6 +1,10 @@
-package com.nucleuschess.piece;
+package com.nucleuschess.move.checker;
 
-import com.nucleuschess.Color;
+import com.nucleuschess.board.Board;
+import com.nucleuschess.move.AbstractMoveChecker;
+import com.nucleuschess.move.Move;
+import com.nucleuschess.piece.King;
+import com.nucleuschess.util.Magic;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -15,15 +19,18 @@ import com.nucleuschess.Color;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-public final class Pawn extends Piece {
+public final class KingMoveChecker extends AbstractMoveChecker<King> {
 
-    public Pawn(Color color) {
-        super(color);
+    public KingMoveChecker(Board board) {
+        super(board);
     }
 
     @Override
-    public String getCode() {
-        return "P";
-    }
+    public boolean check(King piece, Move move) {
+        if (move.getHorizontalSteps() > Magic.MAX_KING_STEPS_SIDEWARDS) return false;
+        if (move.getVerticalSteps() > Magic.MAX_KING_STEPS_FORWARD) return false;
+        if (!board.isEmpty(move.getTo())) return false;
 
+        return true;
+    }
 }

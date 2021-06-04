@@ -12,12 +12,12 @@ package com.nucleuschess.move;/*
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import com.nucleuschess.board.Board;
 import com.nucleuschess.board.PositionUtility;
+import com.nucleuschess.piece.Piece;
 
-public interface MoveChecker {
+public interface MoveChecker<T extends Piece> {
 
-    boolean check(Board board, Move move);
+    boolean check(T piece, Move move);
 
     default boolean isHorizontal(Move move) {
         final int fromFile = PositionUtility.getFileNumber(move.getFrom().getFile());

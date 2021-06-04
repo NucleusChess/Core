@@ -148,7 +148,7 @@ public class BoardTests {
         final Pawn piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.D4, false);
 
-        Assertions.assertTrue(piece.check(board, move));
+        Assertions.assertTrue(board.check(piece, move));
     }
 
     @Test
@@ -157,7 +157,7 @@ public class BoardTests {
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.E1, false);
 
-        Assertions.assertFalse(piece.check(board, move));
+        Assertions.assertFalse(board.check(piece, move));
     }
 
     @Test
@@ -166,7 +166,7 @@ public class BoardTests {
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.A6, false);
 
-        Assertions.assertFalse(piece.check(board, move));
+        Assertions.assertFalse(board.check(piece, move));
     }
 
     @Test
@@ -178,7 +178,7 @@ public class BoardTests {
         board.setEmpty(Position.A2);
 
         Assertions.assertTrue(board.isEmpty(Position.A2));
-        Assertions.assertTrue(piece.check(board, move));
+        Assertions.assertTrue(board.check(piece, move));
     }
 
     @Test

@@ -13,11 +13,10 @@ package com.nucleuschess.piece;/*
 */
 
 import com.nucleuschess.Color;
-import com.nucleuschess.move.MoveChecker;
 
 import java.util.UUID;
 
-public abstract class Piece implements MoveChecker {
+public abstract class Piece {
 
     private final UUID uuid;
 

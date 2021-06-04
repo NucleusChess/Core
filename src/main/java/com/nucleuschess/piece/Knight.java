@@ -1,9 +1,6 @@
 package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
-import com.nucleuschess.board.Board;
-import com.nucleuschess.move.Move;
-import com.nucleuschess.util.Magic;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -29,17 +26,4 @@ public final class Knight extends Piece {
         return "N";
     }
 
-    @Override
-    public boolean check(Board board, Move move) {
-        if (isHorizontal(move)) return false;
-        if (isVertical(move)) return false;
-        if (isDiagonal(move)) return false;
-
-        final int horizontalSteps = Math.abs(move.getHorizontalSteps());
-        final int verticalSteps = Math.abs(move.getVerticalSteps());
-
-        if (horizontalSteps > Magic.MAX_KNIGHT_STEPS_SIDEWARDS || horizontalSteps < Magic.MIN_KNIGHT_STEPS_SIDEWARDS)
-            return false;
-        return verticalSteps <= Magic.MAX_KNIGHT_STEPS_FORWARD && verticalSteps >= Magic.MIN_KNIGHT_STEPS_FORWARD;
-    }
 }

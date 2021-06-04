@@ -1,9 +1,6 @@
 package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
-import com.nucleuschess.board.Board;
-import com.nucleuschess.move.Move;
-import com.nucleuschess.util.Magic;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -27,14 +24,5 @@ public final class King extends Piece {
     @Override
     public String getCode() {
         return "K";
-    }
-
-    @Override
-    public boolean check(Board board, Move move) {
-        if (move.getHorizontalSteps() > Magic.MAX_KING_STEPS_SIDEWARDS) return false;
-        if (move.getVerticalSteps() > Magic.MAX_KING_STEPS_FORWARD) return false;
-        if (!board.isEmpty(move.getTo())) return false;
-
-        return true;
     }
 }

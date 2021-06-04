@@ -1,6 +1,9 @@
-package com.nucleuschess.piece;
+package com.nucleuschess.move.checker;
 
-import com.nucleuschess.Color;
+import com.nucleuschess.board.Board;
+import com.nucleuschess.move.AbstractMoveChecker;
+import com.nucleuschess.move.Move;
+import com.nucleuschess.piece.Bishop;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -15,15 +18,16 @@ import com.nucleuschess.Color;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-public final class Pawn extends Piece {
+public final class BishopMoveChecker extends AbstractMoveChecker<Bishop> {
 
-    public Pawn(Color color) {
-        super(color);
+    public BishopMoveChecker(Board board) {
+        super(board);
     }
 
     @Override
-    public String getCode() {
-        return "P";
+    public boolean check(Bishop piece, Move move) {
+        // Bishops can only move diagonal
+        if (!isDiagonal(move)) return false;
+        return !board.hasObstructionDiagonally(move.getFrom(), move.getTo());
     }
-
 }
