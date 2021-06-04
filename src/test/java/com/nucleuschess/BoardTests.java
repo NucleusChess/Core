@@ -188,6 +188,7 @@ public class BoardTests {
 
         final Move move = new Move(1, pawn, from, Position.E4, false);
 
+        Assertions.assertTrue(board.check(pawn, move));
         board.print();
     }
 

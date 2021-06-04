@@ -19,17 +19,17 @@ package com.nucleuschess.util;
  */
 public class Magic {
 
-    public static int MIN_PAWN_STEPS_FORWARD = 1;
-    public static int MAX_PAWN_STEPS_FORWARD = 2;
-    public static int MAX_PAWN_STEPS_SIDEWARDS = 1;
+    public static final int MIN_PAWN_STEPS_FORWARD = 1;
+    public static final int MAX_PAWN_STEPS_FORWARD = 2;
+    public static final int MAX_PAWN_STEPS_SIDEWARDS = 1;
 
-    public static int MAX_KING_STEPS_FORWARD = 1;
-    public static int MAX_KING_STEPS_SIDEWARDS = 1;
+    public static final int MAX_KING_STEPS_FORWARD = 1;
+    public static final int MAX_KING_STEPS_SIDEWARDS = 1;
 
-    public static int MAX_KNIGHT_STEPS_FORWARD = 2;
-    public static int MAX_KNIGHT_STEPS_SIDEWARDS = 2;
-    public static int MIN_KNIGHT_STEPS_FORWARD = 1;
-    public static int MIN_KNIGHT_STEPS_SIDEWARDS = 1;
+    public static final int MAX_KNIGHT_STEPS_FORWARD = 2;
+    public static final int MAX_KNIGHT_STEPS_SIDEWARDS = 2;
+    public static final int MIN_KNIGHT_STEPS_FORWARD = 1;
+    public static final int MIN_KNIGHT_STEPS_SIDEWARDS = 1;
 
 
 }
