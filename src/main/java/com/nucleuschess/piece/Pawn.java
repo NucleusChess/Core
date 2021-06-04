@@ -1,11 +1,6 @@
 package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
-import com.nucleuschess.board.Board;
-import com.nucleuschess.board.Position;
-import com.nucleuschess.board.PositionUtility;
-import com.nucleuschess.move.Move;
-import com.nucleuschess.util.Magic;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -22,10 +17,6 @@ import com.nucleuschess.util.Magic;
 */
 public final class Pawn extends Piece {
 
-    public Pawn(Color color, Position position) {
-        super(color, position);
-    }
-
     public Pawn(Color color) {
         super(color);
     }
@@ -35,38 +26,4 @@ public final class Pawn extends Piece {
         return "P";
     }
 
-    @Override
-    public boolean check(Board board, Move move) {
-        final Position from = move.getFrom();
-        final Position to = move.getTo();
-
-        final int fromFile = PositionUtility.getFileNumber(from.getFile());
-        final int toFile = PositionUtility.getFileNumber(to.getFile());
-
-        final int forwardSteps = to.getRank() - from.getRank();
-        final int sideSteps = toFile - fromFile;
-
-        // if you are in check and have to deal with this.
-        if (board.isInCheck(getColor())) {
-            // TODO FIND CHECK-BLOCKING MOVES
-            return false;
-        }
-
-        if (Math.abs(sideSteps) > Magic.MAX_PAWN_STEPS_SIDEWARDS) return false;
-
-        if (forwardSteps == 2) {
-            if (hasMoved()) return false;
-            return board.getPosition(to.getFile(), toFile - 1).isEmpty();
-        }
-        // pawns can't move backwards
-        if (forwardSteps < Magic.MIN_PAWN_STEPS_FORWARD || forwardSteps > Magic.MAX_PAWN_STEPS_FORWARD) {
-            return false;
-        }
-
-        // TODO if pinned (scan other attackers)
-
-        // squares is already occupied
-        // TODO fix this will prevent pawns from capturing
-        return to.isEmpty();
-    }
 }

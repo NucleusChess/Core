@@ -1,9 +1,6 @@
 package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
-import com.nucleuschess.board.Board;
-import com.nucleuschess.board.Position;
-import com.nucleuschess.move.Move;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -20,10 +17,6 @@ import com.nucleuschess.move.Move;
 */
 public final class Bishop extends Piece {
 
-    public Bishop(Color color, Position position) {
-        super(color, position);
-    }
-
     public Bishop(Color color) {
         super(color);
     }
@@ -33,10 +26,5 @@ public final class Bishop extends Piece {
         return "B";
     }
 
-    @Override
-    public boolean check(Board board, Move move) {
-        // Bishops can only move diagonal
-        if (!isDiagonal(move)) return false;
-        return !board.hasObstructionDiagonally(move.getFrom(), move.getTo());
-    }
+
 }

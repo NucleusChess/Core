@@ -13,21 +13,18 @@ package com.nucleuschess.piece;/*
 */
 
 import com.nucleuschess.Color;
-import com.nucleuschess.board.Position;
-import com.nucleuschess.move.MoveChecker;
 
-public abstract class Piece implements MoveChecker {
+import java.util.UUID;
+
+public abstract class Piece {
+
+    private final UUID uuid;
 
     private final Color color;
-    private Position position;
     private boolean hasMoved = false;
 
-    public Piece(Color color, Position position) {
-        this.color = color;
-        this.position = position;
-    }
-
     public Piece(Color color) {
+        this.uuid = UUID.randomUUID();
         this.color = color;
     }
 
@@ -41,13 +38,8 @@ public abstract class Piece implements MoveChecker {
         return color;
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-        hasMoved = true;
+    public UUID getId() {
+        return uuid;
     }
 
     public boolean hasMoved() {
@@ -56,6 +48,8 @@ public abstract class Piece implements MoveChecker {
 
     @Deprecated
     public void setHasMoved(boolean moved) {
+        if (hasMoved) throw new IllegalStateException("Changing state when already true");
+
         this.hasMoved = moved;
     }
 }

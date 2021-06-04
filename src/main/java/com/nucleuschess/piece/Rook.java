@@ -1,9 +1,6 @@
 package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
-import com.nucleuschess.board.Board;
-import com.nucleuschess.board.Position;
-import com.nucleuschess.move.Move;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -27,10 +24,6 @@ import com.nucleuschess.move.Move;
  */
 public final class Rook extends Piece {
 
-    public Rook(Color color, Position position) {
-        super(color, position);
-    }
-
     public Rook(Color color) {
         super(color);
     }
@@ -38,16 +31,5 @@ public final class Rook extends Piece {
     @Override
     public String getCode() {
         return "R";
-    }
-
-    @Override
-    public boolean check(Board board, Move move) {
-        // rooks can only move horizontally and vertically
-        if (!isHorizontal(move) && !isVertical(move)) return false;
-        if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom().getRank(), move.getFrom().getFileNumber(), move.getTo().getFileNumber())) {
-            return false;
-        }
-
-        return !isVertical(move) || !board.hasObstructionVertically(move.getFrom().getFileNumber(), move.getFrom().getRank(), move.getTo().getRank());
     }
 }

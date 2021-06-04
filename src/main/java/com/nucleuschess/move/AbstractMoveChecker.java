@@ -1,4 +1,7 @@
-package com.nucleuschess.util;
+package com.nucleuschess.move;
+
+import com.nucleuschess.board.Board;
+import com.nucleuschess.piece.Piece;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -13,22 +16,11 @@ package com.nucleuschess.util;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+public abstract class AbstractMoveChecker<T extends Piece> implements MoveChecker<T> {
 
-/**
- * Class containing the magic constants used in this repository
- */
-public interface Magic {
+    protected final Board board;
 
-    int MIN_PAWN_STEPS_FORWARD = 1;
-    int MAX_PAWN_STEPS_FORWARD = 2;
-    int MAX_PAWN_STEPS_SIDEWARDS = 1;
-
-    int MAX_KING_STEPS_FORWARD = 1;
-    int MAX_KING_STEPS_SIDEWARDS = 1;
-
-    int MAX_KNIGHT_STEPS_FORWARD = 2;
-    int MAX_KNIGHT_STEPS_SIDEWARDS = 2;
-    int MIN_KNIGHT_STEPS_FORWARD = 1;
-    int MIN_KNIGHT_STEPS_SIDEWARDS = 1;
-
+    public AbstractMoveChecker(Board board) {
+        this.board = board;
+    }
 }

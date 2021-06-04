@@ -2,7 +2,6 @@ package com.nucleuschess.util.observer;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 public final class ObservableSet<E> extends LinkedHashSet<E> {

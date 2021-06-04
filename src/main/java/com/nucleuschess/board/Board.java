@@ -3,14 +3,13 @@ package com.nucleuschess.board;
 import com.google.gson.JsonObject;
 import com.nucleuschess.Color;
 import com.nucleuschess.Core;
+import com.nucleuschess.move.Move;
+import com.nucleuschess.move.checker.*;
 import com.nucleuschess.piece.*;
-import com.nucleuschess.util.observer.ObservableSet;
 import jakarta.websocket.Session;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import static com.nucleuschess.Color.BLACK;
 import static com.nucleuschess.Color.WHITE;
@@ -37,46 +36,71 @@ import static com.nucleuschess.Color.WHITE;
  */
 public final class Board {
 
-    private final ObservableSet<Position> positions;
+    private final Map<Position, Piece> positionPieceMap;
+
+    private final BishopMoveChecker bishopChecker;
+    private final KingMoveChecker kingChecker;
+    private final KnightMoveChecker knightChecker;
+    private final PawnMoveChecker pawnChecker;
+    private final QueenMoveChecker queenChecker;
+    private final RookMoveChecker rookChecker;
 
     public Board() {
-        this.positions = new ObservableSet<>();
+        this.positionPieceMap = new HashMap<>();
+
+        this.bishopChecker = new BishopMoveChecker(this);
+        this.kingChecker = new KingMoveChecker(this);
+        this.knightChecker = new KnightMoveChecker(this);
+        this.pawnChecker = new PawnMoveChecker(this);
+        this.queenChecker = new QueenMoveChecker(this);
+        this.rookChecker = new RookMoveChecker(this);
+
         this.setupBoard();
-
-        positions.addHandler(p -> print());
-
-        // Comically, this is supposed to fire the observable-handlers. Except it doesn't because the Set does not change but the object inside the set does.
-        Executors.newSingleThreadScheduledExecutor().schedule(() -> {
-            getPosition('e', 4).setPiece(new Pawn(BLACK));
-            getPosition('e', 2).setPiece(null);
-
-            getPosition('e', 5).setPiece(new Pawn(WHITE));
-            getPosition('e', 7).setPiece(null);
-        }, 5, TimeUnit.SECONDS);
     }
 
-    public final Position getPosition(char file, int rank) {
-        return positions.stream().filter(p -> p.getFile() == file && p.getRank() == rank).findFirst().orElseThrow(NullPointerException::new);
+    public boolean isEmpty(Position position) {
+        return positionPieceMap.get(position) == null;
     }
 
-    public final Position getPosition(int file, int rank) {
-        return getPosition(PositionUtility.getFile(file), rank);
+    public boolean check(Piece piece, Move move) {
+        if (piece instanceof Bishop) return bishopChecker.check((Bishop) piece, move);
+        if (piece instanceof King) return kingChecker.check((King) piece, move);
+        if (piece instanceof Knight) return knightChecker.check((Knight) piece, move);
+        if (piece instanceof Pawn) return pawnChecker.check((Pawn) piece, move);
+        if (piece instanceof Queen) return queenChecker.check((Queen) piece, move);
+        return rookChecker.check((Rook) piece, move);
     }
 
-    public final Position[] getPositions(char file) {
-        return positions.stream().filter(p -> p.getFile() == file).toArray(Position[]::new);
+    public void move(Piece piece, Position to) {
+        final Position from = positionPieceMap.entrySet().stream().filter(e -> e.getValue().equals(piece)).map(Map.Entry::getKey).findFirst().orElseThrow();
+        final Move move = new Move(1, piece, from, to, false);
+
+        if (!check(piece, move)) {
+            return;
+        }
+
+        this.setEmpty(from);
+        setPiece(piece, to);
+
+
+        if (!piece.hasMoved()) {
+            piece.setHasMoved(true);
+        }
     }
 
-    public final Position[] getPositions(int rank) {
-        return positions.stream().filter(p -> p.getRank() == rank).toArray(Position[]::new);
+    public void setPiece(Piece piece, Position position) {
+        positionPieceMap.put(position, piece);
+
+        if (piece == null) return;
     }
 
-    public final Set<Position> getPositions() {
-        return new HashSet<>(positions);
+    public void setEmpty(Position position) {
+        setPiece(null, position);
     }
 
-    public final Position[] getEmptyPositions() {
-        return positions.stream().filter(Position::isEmpty).toArray(Position[]::new);
+    @SuppressWarnings("unchecked")
+    public <T extends Piece> T getPiece(Position position) {
+        return (T) this.positionPieceMap.get(position);
     }
 
     public boolean isInCheck(Color color) {
@@ -84,22 +108,18 @@ public final class Board {
     }
 
     public Position[] getPositionsHorizontally(int rank, int startFile, int endFile) {
-        return positions.stream().filter(p -> p.getRank() == rank)
-                .filter(p -> PositionUtility.getFileNumber(p.getFile()) >= startFile)
-                .filter(p -> PositionUtility.getFileNumber(p.getFile()) <= endFile).toArray(Position[]::new);
+        return Arrays.stream(Position.valuesOf(rank)).filter(p -> p.getFileNumber() >= startFile && p.getFileNumber() <= endFile).toArray(Position[]::new);
     }
 
-    public Position[] getPositionsVertically(int file, int startRank, int endRank) {
-        return positions.stream().filter(p -> PositionUtility.getFileNumber(p.getFile()) == file)
-                .filter(p -> p.getRank() >= startRank)
-                .filter(p -> p.getRank() <= endRank).toArray(Position[]::new);
+    public Position[] getPositionsVertically(char file, int startRank, int endRank) {
+        return Arrays.stream(Position.valuesOf(file)).filter(p -> p.getRank() >= startRank && p.getRank() <= endRank).toArray(Position[]::new);
     }
 
     public boolean hasObstructionHorizontally(int rank, int startFile, int endFile) {
         return hasObstruction0(getPositionsHorizontally(rank, startFile, endFile));
     }
 
-    public boolean hasObstructionVertically(int file, int startRank, int endRank) {
+    public boolean hasObstructionVertically(char file, int startRank, int endRank) {
         return hasObstruction0(getPositionsVertically(file, startRank, endRank));
     }
 
@@ -111,15 +131,15 @@ public final class Board {
         int[] direction = getDirection(xChange, yChange);
 
         for (int i = 0; i < steps; i++) {
-            final Position position = getPosition(start.getFileNumber() + direction[0], start.getRank() + direction[1]);
-            if (!position.isEmpty()) return true;
+            final Position position = Position.valueOf(start.getFileNumber() + direction[0], start.getRank() + direction[1]);
+            if (!isEmpty(position)) return true;
         }
         return false;
     }
 
     private boolean hasObstruction0(Position[] positions) {
         if (positions.length == 2) return false;
-        return Arrays.stream(Arrays.copyOfRange(positions, 1, positions.length - 2)).anyMatch(p -> !p.isEmpty());
+        return Arrays.stream(Arrays.copyOfRange(positions, 1, positions.length - 2)).anyMatch(p -> !isEmpty(p));
     }
 
     private int[] getDirection(int diffX, int diffY) {
@@ -130,44 +150,35 @@ public final class Board {
     }
 
     private void setupBoard() {
-        for (int i = 1; i < 9; i++) { // more convenient, we use the numbers 1-8 since these are the actual file numbers
-            for (int j = 1; j < 9; j++) { // same thing applies here
-                Color color = ((i - 1) % 2 == 0) ? ((j - 1) % 2 == 0 ? BLACK : WHITE) : ((j - 1) % 2 == 0 ? WHITE : BLACK);
-                this.positions.add(new Position(PositionUtility.getFile(i), j, color));
-            }
-        }
-
         // PAWNS
-        Arrays.stream(getPositions(2)).forEach(p -> p.setPiece(new Pawn(WHITE)));
-        Arrays.stream(getPositions(7)).forEach(p -> p.setPiece(new Pawn(BLACK)));
+        Arrays.stream(Position.valuesOf(2)).forEach(p -> this.setPiece(new Pawn(WHITE), p));
+        Arrays.stream(Position.valuesOf(7)).forEach(p -> this.setPiece(new Pawn(BLACK), p));
 
         // ROOKS
-        this.getPosition('a', 1).setPiece(new Rook(WHITE));
-        this.getPosition('h', 1).setPiece(new Rook(WHITE));
-        this.getPosition('a', 8).setPiece(new Rook(BLACK));
-        this.getPosition('h', 8).setPiece(new Rook(BLACK));
+        this.setPiece(new Rook(WHITE), Position.A1);
+        this.setPiece(new Rook(WHITE), Position.H1);
+        this.setPiece(new Rook(BLACK), Position.A8);
+        this.setPiece(new Rook(BLACK), Position.H8);
 
         // BISHOPS
-        this.getPosition('c', 1).setPiece(new Bishop(WHITE));
-        this.getPosition('f', 1).setPiece(new Bishop(WHITE));
-        this.getPosition('c', 8).setPiece(new Bishop(BLACK));
-        this.getPosition('f', 8).setPiece(new Bishop(BLACK));
+        this.setPiece(new Bishop(WHITE), Position.C1);
+        this.setPiece(new Bishop(WHITE), Position.F1);
+        this.setPiece(new Bishop(BLACK), Position.C8);
+        this.setPiece(new Bishop(BLACK), Position.F8);
 
         // KNIGHTS
-        this.getPosition('b', 1).setPiece(new Knight(WHITE));
-        this.getPosition('g', 1).setPiece(new Knight(WHITE));
-        this.getPosition('b', 8).setPiece(new Knight(BLACK));
-        this.getPosition('g', 8).setPiece(new Knight(BLACK));
+        this.setPiece(new Knight(WHITE), Position.B1);
+        this.setPiece(new Knight(WHITE), Position.G1);
+        this.setPiece(new Knight(BLACK), Position.B8);
+        this.setPiece(new Knight(BLACK), Position.G8);
 
         // KINGS
-        this.getPosition('e', 1).setPiece(new King(WHITE));
-        this.getPosition('e', 8).setPiece(new King(BLACK));
+        this.setPiece(new King(WHITE), Position.E1);
+        this.setPiece(new King(BLACK), Position.E8);
 
         // QUEENS
-        this.getPosition('d', 1).setPiece(new Queen(WHITE));
-        this.getPosition('d', 8).setPiece(new Queen(BLACK));
-
-        this.getPositions().stream().filter(p -> !p.isEmpty()).forEach(p -> p.getPiece().setHasMoved(false));
+        this.setPiece(new Queen(WHITE), Position.D1);
+        this.setPiece(new Queen(BLACK), Position.D8);
     }
 
     // -----------------------------------------------------------------
@@ -205,15 +216,15 @@ public final class Board {
 
         for (int i = 1, j = 8; i <= 8; i++, j--) {
             System.out.print("| ");
-            Position[] positions = getPositions(j);
+            Position[] positions = Position.valuesOf(j);
 
             Arrays.stream(positions).forEach(p -> {
-                if (p.getPiece() == null) {
+                if (isEmpty(p)) {
                     System.out.print("- ");
                     return;
                 }
 
-                System.out.print((p.getPiece().getColor() == BLACK ? Ansi.BLUE : Ansi.RED) + p.getPiece().getCode() + " " + Ansi.RESET);
+                System.out.print((getPiece(p).getColor() == BLACK ? Ansi.BLUE : Ansi.RED) + getPiece(p).getCode() + " " + Ansi.RESET);
             });
 
             System.out.println("| " + j);

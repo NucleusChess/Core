@@ -14,10 +14,7 @@ package com.nucleuschess.board;
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import com.nucleuschess.Color;
-import com.nucleuschess.piece.Piece;
-
-import java.util.Objects;
+import java.util.Arrays;
 
 /**
  * A class holding the basic information of a square on a chessboard.
@@ -25,58 +22,42 @@ import java.util.Objects;
  * @author Wouter Kistemaker
  * @since 1.0-SNAPSHOT
  */
-public final class Position {
+public enum Position {
 
-    private final char file;
-    private final int rank;
-    private final Color color;
+    A1, B1, C1, D1, E1, F1, G1, H1,
+    A2, B2, C2, D2, E2, F2, G2, H2,
+    A3, B3, C3, D3, E3, F3, G3, H3,
+    A4, B4, C4, D4, E4, F4, G4, H4,
+    A5, B5, C5, D5, E5, F5, G5, H5,
+    A6, B6, C6, D6, E6, F6, G6, H6,
+    A7, B7, C7, D7, E7, F7, G7, H7,
+    A8, B8, C8, D8, E8, F8, G8, H8;
 
-    private Piece piece;
-
-    public Position(char file, int rank, Color color) {
-        this.file = file;
-        this.rank = rank;
-        this.color = color;
+    public static Position valueOf(char f, int r) {
+        return Arrays.stream(values()).filter(p -> p.getRank() == r && p.name().toLowerCase().charAt(0) == f).findFirst().orElseThrow();
     }
 
-    public final char getFile() {
-        return file;
+    public static Position valueOf(int f, int r) {
+        return Arrays.stream(values()).filter(p -> p.getRank() == r && p.getFileNumber() == f).findFirst().orElseThrow();
     }
 
-    public final int getFileNumber() {
-        return PositionUtility.getFileNumber(file);
+    public static Position[] valuesOf(int r) {
+        return Arrays.stream(values()).filter(v -> v.name().endsWith(String.valueOf(r))).toArray(Position[]::new);
     }
 
-    public final int getRank() {
-        return rank;
+    public static Position[] valuesOf(char f) {
+        return Arrays.stream(values()).filter(v -> v.name().toLowerCase().startsWith(String.valueOf(f))).toArray(Position[]::new);
     }
 
-    public final String getCode() {
-        return file + "" + rank;
+    public int getFileNumber() {
+        return PositionUtility.getFileNumber(name().toLowerCase().charAt(0));
     }
 
-    public final Color getColor() {
-        return color;
+    public char getFile() {
+        return name().toLowerCase().charAt(0);
     }
 
-    @SuppressWarnings("unchecked")
-    public final <T extends Piece> T getPiece() {
-        return (T) piece;
-    }
-
-    public final void setPiece(Piece piece) {
-        this.piece = piece;
-
-        if (piece != null) {
-            piece.setPosition(this);
-        }
-    }
-
-    public final void setEmpty() {
-        setPiece(null);
-    }
-
-    public boolean isEmpty() {
-        return piece == null;
+    public int getRank() {
+        return Integer.parseInt(String.valueOf(name().charAt(1)));
     }
 }

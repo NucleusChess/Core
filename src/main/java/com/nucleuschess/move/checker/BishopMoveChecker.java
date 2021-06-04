@@ -1,4 +1,9 @@
-package com.nucleuschess.util;
+package com.nucleuschess.move.checker;
+
+import com.nucleuschess.board.Board;
+import com.nucleuschess.move.AbstractMoveChecker;
+import com.nucleuschess.move.Move;
+import com.nucleuschess.piece.Bishop;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -13,22 +18,16 @@ package com.nucleuschess.util;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+public final class BishopMoveChecker extends AbstractMoveChecker<Bishop> {
 
-/**
- * Class containing the magic constants used in this repository
- */
-public interface Magic {
+    public BishopMoveChecker(Board board) {
+        super(board);
+    }
 
-    int MIN_PAWN_STEPS_FORWARD = 1;
-    int MAX_PAWN_STEPS_FORWARD = 2;
-    int MAX_PAWN_STEPS_SIDEWARDS = 1;
-
-    int MAX_KING_STEPS_FORWARD = 1;
-    int MAX_KING_STEPS_SIDEWARDS = 1;
-
-    int MAX_KNIGHT_STEPS_FORWARD = 2;
-    int MAX_KNIGHT_STEPS_SIDEWARDS = 2;
-    int MIN_KNIGHT_STEPS_FORWARD = 1;
-    int MIN_KNIGHT_STEPS_SIDEWARDS = 1;
-
+    @Override
+    public boolean check(Bishop piece, Move move) {
+        // Bishops can only move diagonal
+        if (!isDiagonal(move)) return false;
+        return !board.hasObstructionDiagonally(move.getFrom(), move.getTo());
+    }
 }
