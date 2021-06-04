@@ -2,7 +2,6 @@ package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
 import com.nucleuschess.board.Board;
-import com.nucleuschess.board.Position;
 import com.nucleuschess.move.Move;
 
 /*
@@ -27,10 +26,6 @@ import com.nucleuschess.move.Move;
  */
 public final class Rook extends Piece {
 
-    public Rook(Color color, Position position) {
-        super(color, position);
-    }
-
     public Rook(Color color) {
         super(color);
     }
@@ -48,6 +43,6 @@ public final class Rook extends Piece {
             return false;
         }
 
-        return !isVertical(move) || !board.hasObstructionVertically(move.getFrom().getFileNumber(), move.getFrom().getRank(), move.getTo().getRank());
+        return !isVertical(move) || !board.hasObstructionVertically(move.getFrom().getFile(), move.getFrom().getRank(), move.getTo().getRank());
     }
 }

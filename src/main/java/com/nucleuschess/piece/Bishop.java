@@ -2,7 +2,6 @@ package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
 import com.nucleuschess.board.Board;
-import com.nucleuschess.board.Position;
 import com.nucleuschess.move.Move;
 
 /*
@@ -19,10 +18,6 @@ import com.nucleuschess.move.Move;
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 public final class Bishop extends Piece {
-
-    public Bishop(Color color, Position position) {
-        super(color, position);
-    }
 
     public Bishop(Color color) {
         super(color);

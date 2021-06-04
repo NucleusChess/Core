@@ -3,7 +3,6 @@ package com.nucleuschess.piece;
 import com.nucleuschess.Color;
 import com.nucleuschess.board.Board;
 import com.nucleuschess.board.Position;
-import com.nucleuschess.board.PositionUtility;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.util.Magic;
 
@@ -22,10 +21,6 @@ import com.nucleuschess.util.Magic;
 */
 public final class Pawn extends Piece {
 
-    public Pawn(Color color, Position position) {
-        super(color, position);
-    }
-
     public Pawn(Color color) {
         super(color);
     }
@@ -40,8 +35,8 @@ public final class Pawn extends Piece {
         final Position from = move.getFrom();
         final Position to = move.getTo();
 
-        final int fromFile = PositionUtility.getFileNumber(from.getFile());
-        final int toFile = PositionUtility.getFileNumber(to.getFile());
+        final int fromFile = from.getFileNumber();
+        final int toFile = to.getFileNumber();
 
         final int forwardSteps = to.getRank() - from.getRank();
         final int sideSteps = toFile - fromFile;
@@ -56,7 +51,7 @@ public final class Pawn extends Piece {
 
         if (forwardSteps == 2) {
             if (hasMoved()) return false;
-            return board.getPosition(to.getFile(), toFile - 1).isEmpty();
+            return board.isEmpty(Position.valueOf(to.getFileNumber(), to.getRank() - 1));
         }
         // pawns can't move backwards
         if (forwardSteps < Magic.MIN_PAWN_STEPS_FORWARD || forwardSteps > Magic.MAX_PAWN_STEPS_FORWARD) {
@@ -67,6 +62,6 @@ public final class Pawn extends Piece {
 
         // squares is already occupied
         // TODO fix this will prevent pawns from capturing
-        return to.isEmpty();
+        return board.isEmpty(to);
     }
 }

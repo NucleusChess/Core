@@ -3,7 +3,6 @@ package com.nucleuschess;
 import com.nucleuschess.board.Board;
 import com.nucleuschess.board.Position;
 import com.nucleuschess.move.Move;
-import com.nucleuschess.piece.Knight;
 import com.nucleuschess.piece.Pawn;
 import com.nucleuschess.piece.Piece;
 import com.nucleuschess.piece.Rook;
@@ -49,11 +48,11 @@ public class BoardTests {
         final int rank = ranks[random.nextInt(ranks.length)];
 
         final int fileNumber = random.nextInt(8) + 1; // since the random returns between 0 and 7 but we want 1 and 8
-        final Position position = board.getPosition(fileNumber, rank);
-        final Piece piece = position.getPiece();
+        final Position position = Position.valueOf(fileNumber, rank);
+        final Piece piece = board.getPiece(position);
 
         Assertions.assertNotNull(piece);
-        Assertions.assertEquals("K", board.getPosition(5, 1).getPiece().getCode());
+        Assertions.assertEquals("K", board.getPiece(Position.E1).getCode());
     }
 
     @Test
@@ -74,10 +73,12 @@ public class BoardTests {
         for (int i = 1; i < 9; i++) {
             builder = new StringBuilder();
             for (int j = 1; j < 9; j++) {
-                final Position position = board.getPosition(j, i);
-                final String code = position.isEmpty() ? "O" : position.getPiece().getCode();
+                final Position position = Position.valueOf(j, i);
+                final String code = board.isEmpty(position) ? "O" : board.getPiece(position).getCode();
                 builder.append(code);
             }
+
+            System.out.println("Currently at rank " + i);
             Assertions.assertEquals(expected[i - 1], builder.toString());
         }
     }
@@ -85,22 +86,22 @@ public class BoardTests {
     @Test
     @Order(3)
     public void checkFile() {
-        final Position[] positions = board.getPositions('d');
+        final Position[] positions = Position.valuesOf('d');
 
         Assertions.assertNotNull(positions);
-        Assertions.assertEquals(positions.length, 8);
+        Assertions.assertEquals(8, positions.length);
 
         final String expected = "QPOOOOPQ";
 
         final StringBuilder result = new StringBuilder();
-        Arrays.stream(positions).forEach(p -> result.append(p.isEmpty() ? "O" : p.getPiece().getCode()));
+        Arrays.stream(positions).forEach(p -> result.append(board.isEmpty(p) ? "O" : board.getPiece(p).getCode()));
 
         Assertions.assertEquals(expected, result.toString());
     }
 
     @Test
     public void checkRank() {
-        final Position[] positions = board.getPositions(1);
+        final Position[] positions = Position.valuesOf(1);
 
         Assertions.assertNotNull(positions);
         Assertions.assertEquals(positions.length, 8);
@@ -108,7 +109,7 @@ public class BoardTests {
         final String expected = "RNBQKBNR";
 
         final StringBuilder result = new StringBuilder();
-        Arrays.stream(positions).forEach(p -> result.append(p.isEmpty() ? "O" : p.getPiece().getCode()));
+        Arrays.stream(positions).forEach(p -> result.append(board.isEmpty(p) ? "O" : board.getPiece(p).getCode()));
 
         Assertions.assertEquals(expected, result.toString());
     }
@@ -117,14 +118,14 @@ public class BoardTests {
     @Order(4)
     public void checkPartialFile() {
 
-        final Position[] positions = board.getPositionsVertically(3, 3, 7);
+        final Position[] positions = board.getPositionsVertically('c', 3, 7);
         Assertions.assertNotNull(positions);
         Assertions.assertEquals(5, positions.length);
 
         final String expected = "OOOOP";
         final StringBuilder result = new StringBuilder();
 
-        Arrays.stream(positions).forEach(p -> result.append(p.isEmpty() ? "O" : p.getPiece().getCode()));
+        Arrays.stream(positions).forEach(p -> result.append(board.isEmpty(p) ? "O" : board.getPiece(p).getCode()));
         Assertions.assertEquals(expected, result.toString());
     }
 
@@ -137,67 +138,57 @@ public class BoardTests {
         final String expected = "BQKBNR";
         final StringBuilder result = new StringBuilder();
 
-        Arrays.stream(positions).forEach(p -> result.append(p.isEmpty() ? "O" : p.getPiece().getCode()));
+        Arrays.stream(positions).forEach(p -> result.append(board.isEmpty(p) ? "O" : board.getPiece(p).getCode()));
         Assertions.assertEquals(expected, result.toString());
     }
 
     @Test
     public void testPawn() {
-        final Position from = board.getPosition(4, 2); // D4
-        final Pawn piece = from.getPiece();
-        final Move move = new Move(1, piece, from, board.getPosition(4, 4), false);
+        final Position from = Position.D2;
+        final Pawn piece = board.getPiece(from);
+        final Move move = new Move(1, piece, from, Position.D4, false);
 
         Assertions.assertTrue(piece.check(board, move));
     }
 
     @Test
     public void testHorizontalRookCollision() {
-        final Position from = board.getPosition(1, 1); // A1
-        final Rook piece = from.getPiece();
-        final Move move = new Move(1, piece, from, board.getPosition(5, 1), false);
+        final Position from = Position.A1;
+        final Rook piece = board.getPiece(from);
+        final Move move = new Move(1, piece, from, Position.E1, false);
 
         Assertions.assertFalse(piece.check(board, move));
     }
 
     @Test
     public void testVerticalRookCollision() {
-        final Position from = board.getPosition(1, 1); // A1
-        final Rook piece = from.getPiece();
-        final Move move = new Move(1, piece, from, board.getPosition(1, 6), false);
+        final Position from = Position.A1;
+        final Rook piece = board.getPiece(from);
+        final Move move = new Move(1, piece, from, Position.A6, false);
 
         Assertions.assertFalse(piece.check(board, move));
     }
 
     @Test
     public void testNormalRookMovement() {
-        final Position from = board.getPosition(1, 1); // A1
-        final Rook piece = from.getPiece();
-        final Move move = new Move(1, piece, from, board.getPosition(1, 6), false);
+        final Position from = Position.A1;
+        final Rook piece = board.getPiece(from);
+        final Move move = new Move(1, piece, from, Position.A6, false);
 
-        board.getPosition(1, 2).setEmpty();
+        board.setEmpty(Position.A2);
 
-        Assertions.assertTrue(board.getPosition(1, 2).isEmpty());
+        Assertions.assertTrue(board.isEmpty(Position.A2));
         Assertions.assertTrue(piece.check(board, move));
     }
 
     @Test
     public void testOpening() {
-        final Position from = board.getPosition(5, 2); // E-pawn
-        final Pawn pawn = from.getPiece();
+        final Position from = Position.E2;
+        final Pawn pawn = board.getPiece(from);
 
-        final Move move = new Move(1, pawn, from, board.getPosition(5, 4), false);
-        if (pawn.check(board, move)) {
-            from.setEmpty();
-            board.getPosition('e', 4).setPiece(pawn);
-            board.getPosition('e', 2).setPiece(null);
-
-            board.getPosition('c', 5).setPiece(new Pawn(Color.BLACK));
-            board.getPosition('f', 3).setPiece(new Knight(Color.WHITE));
-            board.getPosition('d', 6).setPiece(new Pawn(Color.BLACK));
-            board.getPosition('d', 4).setPiece(new Pawn(Color.WHITE));
-            board.getPosition('d', 4).setPiece(new Pawn(Color.BLACK));
-        }
+        final Move move = new Move(1, pawn, from, Position.E4, false);
 
         board.print();
     }
+
 }

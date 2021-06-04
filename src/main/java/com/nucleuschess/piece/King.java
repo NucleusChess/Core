@@ -2,7 +2,6 @@ package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
 import com.nucleuschess.board.Board;
-import com.nucleuschess.board.Position;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.util.Magic;
 
@@ -21,10 +20,6 @@ import com.nucleuschess.util.Magic;
 */
 public final class King extends Piece {
 
-    public King(Color color, Position position) {
-        super(color, position);
-    }
-
     public King(Color color) {
         super(color);
     }
@@ -38,7 +33,7 @@ public final class King extends Piece {
     public boolean check(Board board, Move move) {
         if (move.getHorizontalSteps() > Magic.MAX_KING_STEPS_SIDEWARDS) return false;
         if (move.getVerticalSteps() > Magic.MAX_KING_STEPS_FORWARD) return false;
-        if (!move.getTo().isEmpty()) return false;
+        if (!board.isEmpty(move.getTo())) return false;
 
         return true;
     }

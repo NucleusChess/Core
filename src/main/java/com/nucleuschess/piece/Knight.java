@@ -2,7 +2,6 @@ package com.nucleuschess.piece;
 
 import com.nucleuschess.Color;
 import com.nucleuschess.board.Board;
-import com.nucleuschess.board.Position;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.util.Magic;
 
@@ -20,10 +19,6 @@ import com.nucleuschess.util.Magic;
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 public final class Knight extends Piece {
-
-    public Knight(Color color, Position position) {
-        super(color, position);
-    }
 
     public Knight(Color color) {
         super(color);
