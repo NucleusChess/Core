@@ -55,7 +55,6 @@ public final class Board {
         this.queenChecker = new QueenMoveChecker(this);
         this.rookChecker = new RookMoveChecker(this);
 
-
         this.setupBoard();
     }
 
@@ -72,32 +71,27 @@ public final class Board {
         return rookChecker.check((Rook) piece, move);
     }
 
-    /**
-     * TODO delegate move checking and use that here to verify move before executing it !
-     */
     public void move(Piece piece, Position to) {
-
-        if (!piece.hasMoved()) {
-            piece.setHasMoved(true);
-        }
-
         final Position from = positionPieceMap.entrySet().stream().filter(e -> e.getValue().equals(piece)).map(Map.Entry::getKey).findFirst().orElseThrow();
         final Move move = new Move(1, piece, from, to, false);
 
         if (!check(piece, move)) {
-            System.out.println("Illegal move attempted to make");
             return;
         }
 
         this.setEmpty(from);
         setPiece(piece, to);
+
+
+        if (!piece.hasMoved()) {
+            piece.setHasMoved(true);
+        }
     }
 
     public void setPiece(Piece piece, Position position) {
         positionPieceMap.put(position, piece);
 
         if (piece == null) return;
-        System.out.println("Placed " + piece.getName() + " at " + position.name());
     }
 
     public void setEmpty(Position position) {

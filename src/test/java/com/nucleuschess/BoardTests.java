@@ -31,8 +31,8 @@ public class BoardTests {
     private static Board board;
     private static Random random;
 
-    @BeforeAll
-    public static void createBoard() {
+    @BeforeEach
+    public void createBoard() {
         board = new Board();
     }
 
@@ -78,7 +78,6 @@ public class BoardTests {
                 builder.append(code);
             }
 
-            System.out.println("Currently at rank " + i);
             Assertions.assertEquals(expected[i - 1], builder.toString());
         }
     }
@@ -186,10 +185,12 @@ public class BoardTests {
         final Position from = Position.E2;
         final Pawn pawn = board.getPiece(from);
 
-        final Move move = new Move(1, pawn, from, Position.E4, false);
+        Assertions.assertTrue(board.check(pawn, new Move(1, pawn, from, Position.E4, false)));
 
-        Assertions.assertTrue(board.check(pawn, move));
+        board.move(pawn, Position.E4);
         board.print();
+        // This should now be false after the move was executed (!) because the same move would mean from E4-> E4 which is illegal
+        Assertions.assertFalse(board.check(pawn, new Move(1, pawn, from, Position.E4, false)));
     }
 
 }
