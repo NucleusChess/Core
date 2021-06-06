@@ -5,6 +5,7 @@ import com.nucleuschess.Color;
 import com.nucleuschess.Core;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.move.checker.*;
+import com.nucleuschess.move.finder.PawnMoveFinder;
 import com.nucleuschess.piece.*;
 import jakarta.websocket.Session;
 
@@ -36,24 +37,31 @@ import static com.nucleuschess.Color.WHITE;
  */
 public final class Board {
 
+    private int moveCounter;
+
     private final Map<Position, Piece> positionPieceMap;
 
-    private final BishopMoveChecker bishopChecker;
-    private final KingMoveChecker kingChecker;
-    private final KnightMoveChecker knightChecker;
-    private final PawnMoveChecker pawnChecker;
-    private final QueenMoveChecker queenChecker;
-    private final RookMoveChecker rookChecker;
+    private final BishopMoveChecker bishopMoveChecker;
+    private final KingMoveChecker kingMoveChecker;
+    private final KnightMoveChecker knightMoveChecker;
+    private final PawnMoveChecker pawnMoveChecker;
+    private final QueenMoveChecker queenMoveChecker;
+    private final RookMoveChecker rookMoveChecker;
+
+    private final PawnMoveFinder pawnMoveFinder;
 
     public Board() {
+        this.moveCounter = 1;
         this.positionPieceMap = new HashMap<>();
 
-        this.bishopChecker = new BishopMoveChecker(this);
-        this.kingChecker = new KingMoveChecker(this);
-        this.knightChecker = new KnightMoveChecker(this);
-        this.pawnChecker = new PawnMoveChecker(this);
-        this.queenChecker = new QueenMoveChecker(this);
-        this.rookChecker = new RookMoveChecker(this);
+        this.bishopMoveChecker = new BishopMoveChecker(this);
+        this.kingMoveChecker = new KingMoveChecker(this);
+        this.knightMoveChecker = new KnightMoveChecker(this);
+        this.pawnMoveChecker = new PawnMoveChecker(this);
+        this.queenMoveChecker = new QueenMoveChecker(this);
+        this.rookMoveChecker = new RookMoveChecker(this);
+
+        this.pawnMoveFinder = new PawnMoveFinder(this);
 
         this.setupBoard();
     }
@@ -63,16 +71,21 @@ public final class Board {
     }
 
     public boolean check(Piece piece, Move move) {
-        if (piece instanceof Bishop) return bishopChecker.check((Bishop) piece, move);
-        if (piece instanceof King) return kingChecker.check((King) piece, move);
-        if (piece instanceof Knight) return knightChecker.check((Knight) piece, move);
-        if (piece instanceof Pawn) return pawnChecker.check((Pawn) piece, move);
-        if (piece instanceof Queen) return queenChecker.check((Queen) piece, move);
-        return rookChecker.check((Rook) piece, move);
+        if (piece instanceof Bishop) return bishopMoveChecker.check((Bishop) piece, move);
+        if (piece instanceof King) return kingMoveChecker.check((King) piece, move);
+        if (piece instanceof Knight) return knightMoveChecker.check((Knight) piece, move);
+        if (piece instanceof Pawn) return pawnMoveChecker.check((Pawn) piece, move);
+        if (piece instanceof Queen) return queenMoveChecker.check((Queen) piece, move);
+        return rookMoveChecker.check((Rook) piece, move);
+    }
+
+    public Move[] getAvailableMoves(Piece piece) {
+        if (piece instanceof Pawn) return pawnMoveFinder.getAvailableMoves(this, (Pawn) piece);
+        return null;
     }
 
     public void move(Piece piece, Position to) {
-        final Position from = positionPieceMap.entrySet().stream().filter(e -> e.getValue().equals(piece)).map(Map.Entry::getKey).findFirst().orElseThrow();
+        final Position from = getPosition(piece);
         final Move move = new Move(1, piece, from, to, false);
 
         if (!check(piece, move)) {
@@ -101,6 +114,10 @@ public final class Board {
     @SuppressWarnings("unchecked")
     public <T extends Piece> T getPiece(Position position) {
         return (T) this.positionPieceMap.get(position);
+    }
+
+    public Position getPosition(Piece piece) {
+        return positionPieceMap.entrySet().stream().filter(e -> e.getValue().equals(piece)).map(Map.Entry::getKey).findFirst().orElseThrow();
     }
 
     public boolean isInCheck(Color color) {
@@ -232,5 +249,9 @@ public final class Board {
 
         System.out.println("===================");
         System.out.println("  A B C D E F G H ");
+    }
+
+    public int getMoveCounter() {
+        return moveCounter;
     }
 }

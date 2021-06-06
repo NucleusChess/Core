@@ -33,6 +33,17 @@ public enum Position {
     A7, B7, C7, D7, E7, F7, G7, H7,
     A8, B8, C8, D8, E8, F8, G8, H8;
 
+    private final int fileNumber;
+    private final char file;
+    private final int rank;
+
+
+    Position() {
+        this.fileNumber = PositionUtility.getFileNumber(name().toLowerCase().charAt(0));
+        this.file = name().toLowerCase().charAt(0);
+        this.rank = Integer.parseInt(String.valueOf(name().charAt(1)));
+    }
+
     public static Position valueOf(char f, int r) {
         return Arrays.stream(values()).filter(p -> p.getRank() == r && p.name().toLowerCase().charAt(0) == f).findFirst().orElseThrow();
     }
@@ -49,15 +60,23 @@ public enum Position {
         return Arrays.stream(values()).filter(v -> v.name().toLowerCase().startsWith(String.valueOf(f))).toArray(Position[]::new);
     }
 
-    public int getFileNumber() {
-        return PositionUtility.getFileNumber(name().toLowerCase().charAt(0));
+    public Position getRelative(PositionFace face, int multiplier) {
+        return valueOf(fileNumber + multiplier * face.getModX(), rank + multiplier * face.getModY());
     }
 
-    public char getFile() {
-        return name().toLowerCase().charAt(0);
+    public Position getRelative(PositionFace face) {
+        return getRelative(face, 1);
     }
 
-    public int getRank() {
-        return Integer.parseInt(String.valueOf(name().charAt(1)));
+    public final int getFileNumber() {
+        return fileNumber;
+    }
+
+    public final char getFile() {
+        return file;
+    }
+
+    public final int getRank() {
+        return rank;
     }
 }

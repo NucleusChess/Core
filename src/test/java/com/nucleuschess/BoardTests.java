@@ -193,4 +193,19 @@ public class BoardTests {
         Assertions.assertFalse(board.check(pawn, new Move(1, pawn, from, Position.E4, false)));
     }
 
+    @Test
+    public void testMoveFinder() {
+        final Position from = Position.E2;
+        final Pawn pawn = board.getPiece(from);
+
+        Move[] moves = board.getAvailableMoves(pawn);
+        Arrays.stream(moves).forEach(move -> System.out.println("Pawn can move to " + move.getTo()));
+
+        board.move(pawn, Position.E3);
+
+        moves = board.getAvailableMoves(pawn);
+
+        Arrays.stream(moves).forEach(move -> System.out.println("Pawn has moved to E3 and can now move to " + move.getTo()));
+    }
+
 }
