@@ -16,6 +16,6 @@ import com.nucleuschess.piece.Piece;
 
 public interface MoveFinder<T extends Piece> {
 
-    Move[] getAvailableMoves(T piece);
+    Move[] getPotentialMoves(T piece);
 
 }

@@ -38,10 +38,10 @@ public final class PawnMoveChecker extends AbstractMoveChecker<Pawn> {
         final int sideSteps = toFile - fromFile;
 
         // if you are in check and have to deal with this.
-        if (board.isInCheck(pawn.getColor())) {
-            // TODO FIND CHECK-BLOCKING MOVES
-            return false;
-        }
+//        if (board.isInCheck(pawn.getColor())) {
+//             TODO FIND CHECK-BLOCKING MOVES
+//            return false;
+//        }
 
         if (Math.abs(sideSteps) > Magic.MAX_PAWN_STEPS_SIDEWARDS) return false;
 

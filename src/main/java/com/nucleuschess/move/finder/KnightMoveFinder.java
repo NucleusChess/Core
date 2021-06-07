@@ -7,6 +7,8 @@ import com.nucleuschess.move.AbstractMoveFinder;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.piece.Knight;
 
+import java.util.Arrays;
+
 import static com.nucleuschess.board.PositionFace.*;
 
 /*
@@ -29,7 +31,7 @@ public final class KnightMoveFinder extends AbstractMoveFinder<Knight> {
     }
 
     @Override
-    public Move[] getAvailableMoves(Knight piece) {
+    public Move[] getPotentialMoves(Knight piece) {
         final Position from = board.getPosition(piece);
         final PositionFace[] faces = new PositionFace[]{
                 NORTH_NORTH_EAST, NORTH_NORTH_WEST,
@@ -39,6 +41,7 @@ public final class KnightMoveFinder extends AbstractMoveFinder<Knight> {
                 SOUTH_EAST_EAST, SOUTH_WEST_WEST
         };
 
-        return validateMoves(piece, from, faces);
+        return Arrays.stream(faces).filter(from::isRelative).map(from::getRelative)
+                .map(p -> new Move(board.getMoveCounter() + 1, piece, from, p, false)).toArray(Move[]::new);
     }
 }

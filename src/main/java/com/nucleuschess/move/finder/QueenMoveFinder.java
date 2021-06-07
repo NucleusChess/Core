@@ -30,7 +30,7 @@ public final class QueenMoveFinder extends AbstractMoveFinder<Queen> {
     }
 
     @Override
-    public Move[] getAvailableMoves(Queen piece) {
+    public Move[] getPotentialMoves(Queen piece) {
         final Position from = board.getPosition(piece);
         final Position[] horizontal = Position.valuesOf(from.getRank());
         final Position[] vertical = Position.valuesOf(from.getFile());
@@ -41,6 +41,6 @@ public final class QueenMoveFinder extends AbstractMoveFinder<Queen> {
         positions.addAll(Arrays.asList(vertical));
         positions.addAll(Arrays.asList(diagonal));
 
-        return validateMoves(piece, from, positions.toArray(Position[]::new));
+        return positions.stream().map(p -> new Move(board.getMoveCounter() + 1, piece, from, p, false)).toArray(Move[]::new);
     }
 }

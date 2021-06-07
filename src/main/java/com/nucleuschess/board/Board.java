@@ -11,6 +11,7 @@ import jakarta.websocket.Session;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.nucleuschess.Color.BLACK;
 import static com.nucleuschess.Color.WHITE;
@@ -93,13 +94,13 @@ public final class Board {
         throw new IllegalArgumentException("Piece is of unknown type");
     }
 
-    public Move[] getAvailableMoves(Piece piece) {
-        if (piece instanceof King) return kingMoveFinder.getAvailableMoves((King) piece);
-        if (piece instanceof Queen) return queenMoveFinder.getAvailableMoves((Queen) piece);
-        if (piece instanceof Rook) return rookMoveFinder.getAvailableMoves((Rook) piece);
-        if (piece instanceof Bishop) return bishopMoveFinder.getAvailableMoves((Bishop) piece);
-        if (piece instanceof Knight) return knightMoveFinder.getAvailableMoves((Knight) piece);
-        if (piece instanceof Pawn) return pawnMoveFinder.getAvailableMoves((Pawn) piece);
+    public Move[] getPotentialMoves(Piece piece) {
+        if (piece instanceof King) return kingMoveFinder.getPotentialMoves((King) piece);
+        if (piece instanceof Queen) return queenMoveFinder.getPotentialMoves((Queen) piece);
+        if (piece instanceof Rook) return rookMoveFinder.getPotentialMoves((Rook) piece);
+        if (piece instanceof Bishop) return bishopMoveFinder.getPotentialMoves((Bishop) piece);
+        if (piece instanceof Knight) return knightMoveFinder.getPotentialMoves((Knight) piece);
+        if (piece instanceof Pawn) return pawnMoveFinder.getPotentialMoves((Pawn) piece);
         throw new IllegalArgumentException("Piece is of unknown type");
     }
 
@@ -135,12 +136,28 @@ public final class Board {
         return (T) this.positionPieceMap.get(position);
     }
 
+    public Position getKing(Color c) {
+        for (Map.Entry<Position, Piece> entry : positionPieceMap.entrySet()) {
+            if (entry.getValue() instanceof King && entry.getValue().getColor().equals(c)) {
+                return entry.getKey();
+            }
+        }
+        throw new IllegalStateException("Cannot find King for color " + c.name());
+    }
+
     public Position getPosition(Piece piece) {
         return positionPieceMap.entrySet().stream().filter(e -> e.getValue() != null && e.getValue().equals(piece)).map(Map.Entry::getKey).findFirst().orElseThrow();
     }
 
     public boolean isInCheck(Color color) {
-        return false; // implement
+        final Position kingPosition = getKing(color);
+
+        for (Piece piece : positionPieceMap.values().stream().filter(p -> !p.getColor().equals(color)).collect(Collectors.toList())) {
+            if (Arrays.stream(getPotentialMoves(piece)).map(Move::getTo).anyMatch(p -> p.equals(kingPosition))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Position[] getPositionsHorizontally(Position from, int endFile) {
@@ -176,6 +193,22 @@ public final class Board {
         }
 
         return positions.toArray(Position[]::new);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Piece> T getObstructionHorizontally(Position from, int endFile) {
+        if (!hasObstructionHorizontally(from, endFile)) return null;
+        return (T) Arrays.stream(getPositionsHorizontally(from, endFile))
+                .filter(p -> p != from)
+                .filter(p -> !isEmpty(p)).findAny().map(this::getPiece).orElseThrow();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Piece> T getObstructionVertically(Position from, int endFile) {
+        if (!hasObstructionVertically(from, endFile)) return null;
+        return (T) Arrays.stream(getPositionsVertically(from, endFile))
+                .filter(p -> p != from)
+                .filter(p -> !isEmpty(p)).findAny().map(this::getPiece).orElseThrow();
     }
 
     public boolean hasObstructionHorizontally(Position from, int endFile) {

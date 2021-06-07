@@ -6,6 +6,8 @@ import com.nucleuschess.move.AbstractMoveFinder;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.piece.Bishop;
 
+import java.util.Arrays;
+
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
   This program is free software: you can redistribute it and/or modify
@@ -26,10 +28,10 @@ public final class BishopMoveFinder extends AbstractMoveFinder<Bishop> {
     }
 
     @Override
-    public Move[] getAvailableMoves(Bishop piece) {
+    public Move[] getPotentialMoves(Bishop piece) {
         final Position from = board.getPosition(piece);
         final Position[] positions = board.getPositionsDiagonally(from);
 
-        return validateMoves(piece, from, positions);
+        return Arrays.stream(positions).map(p -> new Move(board.getMoveCounter() + 1, piece, from, p, false)).toArray(Move[]::new);
     }
 }

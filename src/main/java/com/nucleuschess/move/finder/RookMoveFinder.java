@@ -30,7 +30,7 @@ public final class RookMoveFinder extends AbstractMoveFinder<Rook> {
     }
 
     @Override
-    public Move[] getAvailableMoves(Rook piece) {
+    public Move[] getPotentialMoves(Rook piece) {
         List<Move> moves = new ArrayList<>();
 
         final Position from = board.getPosition(piece);

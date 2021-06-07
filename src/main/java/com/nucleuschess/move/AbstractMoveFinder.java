@@ -1,11 +1,7 @@
 package com.nucleuschess.move;
 
 import com.nucleuschess.board.Board;
-import com.nucleuschess.board.Position;
-import com.nucleuschess.board.PositionFace;
 import com.nucleuschess.piece.Piece;
-
-import java.util.Arrays;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -26,15 +22,5 @@ public abstract class AbstractMoveFinder<T extends Piece> implements MoveFinder<
 
     public AbstractMoveFinder(Board board) {
         this.board = board;
-    }
-
-    protected Move[] validateMoves(Piece piece, Position from, Position[] positions) {
-        return Arrays.stream(positions).map(p -> new Move(board.getMoveCounter() + 1, piece, from, p, false))
-                .filter(m -> board.check(piece, m)).toArray(Move[]::new);
-    }
-
-    protected Move[] validateMoves(Piece piece, Position from, PositionFace[] faces) {
-        return validateMoves(piece, from, Arrays.stream(faces).filter(from::isRelative)
-                .map(from::getRelative).toArray(Position[]::new));
     }
 }

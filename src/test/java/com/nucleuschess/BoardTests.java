@@ -196,13 +196,13 @@ public class BoardTests {
         final Position from = Position.E2;
         final Pawn pawn = board.getPiece(from);
 
-        Move[] moves = board.getAvailableMoves(pawn);
+        Move[] moves = board.getPotentialMoves(pawn);
         Assertions.assertEquals(4, moves.length);
 
         board.move(pawn, Position.E3);
 
-        moves = board.getAvailableMoves(pawn);
-        Assertions.assertEquals(3, moves.length);
+        moves = board.getPotentialMoves(pawn);
+        Assertions.assertEquals(4, moves.length);
     }
 
     @Test
@@ -210,13 +210,13 @@ public class BoardTests {
         final Position from = Position.B1;
         final Knight knight = board.getPiece(from);
 
-        Move[] moves = board.getAvailableMoves(knight);
-        Assertions.assertEquals(2, moves.length);
+        Move[] moves = board.getPotentialMoves(knight);
+        Assertions.assertEquals(3, moves.length);
 
         board.move(knight, Position.C3);
 
-        moves = board.getAvailableMoves(knight);
-        Assertions.assertEquals(5, moves.length);
+        moves = board.getPotentialMoves(knight);
+        Assertions.assertEquals(8, moves.length);
     }
 
     @Test
@@ -224,13 +224,13 @@ public class BoardTests {
         final Position from = Position.A1;
         final Rook rook = board.getPiece(from);
 
-        Move[] moves = board.getAvailableMoves(rook);
+        Move[] moves = board.getPotentialMoves(rook);
         Assertions.assertEquals(0, moves.length, "The moves found are " +
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
 
         board.setEmpty(Position.A2);
 
-        moves = board.getAvailableMoves(rook);
+        moves = board.getPotentialMoves(rook);
         Assertions.assertEquals(5, moves.length);
     }
 
@@ -240,8 +240,8 @@ public class BoardTests {
         final Position from = Position.E4;
         final Bishop bishop = board.setPiece(new Bishop(Color.WHITE), from);
 
-        Move[] moves = board.getAvailableMoves(bishop);
-        Assertions.assertEquals(6, moves.length, "The moves found are " +
+        Move[] moves = board.getPotentialMoves(bishop);
+        Assertions.assertEquals(13, moves.length, "The moves found are " +
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
     }
 
@@ -251,8 +251,14 @@ public class BoardTests {
         final Position from = Position.C5;
         final Queen queen = board.setPiece(new Queen(Color.WHITE), from);
 
-        Move[] moves = board.getAvailableMoves(queen);
-        Assertions.assertEquals(16, moves.length, "The moves found are " +
+        Move[] moves = board.getPotentialMoves(queen);
+        Assertions.assertEquals(26, moves.length, "The moves found are " +
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+    }
+
+    @Test
+    public void testKingInCheck() {
+        Assertions.assertFalse(board.isInCheck(Color.WHITE));
+        Assertions.assertFalse(board.isInCheck(Color.BLACK));
     }
 }

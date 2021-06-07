@@ -27,9 +27,6 @@ public final class BishopMoveChecker extends AbstractMoveChecker<Bishop> {
     @Override
     public boolean check(Bishop piece, Move move) {
         // Bishops can only move diagonal
-
-        System.out.println(move.getTo().name());
-
         if (!isDiagonal(move)) return false;
         if (!board.isEmpty(move.getTo())) return false;
 
