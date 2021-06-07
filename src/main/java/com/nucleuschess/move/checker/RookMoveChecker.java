@@ -27,7 +27,10 @@ public final class RookMoveChecker extends AbstractMoveChecker<Rook> {
     @Override
     public boolean check(Rook piece, Move move) {
         // rooks can only move horizontally and vertically
-        if (!isHorizontal(move) && !isVertical(move)) return false;
+
+        if (!isHorizontal(move) && !isVertical(move)) {
+            return false;
+        }
         if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom().getRank(), move.getFrom().getFileNumber(), move.getTo().getFileNumber())) {
             return false;
         }

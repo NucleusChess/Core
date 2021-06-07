@@ -5,7 +5,7 @@ import com.nucleuschess.board.Position;
 import com.nucleuschess.board.PositionFace;
 import com.nucleuschess.move.AbstractMoveFinder;
 import com.nucleuschess.move.Move;
-import com.nucleuschess.piece.Pawn;
+import com.nucleuschess.piece.Knight;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,21 +26,25 @@ import static com.nucleuschess.board.PositionFace.*;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-public final class PawnMoveFinder extends AbstractMoveFinder<Pawn> {
+public final class KnightMoveFinder extends AbstractMoveFinder<Knight> {
 
-    public PawnMoveFinder(Board board) {
+    public KnightMoveFinder(Board board) {
         super(board);
     }
 
     @Override
-    public Move[] getAvailableMoves(Pawn piece) {
+    public Move[] getAvailableMoves(Knight piece) {
         List<Move> moves = new ArrayList<>();
-
-        final PositionFace[] faces = new PositionFace[]{NORTH, NORTH_EAST, NORTH_WEST};
         final Position from = board.getPosition(piece);
+        final PositionFace[] faces = new PositionFace[]{
+                NORTH_NORTH_EAST, NORTH_NORTH_WEST,
+                NORTH_WEST_WEST, NORTH_EAST_EAST,
 
-        Arrays.stream(faces).forEach(face -> moves.add(new Move(board.getMoveCounter() + 1, piece, from, from.getRelative(face), false)));
-        moves.add(new Move(board.getMoveCounter() + 1, piece, from, from.getRelative(NORTH, 2), false));
+                SOUTH_SOUTH_EAST, SOUTH_SOUTH_WEST,
+                SOUTH_EAST_EAST, SOUTH_WEST_WEST
+        };
+
+        Arrays.stream(faces).filter(from::isRelative).forEach(f -> moves.add(new Move(board.getMoveCounter() + 1, piece, from, from.getRelative(f), false)));
         return moves.stream().filter(m -> board.check(piece, m)).toArray(Move[]::new);
     }
 }

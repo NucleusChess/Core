@@ -46,6 +46,7 @@ public abstract class Piece {
         return hasMoved;
     }
 
+    @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
     public void setHasMoved(boolean moved) {
         if (hasMoved) throw new IllegalStateException("Changing state when already true");

@@ -12,7 +12,6 @@ package com.nucleuschess.move;/*
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import com.nucleuschess.board.PositionUtility;
 import com.nucleuschess.piece.Piece;
 
 public interface MoveChecker<T extends Piece> {
@@ -20,25 +19,17 @@ public interface MoveChecker<T extends Piece> {
     boolean check(T piece, Move move);
 
     default boolean isHorizontal(Move move) {
-        final int fromFile = PositionUtility.getFileNumber(move.getFrom().getFile());
-        final int toFile = PositionUtility.getFileNumber(move.getTo().getFile());
-        return move.getFrom().getRank() == move.getTo().getRank() && fromFile != toFile;
+        return move.getHorizontalSteps() > 0 && move.getVerticalSteps() == 0;
     }
 
     default boolean isVertical(Move move) {
-        if (isHorizontal(move)) return false;
-        return move.getTo().getRank() != move.getFrom().getRank();
+        return move.getVerticalSteps() > 0 && move.getHorizontalSteps() == 0;
     }
 
     default boolean isDiagonal(Move move) {
         if (isHorizontal(move)) return false;
         if (isVertical(move)) return false;
 
-        final int fromFile = PositionUtility.getFileNumber(move.getFrom().getFile());
-        final int toFile = PositionUtility.getFileNumber(move.getTo().getFile());
-        final int horizontalSteps = Math.abs(toFile - fromFile);
-        final int verticalSteps = Math.abs(move.getTo().getRank() - move.getFrom().getRank());
-
-        return (fromFile / toFile == 1 && horizontalSteps / verticalSteps == 1);
+        return (move.getHorizontalSteps() / move.getVerticalSteps() == 1);
     }
 }

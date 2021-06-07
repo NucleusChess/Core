@@ -5,6 +5,7 @@ import com.nucleuschess.Color;
 import com.nucleuschess.Core;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.move.checker.*;
+import com.nucleuschess.move.finder.KnightMoveFinder;
 import com.nucleuschess.move.finder.PawnMoveFinder;
 import com.nucleuschess.piece.*;
 import jakarta.websocket.Session;
@@ -37,6 +38,7 @@ import static com.nucleuschess.Color.WHITE;
  */
 public final class Board {
 
+    @SuppressWarnings("FieldMayBeFinal")
     private int moveCounter;
 
     private final Map<Position, Piece> positionPieceMap;
@@ -49,6 +51,7 @@ public final class Board {
     private final RookMoveChecker rookMoveChecker;
 
     private final PawnMoveFinder pawnMoveFinder;
+    private final KnightMoveFinder knightMoveFinder;
 
     public Board() {
         this.moveCounter = 1;
@@ -62,6 +65,7 @@ public final class Board {
         this.rookMoveChecker = new RookMoveChecker(this);
 
         this.pawnMoveFinder = new PawnMoveFinder(this);
+        this.knightMoveFinder = new KnightMoveFinder(this);
 
         this.setupBoard();
     }
@@ -80,7 +84,8 @@ public final class Board {
     }
 
     public Move[] getAvailableMoves(Piece piece) {
-        if (piece instanceof Pawn) return pawnMoveFinder.getAvailableMoves(this, (Pawn) piece);
+        if (piece instanceof Pawn) return pawnMoveFinder.getAvailableMoves((Pawn) piece);
+        if (piece instanceof Knight) return knightMoveFinder.getAvailableMoves((Knight) piece);
         return null;
     }
 
@@ -104,7 +109,6 @@ public final class Board {
     public void setPiece(Piece piece, Position position) {
         positionPieceMap.put(position, piece);
 
-        if (piece == null) return;
     }
 
     public void setEmpty(Position position) {
@@ -117,7 +121,7 @@ public final class Board {
     }
 
     public Position getPosition(Piece piece) {
-        return positionPieceMap.entrySet().stream().filter(e -> e.getValue().equals(piece)).map(Map.Entry::getKey).findFirst().orElseThrow();
+        return positionPieceMap.entrySet().stream().filter(e -> e.getValue() != null && e.getValue().equals(piece)).map(Map.Entry::getKey).findFirst().orElseThrow();
     }
 
     public boolean isInCheck(Color color) {

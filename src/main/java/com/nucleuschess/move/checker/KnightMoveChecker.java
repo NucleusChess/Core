@@ -34,6 +34,11 @@ public final class KnightMoveChecker extends AbstractMoveChecker<Knight> {
         final int horizontalSteps = Math.abs(move.getHorizontalSteps());
         final int verticalSteps = Math.abs(move.getVerticalSteps());
 
+        // Can't capture own pieces
+        if (!board.isEmpty(move.getTo()) && board.getPiece(move.getTo()).getColor() == piece.getColor()) {
+            return false;
+        }
+
         if (horizontalSteps > Magic.MAX_KNIGHT_STEPS_SIDEWARDS || horizontalSteps < Magic.MIN_KNIGHT_STEPS_SIDEWARDS)
             return false;
         return verticalSteps <= Magic.MAX_KNIGHT_STEPS_FORWARD && verticalSteps >= Magic.MIN_KNIGHT_STEPS_FORWARD;

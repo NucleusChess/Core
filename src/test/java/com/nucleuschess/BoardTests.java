@@ -3,6 +3,7 @@ package com.nucleuschess;
 import com.nucleuschess.board.Board;
 import com.nucleuschess.board.Position;
 import com.nucleuschess.move.Move;
+import com.nucleuschess.piece.Knight;
 import com.nucleuschess.piece.Pawn;
 import com.nucleuschess.piece.Piece;
 import com.nucleuschess.piece.Rook;
@@ -194,18 +195,31 @@ public class BoardTests {
     }
 
     @Test
-    public void testMoveFinder() {
+    public void testPawnMoveFinder() {
         final Position from = Position.E2;
         final Pawn pawn = board.getPiece(from);
 
         Move[] moves = board.getAvailableMoves(pawn);
-        Arrays.stream(moves).forEach(move -> System.out.println("Pawn can move to " + move.getTo()));
+        Assertions.assertEquals(4, moves.length);
 
         board.move(pawn, Position.E3);
 
         moves = board.getAvailableMoves(pawn);
+        Assertions.assertEquals(3, moves.length);
+    }
 
-        Arrays.stream(moves).forEach(move -> System.out.println("Pawn has moved to E3 and can now move to " + move.getTo()));
+    @Test
+    public void testKnightMoveFinder() {
+        final Position from = Position.B1;
+        final Knight knight = board.getPiece(from);
+
+        Move[] moves = board.getAvailableMoves(knight);
+        Assertions.assertEquals(2, moves.length);
+
+        board.move(knight, Position.C3);
+
+        moves = board.getAvailableMoves(knight);
+        Assertions.assertEquals(5, moves.length);
     }
 
 }

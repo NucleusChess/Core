@@ -56,11 +56,11 @@ public final class Move {
         return to;
     }
 
-    public int getHorizontalSteps() {
+    public int getVerticalSteps() {
         return Math.abs(from.getRank() - to.getRank());
     }
 
-    public int getVerticalSteps() {
+    public int getHorizontalSteps() {
         return Math.abs(PositionUtility.getFileNumber(from.getFile()) - PositionUtility.getFileNumber(to.getFile()));
     }
 

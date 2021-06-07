@@ -12,11 +12,10 @@ package com.nucleuschess.move;/*
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import com.nucleuschess.board.Board;
 import com.nucleuschess.piece.Piece;
 
 public interface MoveFinder<T extends Piece> {
 
-    Move[] getAvailableMoves(Board board, T piece);
+    Move[] getAvailableMoves(T piece);
 
 }

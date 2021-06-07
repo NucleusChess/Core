@@ -68,6 +68,13 @@ public enum Position {
         return getRelative(face, 1);
     }
 
+    public boolean isRelative(PositionFace face) {
+        int x = fileNumber + face.getModX();
+        int y = rank + face.getModY();
+
+        return x >= 1 && x <= 8 && y >= 1 && y <= 8;
+    }
+
     public final int getFileNumber() {
         return fileNumber;
     }
