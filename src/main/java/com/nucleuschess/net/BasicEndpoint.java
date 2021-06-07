@@ -1,7 +1,6 @@
 package com.nucleuschess.net;
 
 import com.google.gson.JsonObject;
-import com.nucleuschess.Color;
 import com.nucleuschess.Core;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;

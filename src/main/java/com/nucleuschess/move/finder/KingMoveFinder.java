@@ -5,7 +5,7 @@ import com.nucleuschess.board.Position;
 import com.nucleuschess.board.PositionFace;
 import com.nucleuschess.move.AbstractMoveFinder;
 import com.nucleuschess.move.Move;
-import com.nucleuschess.piece.Knight;
+import com.nucleuschess.piece.King;
 
 import static com.nucleuschess.board.PositionFace.*;
 
@@ -22,23 +22,20 @@ import static com.nucleuschess.board.PositionFace.*;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-public final class KnightMoveFinder extends AbstractMoveFinder<Knight> {
+public final class KingMoveFinder extends AbstractMoveFinder<King> {
 
-    public KnightMoveFinder(Board board) {
+    public KingMoveFinder(Board board) {
         super(board);
     }
 
     @Override
-    public Move[] getAvailableMoves(Knight piece) {
+    public Move[] getAvailableMoves(King piece) {
         final Position from = board.getPosition(piece);
         final PositionFace[] faces = new PositionFace[]{
-                NORTH_NORTH_EAST, NORTH_NORTH_WEST,
-                NORTH_WEST_WEST, NORTH_EAST_EAST,
-
-                SOUTH_SOUTH_EAST, SOUTH_SOUTH_WEST,
-                SOUTH_EAST_EAST, SOUTH_WEST_WEST
+                NORTH, SOUTH, EAST, WEST,
+                NORTH_WEST, NORTH_EAST,
+                SOUTH_WEST, SOUTH_EAST
         };
-
         return validateMoves(piece, from, faces);
     }
 }

@@ -5,8 +5,7 @@ import com.nucleuschess.Color;
 import com.nucleuschess.Core;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.move.checker.*;
-import com.nucleuschess.move.finder.KnightMoveFinder;
-import com.nucleuschess.move.finder.PawnMoveFinder;
+import com.nucleuschess.move.finder.*;
 import com.nucleuschess.piece.*;
 import jakarta.websocket.Session;
 
@@ -43,29 +42,39 @@ public final class Board {
 
     private final Map<Position, Piece> positionPieceMap;
 
-    private final BishopMoveChecker bishopMoveChecker;
+    // Move checkers
     private final KingMoveChecker kingMoveChecker;
-    private final KnightMoveChecker knightMoveChecker;
-    private final PawnMoveChecker pawnMoveChecker;
     private final QueenMoveChecker queenMoveChecker;
     private final RookMoveChecker rookMoveChecker;
+    private final BishopMoveChecker bishopMoveChecker;
+    private final KnightMoveChecker knightMoveChecker;
+    private final PawnMoveChecker pawnMoveChecker;
 
-    private final PawnMoveFinder pawnMoveFinder;
+    // Move finders
+    private final KingMoveFinder kingMoveFinder;
+    private final QueenMoveFinder queenMoveFinder;
+    private final RookMoveFinder rookMoveFinder;
+    private final BishopMoveFinder bishopMoveFinder;
     private final KnightMoveFinder knightMoveFinder;
+    private final PawnMoveFinder pawnMoveFinder;
 
     public Board() {
         this.moveCounter = 1;
         this.positionPieceMap = new HashMap<>();
 
-        this.bishopMoveChecker = new BishopMoveChecker(this);
         this.kingMoveChecker = new KingMoveChecker(this);
-        this.knightMoveChecker = new KnightMoveChecker(this);
-        this.pawnMoveChecker = new PawnMoveChecker(this);
         this.queenMoveChecker = new QueenMoveChecker(this);
         this.rookMoveChecker = new RookMoveChecker(this);
+        this.bishopMoveChecker = new BishopMoveChecker(this);
+        this.knightMoveChecker = new KnightMoveChecker(this);
+        this.pawnMoveChecker = new PawnMoveChecker(this);
 
-        this.pawnMoveFinder = new PawnMoveFinder(this);
+        this.kingMoveFinder = new KingMoveFinder(this);
+        this.queenMoveFinder = new QueenMoveFinder(this);
+        this.rookMoveFinder = new RookMoveFinder(this);
+        this.bishopMoveFinder = new BishopMoveFinder(this);
         this.knightMoveFinder = new KnightMoveFinder(this);
+        this.pawnMoveFinder = new PawnMoveFinder(this);
 
         this.setupBoard();
     }
@@ -75,18 +84,23 @@ public final class Board {
     }
 
     public boolean check(Piece piece, Move move) {
-        if (piece instanceof Bishop) return bishopMoveChecker.check((Bishop) piece, move);
         if (piece instanceof King) return kingMoveChecker.check((King) piece, move);
+        if (piece instanceof Queen) return queenMoveChecker.check((Queen) piece, move);
+        if (piece instanceof Rook) return rookMoveChecker.check((Rook) piece, move);
+        if (piece instanceof Bishop) return bishopMoveChecker.check((Bishop) piece, move);
         if (piece instanceof Knight) return knightMoveChecker.check((Knight) piece, move);
         if (piece instanceof Pawn) return pawnMoveChecker.check((Pawn) piece, move);
-        if (piece instanceof Queen) return queenMoveChecker.check((Queen) piece, move);
-        return rookMoveChecker.check((Rook) piece, move);
+        throw new IllegalArgumentException("Piece is of unknown type");
     }
 
     public Move[] getAvailableMoves(Piece piece) {
-        if (piece instanceof Pawn) return pawnMoveFinder.getAvailableMoves((Pawn) piece);
+        if (piece instanceof King) return kingMoveFinder.getAvailableMoves((King) piece);
+        if (piece instanceof Queen) return queenMoveFinder.getAvailableMoves((Queen) piece);
+        if (piece instanceof Rook) return rookMoveFinder.getAvailableMoves((Rook) piece);
+        if (piece instanceof Bishop) return bishopMoveFinder.getAvailableMoves((Bishop) piece);
         if (piece instanceof Knight) return knightMoveFinder.getAvailableMoves((Knight) piece);
-        return null;
+        if (piece instanceof Pawn) return pawnMoveFinder.getAvailableMoves((Pawn) piece);
+        throw new IllegalArgumentException("Piece is of unknown type");
     }
 
     public void move(Piece piece, Position to) {
@@ -159,8 +173,7 @@ public final class Board {
     }
 
     private boolean hasObstruction0(Position[] positions) {
-        if (positions.length == 2) return false;
-        return Arrays.stream(Arrays.copyOfRange(positions, 1, positions.length - 2)).anyMatch(p -> !isEmpty(p));
+        return Arrays.stream(positions).filter(p -> !isEmpty(p)).count() > 1;
     }
 
     private int[] getDirection(int diffX, int diffY) {

@@ -1,6 +1,9 @@
 package com.nucleuschess.util.observer;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public final class ObservableMap<K, V> extends LinkedHashMap<K, V> {
 

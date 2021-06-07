@@ -7,10 +7,6 @@ import com.nucleuschess.move.AbstractMoveFinder;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.piece.Pawn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static com.nucleuschess.board.PositionFace.*;
 
 /*
@@ -34,13 +30,9 @@ public final class PawnMoveFinder extends AbstractMoveFinder<Pawn> {
 
     @Override
     public Move[] getAvailableMoves(Pawn piece) {
-        List<Move> moves = new ArrayList<>();
-
-        final PositionFace[] faces = new PositionFace[]{NORTH, NORTH_EAST, NORTH_WEST};
         final Position from = board.getPosition(piece);
+        final PositionFace[] faces = new PositionFace[]{NORTH, TWO_NORTH, NORTH_EAST, NORTH_WEST};
 
-        Arrays.stream(faces).forEach(face -> moves.add(new Move(board.getMoveCounter() + 1, piece, from, from.getRelative(face), false)));
-        moves.add(new Move(board.getMoveCounter() + 1, piece, from, from.getRelative(NORTH, 2), false));
-        return moves.stream().filter(m -> board.check(piece, m)).toArray(Move[]::new);
+        return validateMoves(piece, from, faces);
     }
 }

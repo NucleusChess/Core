@@ -222,4 +222,19 @@ public class BoardTests {
         Assertions.assertEquals(5, moves.length);
     }
 
+    @Test
+    public void testRookMoveFinder() {
+        final Position from = Position.A1;
+        final Rook rook = board.getPiece(from);
+
+        Move[] moves = board.getAvailableMoves(rook);
+        Assertions.assertEquals(0, moves.length, "The moves found are " +
+                Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+
+        board.setEmpty(Position.A2);
+
+        moves = board.getAvailableMoves(rook);
+        Assertions.assertEquals(5, moves.length);
+    }
+
 }

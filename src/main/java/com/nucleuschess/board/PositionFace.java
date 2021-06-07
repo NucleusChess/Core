@@ -18,6 +18,7 @@ public enum PositionFace {
 
     SELF(0, 0),
     NORTH(0, 1),
+    TWO_NORTH(0, 2),
     SOUTH(0, -1),
     WEST(-1, 0),
     EAST(1, 0),
