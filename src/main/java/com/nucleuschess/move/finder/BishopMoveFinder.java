@@ -1,6 +1,7 @@
 package com.nucleuschess.move.finder;
 
 import com.nucleuschess.board.Board;
+import com.nucleuschess.board.Position;
 import com.nucleuschess.move.AbstractMoveFinder;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.piece.Bishop;
@@ -26,6 +27,9 @@ public final class BishopMoveFinder extends AbstractMoveFinder<Bishop> {
 
     @Override
     public Move[] getAvailableMoves(Bishop piece) {
-        return new Move[0];
+        final Position from = board.getPosition(piece);
+        final Position[] positions = board.getPositionsDiagonally(from);
+
+        return validateMoves(piece, from, positions);
     }
 }

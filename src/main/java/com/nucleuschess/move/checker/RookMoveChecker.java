@@ -31,10 +31,10 @@ public final class RookMoveChecker extends AbstractMoveChecker<Rook> {
         if (!isHorizontal(move) && !isVertical(move)) {
             return false;
         }
-        if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom().getRank(), move.getFrom().getFileNumber(), move.getTo().getFileNumber())) {
+        if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom(), move.getTo().getFileNumber())) {
             return false;
         }
 
-        return !isVertical(move) || !board.hasObstructionVertically(move.getFrom().getFile(), move.getFrom().getRank(), move.getTo().getRank());
+        return !isVertical(move) || !board.hasObstructionVertically(move.getFrom(), move.getTo().getRank());
     }
 }

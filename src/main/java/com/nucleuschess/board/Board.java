@@ -120,9 +120,10 @@ public final class Board {
         }
     }
 
-    public void setPiece(Piece piece, Position position) {
+    @SuppressWarnings("unchecked")
+    public <T extends Piece> T setPiece(Piece piece, Position position) {
         positionPieceMap.put(position, piece);
-
+        return (T) piece;
     }
 
     public void setEmpty(Position position) {
@@ -142,20 +143,47 @@ public final class Board {
         return false; // implement
     }
 
-    public Position[] getPositionsHorizontally(int rank, int startFile, int endFile) {
-        return Arrays.stream(Position.valuesOf(rank)).filter(p -> p.getFileNumber() >= startFile && p.getFileNumber() <= endFile).toArray(Position[]::new);
+    public Position[] getPositionsHorizontally(Position from, int endFile) {
+        return Arrays.stream(Position.valuesOf(from.getRank())).filter(p -> p.getFileNumber() >= from.getFileNumber() && p.getFileNumber() <= endFile).toArray(Position[]::new);
     }
 
-    public Position[] getPositionsVertically(char file, int startRank, int endRank) {
-        return Arrays.stream(Position.valuesOf(file)).filter(p -> p.getRank() >= startRank && p.getRank() <= endRank).toArray(Position[]::new);
+    public Position[] getPositionsVertically(Position from, int endRank) {
+        return Arrays.stream(Position.valuesOf(from.getFile())).filter(p -> p.getRank() >= from.getRank() && p.getRank() <= endRank).toArray(Position[]::new);
     }
 
-    public boolean hasObstructionHorizontally(int rank, int startFile, int endFile) {
-        return hasObstruction0(getPositionsHorizontally(rank, startFile, endFile));
+    public Position[] getPositionsDiagonally(Position start) {
+        final Set<Position> positions = new HashSet<>();
+
+        final PositionFace[] faces = new PositionFace[]{
+                PositionFace.NORTH_EAST, PositionFace.NORTH_WEST,
+                PositionFace.SOUTH_EAST, PositionFace.SOUTH_WEST
+        };
+
+        final int x = start.getFileNumber();
+        final int y = start.getRank();
+
+        final int stepsNorth = 8 - y;
+        final int stepsSouth = y - 1;
+
+        final int stepsEast = 8 - x;
+        final int stepsWest = x - 1;
+
+        final int biggest = max(stepsNorth, stepsSouth, stepsEast, stepsWest);
+
+        for (int i = 0; i < biggest; i++) {
+            int finalI = i + 1;
+            Arrays.stream(faces).filter(f -> start.isRelative(f, finalI)).map(f -> start.getRelative(f, finalI)).forEach(positions::add);
+        }
+
+        return positions.toArray(Position[]::new);
     }
 
-    public boolean hasObstructionVertically(char file, int startRank, int endRank) {
-        return hasObstruction0(getPositionsVertically(file, startRank, endRank));
+    public boolean hasObstructionHorizontally(Position from, int endFile) {
+        return hasObstruction0(getPositionsHorizontally(from, endFile));
+    }
+
+    public boolean hasObstructionVertically(Position from, int endRank) {
+        return hasObstruction0(getPositionsVertically(from, endRank));
     }
 
     public boolean hasObstructionDiagonally(Position start, Position end) {
@@ -167,7 +195,7 @@ public final class Board {
 
         for (int i = 0; i < steps; i++) {
             final Position position = Position.valueOf(start.getFileNumber() + direction[0], start.getRank() + direction[1]);
-            if (!isEmpty(position)) return true;
+            if (position != start && !isEmpty(position)) return true;
         }
         return false;
     }
@@ -181,6 +209,16 @@ public final class Board {
         int y = diffY >= 0 ? 1 : 0;
 
         return new int[]{x, y};
+    }
+
+    private int max(int... ints) {
+        int current = 0;
+
+        for (int i : ints) {
+            current = Math.max(i, current);
+        }
+
+        return current;
     }
 
     private void setupBoard() {

@@ -27,9 +27,10 @@ public interface MoveChecker<T extends Piece> {
     }
 
     default boolean isDiagonal(Move move) {
+        if (move.getFrom() == move.getTo()) return false;
         if (isHorizontal(move)) return false;
         if (isVertical(move)) return false;
 
-        return (move.getHorizontalSteps() / move.getVerticalSteps() == 1);
+        return Math.abs(move.getHorizontalSteps() / move.getVerticalSteps()) == 1;
     }
 }

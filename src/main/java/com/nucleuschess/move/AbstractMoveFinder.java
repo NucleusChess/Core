@@ -28,9 +28,13 @@ public abstract class AbstractMoveFinder<T extends Piece> implements MoveFinder<
         this.board = board;
     }
 
-    protected Move[] validateMoves(Piece piece, Position from, PositionFace[] faces) {
-        return Arrays.stream(faces).filter(from::isRelative)
-                .map(f -> new Move(board.getMoveCounter() + 1, piece, from, from.getRelative(f), false))
+    protected Move[] validateMoves(Piece piece, Position from, Position[] positions) {
+        return Arrays.stream(positions).map(p -> new Move(board.getMoveCounter() + 1, piece, from, p, false))
                 .filter(m -> board.check(piece, m)).toArray(Move[]::new);
+    }
+
+    protected Move[] validateMoves(Piece piece, Position from, PositionFace[] faces) {
+        return validateMoves(piece, from, Arrays.stream(faces).filter(from::isRelative)
+                .map(from::getRelative).toArray(Position[]::new));
     }
 }

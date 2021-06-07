@@ -1,9 +1,14 @@
 package com.nucleuschess.move.finder;
 
 import com.nucleuschess.board.Board;
+import com.nucleuschess.board.Position;
 import com.nucleuschess.move.AbstractMoveFinder;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.piece.Queen;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
@@ -26,6 +31,16 @@ public final class QueenMoveFinder extends AbstractMoveFinder<Queen> {
 
     @Override
     public Move[] getAvailableMoves(Queen piece) {
-        return new Move[0];
+        final Position from = board.getPosition(piece);
+        final Position[] horizontal = Position.valuesOf(from.getRank());
+        final Position[] vertical = Position.valuesOf(from.getFile());
+        final Position[] diagonal = board.getPositionsDiagonally(from);
+
+        Set<Position> positions = new HashSet<>();
+        positions.addAll(Arrays.asList(horizontal));
+        positions.addAll(Arrays.asList(vertical));
+        positions.addAll(Arrays.asList(diagonal));
+
+        return validateMoves(piece, from, positions.toArray(Position[]::new));
     }
 }

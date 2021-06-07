@@ -26,11 +26,13 @@ public class QueenMoveChecker extends AbstractMoveChecker<Queen> {
 
     @Override
     public boolean check(Queen piece, Move move) {
-        if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom().getRank(), move.getFrom().getFileNumber(), move.getTo().getFileNumber())) {
+        if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom(), move.getTo().getFileNumber())) {
             return false;
         }
 
-        if (isVertical(move) && board.hasObstructionVertically(move.getFrom().getFile(), move.getFrom().getRank(), move.getTo().getRank())) {
+        if (!board.isEmpty(move.getTo())) return false;
+
+        if (isVertical(move) && board.hasObstructionVertically(move.getFrom(), move.getTo().getRank())) {
             return false;
         }
         return !isDiagonal(move) || !board.hasObstructionDiagonally(move.getFrom(), move.getTo());

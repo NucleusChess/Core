@@ -3,10 +3,7 @@ package com.nucleuschess;
 import com.nucleuschess.board.Board;
 import com.nucleuschess.board.Position;
 import com.nucleuschess.move.Move;
-import com.nucleuschess.piece.Knight;
-import com.nucleuschess.piece.Pawn;
-import com.nucleuschess.piece.Piece;
-import com.nucleuschess.piece.Rook;
+import com.nucleuschess.piece.*;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
@@ -118,7 +115,7 @@ public class BoardTests {
     @Order(4)
     public void checkPartialFile() {
 
-        final Position[] positions = board.getPositionsVertically('c', 3, 7);
+        final Position[] positions = board.getPositionsVertically(Position.C3, 7);
         Assertions.assertNotNull(positions);
         Assertions.assertEquals(5, positions.length);
 
@@ -131,7 +128,7 @@ public class BoardTests {
 
     @Test
     public void checkPartialRank() {
-        final Position[] positions = board.getPositionsHorizontally(8, 3, 8);
+        final Position[] positions = board.getPositionsHorizontally(Position.C8, 8);
         Assertions.assertNotNull(positions);
         Assertions.assertEquals(6, positions.length);
 
@@ -237,4 +234,25 @@ public class BoardTests {
         Assertions.assertEquals(5, moves.length);
     }
 
+    @Test
+    public void testBishopMoveFinder() {
+
+        final Position from = Position.E4;
+        final Bishop bishop = board.setPiece(new Bishop(Color.WHITE), from);
+
+        Move[] moves = board.getAvailableMoves(bishop);
+        Assertions.assertEquals(6, moves.length, "The moves found are " +
+                Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+    }
+
+    @Test
+    public void testQueenMoveFinder() {
+
+        final Position from = Position.C5;
+        final Queen queen = board.setPiece(new Queen(Color.WHITE), from);
+
+        Move[] moves = board.getAvailableMoves(queen);
+        Assertions.assertEquals(16, moves.length, "The moves found are " +
+                Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+    }
 }
