@@ -205,7 +205,7 @@ public class BoardTests {
         board.move(pawn, Position.E3);
 
         moves = board.getPotentialMoves(pawn);
-        Board.createVisualized(moves).print(pawn.getColor());
+        Board.createVisualized(pawn, from, moves).print(pawn.getColor(), from);
 
         Assertions.assertEquals(4, moves.length);
     }
@@ -221,7 +221,7 @@ public class BoardTests {
         board.move(knight, Position.C3);
 
         moves = board.getPotentialMoves(knight);
-        Board.createVisualized(moves).print(knight.getColor());
+        Board.createVisualized(knight, from, moves).print(knight.getColor(), from);
 
         Assertions.assertEquals(8, moves.length);
     }
@@ -238,7 +238,7 @@ public class BoardTests {
         board.setEmpty(Position.A2);
 
         moves = board.getPotentialMoves(rook);
-        Board.createVisualized(moves).print(rook.getColor());
+        Board.createVisualized(rook, from, moves).print(rook.getColor(), from);
 
         Assertions.assertEquals(14, moves.length);
     }
@@ -250,7 +250,7 @@ public class BoardTests {
         final Bishop bishop = board.setPiece(new Bishop(WHITE), from);
 
         Move[] moves = board.getPotentialMoves(bishop);
-        Board.createVisualized(moves).print(bishop.getColor());
+        Board.createVisualized(bishop, from, moves).print(bishop.getColor(), from);
 
         Assertions.assertEquals(13, moves.length, "The moves found are " +
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
@@ -263,7 +263,7 @@ public class BoardTests {
         final Queen queen = board.setPiece(new Queen(WHITE), from);
 
         Move[] moves = board.getPotentialMoves(queen);
-        Board.createVisualized(moves).print(queen.getColor());
+        Board.createVisualized(queen, from, moves).print(queen.getColor(), from);
 
         Assertions.assertEquals(25, moves.length, "The moves found are " +
         Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));

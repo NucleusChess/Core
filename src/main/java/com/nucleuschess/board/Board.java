@@ -80,8 +80,9 @@ public final class Board {
         this.setupBoard();
     }
 
-    public static Board createVisualized(Move[] moves) {
+    public static Board createVisualized(Piece fromWhich, Position from, Move[] moves) {
         final Board tempBoard = new Board();
+        tempBoard.setPiece(fromWhich, from);
 
         Arrays.stream(moves).forEach(m -> {
             final Piece piece = m.getPiece();
@@ -347,10 +348,10 @@ public final class Board {
     }
 
     public void print() {
-        print(null);
+        print(null, null);
     }
 
-    public void print(Color which) {
+    public void print(Color which, Position whichFrom) {
         if (which != null) {
             System.out.println(which + " to move.");
         }
@@ -359,6 +360,7 @@ public final class Board {
             private static final String RED = "\u001B[31m";
             private static final String GREEN = "\u001B[32m";
             private static final String BLUE = "\u001B[34m";
+            private static final String YELLOW = "\u001B[33m";
             private static final String RESET = "\u001B[0m";
         }
 
@@ -374,7 +376,9 @@ public final class Board {
                     return;
                 }
 
-                System.out.print(((getPiece(p).getColor() != null ? (getPiece(p).getColor() == BLACK ? Ansi.BLUE : Ansi.RED) : Ansi.GREEN)) + getPiece(p).getCode() + " " + Ansi.RESET);
+                if (whichFrom != null && p == whichFrom) {
+                    System.out.print(Ansi.YELLOW + getPiece(p).getCode() + " " + Ansi.RESET);
+                } else System.out.print(((getPiece(p).getColor() != null ? (getPiece(p).getColor() == BLACK ? Ansi.BLUE : Ansi.RED) : Ansi.GREEN)) + getPiece(p).getCode() + " " + Ansi.RESET);
             });
 
             System.out.println("| " + j);
