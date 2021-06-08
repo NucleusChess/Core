@@ -269,6 +269,7 @@ public class BoardTests {
         Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
     }
 
+    @Disabled
     @Test
     public void testKingInCheck() {
         Assertions.assertFalse(board.isInCheck(WHITE));
