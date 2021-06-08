@@ -234,16 +234,13 @@ public class BoardTests {
         Move[] moves = board.getPotentialMoves(rook);
         Assertions.assertEquals(14, moves.length, "The moves found are " +
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
-<<<<<<< HEAD
 
         board.setEmpty(Position.A2);
 
         moves = board.getPotentialMoves(rook);
         Board.createVisualized(moves).print(rook.getColor());
 
-        Assertions.assertEquals(5, moves.length);
-=======
->>>>>>> 6995aca39bc1c8079e965a80af0f216d7d8c0a7c
+        Assertions.assertEquals(14, moves.length);
     }
 
     @Test
@@ -266,14 +263,10 @@ public class BoardTests {
         final Queen queen = board.setPiece(new Queen(WHITE), from);
 
         Move[] moves = board.getPotentialMoves(queen);
-<<<<<<< HEAD
         Board.createVisualized(moves).print(queen.getColor());
 
-        Assertions.assertEquals(26, moves.length, "The moves found are " +
-=======
         Assertions.assertEquals(25, moves.length, "The moves found are " +
->>>>>>> 6995aca39bc1c8079e965a80af0f216d7d8c0a7c
-                Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+        Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
     }
 
     @Test
