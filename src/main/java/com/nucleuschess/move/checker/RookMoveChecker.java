@@ -3,6 +3,7 @@ package com.nucleuschess.move.checker;
 import com.nucleuschess.board.Board;
 import com.nucleuschess.move.AbstractMoveChecker;
 import com.nucleuschess.move.Move;
+import com.nucleuschess.piece.Piece;
 import com.nucleuschess.piece.Rook;
 
 /*
@@ -32,7 +33,14 @@ public final class RookMoveChecker extends AbstractMoveChecker<Rook> {
             return false;
         }
         if (isHorizontal(move) && board.hasObstructionHorizontally(move.getFrom(), move.getTo().getFileNumber())) {
-            return false;
+
+            final Piece obstruction = board.getObstructionHorizontally(move.getFrom(), move.getTo().getFileNumber());
+            if (obstruction == null) {
+                throw new IllegalStateException("Obstruction is found but object is null");
+            }
+
+            System.out.println("Obstructing piece is from type " + obstruction.getName() + ", color=" + obstruction.getColor());
+            return obstruction.getColor() != piece.getColor();
         }
 
         return !isVertical(move) || !board.hasObstructionVertically(move.getFrom(), move.getTo().getRank());
