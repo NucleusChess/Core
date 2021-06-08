@@ -368,7 +368,7 @@ public final class Board {
 
         for (int i = 1, j = 8; i <= 8; i++, j--) {
             System.out.print("| ");
-            Position[] positions = Position.valuesOf(j);
+            Position[] positions = Position.valuesOf(j); // positions of rank j
 
             Arrays.stream(positions).forEach(p -> {
                 if (isEmpty(p)) {

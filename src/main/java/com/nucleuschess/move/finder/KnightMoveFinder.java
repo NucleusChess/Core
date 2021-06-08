@@ -33,6 +33,7 @@ public final class KnightMoveFinder extends AbstractMoveFinder<Knight> {
     @Override
     public Move[] getPotentialMoves(Knight piece) {
         final Position from = board.getPosition(piece);
+
         final PositionFace[] faces = new PositionFace[]{
                 NORTH_NORTH_EAST, NORTH_NORTH_WEST,
                 NORTH_WEST_WEST, NORTH_EAST_EAST,

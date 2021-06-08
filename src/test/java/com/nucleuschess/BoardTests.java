@@ -205,7 +205,7 @@ public class BoardTests {
         board.move(pawn, Position.E3);
 
         moves = board.getPotentialMoves(pawn);
-        Board.createVisualized(pawn, from, moves).print(pawn.getColor(), from);
+        Board.createVisualized(pawn, board.getPosition(pawn), moves).print(pawn.getColor(), board.getPosition(pawn));
 
         Assertions.assertEquals(4, moves.length);
     }
@@ -221,7 +221,7 @@ public class BoardTests {
         board.move(knight, Position.C3);
 
         moves = board.getPotentialMoves(knight);
-        Board.createVisualized(knight, from, moves).print(knight.getColor(), from);
+        Board.createVisualized(knight, board.getPosition(knight), moves).print(knight.getColor(), board.getPosition(knight));
 
         Assertions.assertEquals(8, moves.length);
     }
@@ -238,7 +238,7 @@ public class BoardTests {
         board.setEmpty(Position.A2);
 
         moves = board.getPotentialMoves(rook);
-        Board.createVisualized(rook, from, moves).print(rook.getColor(), from);
+        Board.createVisualized(rook, board.getPosition(rook), moves).print(rook.getColor(), board.getPosition(rook));
 
         Assertions.assertEquals(14, moves.length);
     }
@@ -250,7 +250,7 @@ public class BoardTests {
         final Bishop bishop = board.setPiece(new Bishop(WHITE), from);
 
         Move[] moves = board.getPotentialMoves(bishop);
-        Board.createVisualized(bishop, from, moves).print(bishop.getColor(), from);
+        Board.createVisualized(bishop, board.getPosition(bishop), moves).print(bishop.getColor(), board.getPosition(bishop));
 
         Assertions.assertEquals(13, moves.length, "The moves found are " +
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
@@ -263,7 +263,7 @@ public class BoardTests {
         final Queen queen = board.setPiece(new Queen(WHITE), from);
 
         Move[] moves = board.getPotentialMoves(queen);
-        Board.createVisualized(queen, from, moves).print(queen.getColor(), from);
+        Board.createVisualized(queen, board.getPosition(queen), moves).print(queen.getColor(), board.getPosition(queen));
 
         Assertions.assertEquals(25, moves.length, "The moves found are " +
         Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
