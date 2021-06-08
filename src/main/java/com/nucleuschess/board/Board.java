@@ -80,6 +80,42 @@ public final class Board {
         this.setupBoard();
     }
 
+    public static Board createVisualized(Move[] moves) {
+        final Board tempBoard = new Board();
+
+        Arrays.stream(moves).forEach(m -> {
+            final Piece piece = m.getPiece();
+            Piece newPiece = null;
+
+            switch (piece.getName()) {
+                case "Pawn":
+                    newPiece = new Pawn(null);
+                    break;
+                case "Knight":
+                    newPiece = new Knight(null);
+                    break;
+                case "Bishop":
+                    newPiece = new Bishop(null);
+                    break;
+                case "Rook":
+                    newPiece = new Rook(null);
+                    break;
+                case "Queen":
+                    newPiece = new Queen(null);
+                    break;
+                case "King":
+                    newPiece = new King(null);
+                    break;
+            }
+
+            if (newPiece != null) {
+                tempBoard.setPiece(newPiece, m.getTo());
+            }
+        });
+
+        return tempBoard;
+    }
+
     public boolean isEmpty(Position position) {
         return positionPieceMap.get(position) == null;
     }
@@ -311,8 +347,17 @@ public final class Board {
     }
 
     public void print() {
+        print(null);
+    }
+
+    public void print(Color which) {
+        if (which != null) {
+            System.out.println(which + " to move.");
+        }
+
         class Ansi {
             private static final String RED = "\u001B[31m";
+            private static final String GREEN = "\u001B[32m";
             private static final String BLUE = "\u001B[34m";
             private static final String RESET = "\u001B[0m";
         }
@@ -329,7 +374,7 @@ public final class Board {
                     return;
                 }
 
-                System.out.print((getPiece(p).getColor() == BLACK ? Ansi.BLUE : Ansi.RED) + getPiece(p).getCode() + " " + Ansi.RESET);
+                System.out.print(((getPiece(p).getColor() != null ? (getPiece(p).getColor() == BLACK ? Ansi.BLUE : Ansi.RED) : Ansi.GREEN)) + getPiece(p).getCode() + " " + Ansi.RESET);
             });
 
             System.out.println("| " + j);

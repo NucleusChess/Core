@@ -202,6 +202,8 @@ public class BoardTests {
         board.move(pawn, Position.E3);
 
         moves = board.getPotentialMoves(pawn);
+        Board.createVisualized(moves).print(pawn.getColor());
+
         Assertions.assertEquals(4, moves.length);
     }
 
@@ -216,6 +218,8 @@ public class BoardTests {
         board.move(knight, Position.C3);
 
         moves = board.getPotentialMoves(knight);
+        Board.createVisualized(moves).print(knight.getColor());
+
         Assertions.assertEquals(8, moves.length);
     }
 
@@ -231,6 +235,8 @@ public class BoardTests {
         board.setEmpty(Position.A2);
 
         moves = board.getPotentialMoves(rook);
+        Board.createVisualized(moves).print(rook.getColor());
+
         Assertions.assertEquals(5, moves.length);
     }
 
@@ -241,6 +247,8 @@ public class BoardTests {
         final Bishop bishop = board.setPiece(new Bishop(Color.WHITE), from);
 
         Move[] moves = board.getPotentialMoves(bishop);
+        Board.createVisualized(moves).print(bishop.getColor());
+
         Assertions.assertEquals(13, moves.length, "The moves found are " +
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
     }
@@ -252,6 +260,8 @@ public class BoardTests {
         final Queen queen = board.setPiece(new Queen(Color.WHITE), from);
 
         Move[] moves = board.getPotentialMoves(queen);
+        Board.createVisualized(moves).print(queen.getColor());
+
         Assertions.assertEquals(26, moves.length, "The moves found are " +
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
     }
