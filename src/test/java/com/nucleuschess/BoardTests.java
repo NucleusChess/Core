@@ -9,6 +9,9 @@ import org.junit.jupiter.api.*;
 import java.util.Arrays;
 import java.util.Random;
 
+import static com.nucleuschess.Color.BLACK;
+import static com.nucleuschess.Color.WHITE;
+
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
   This program is free software: you can redistribute it and/or modify
@@ -229,8 +232,9 @@ public class BoardTests {
         final Rook rook = board.getPiece(from);
 
         Move[] moves = board.getPotentialMoves(rook);
-        Assertions.assertEquals(0, moves.length, "The moves found are " +
+        Assertions.assertEquals(14, moves.length, "The moves found are " +
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+<<<<<<< HEAD
 
         board.setEmpty(Position.A2);
 
@@ -238,13 +242,15 @@ public class BoardTests {
         Board.createVisualized(moves).print(rook.getColor());
 
         Assertions.assertEquals(5, moves.length);
+=======
+>>>>>>> 6995aca39bc1c8079e965a80af0f216d7d8c0a7c
     }
 
     @Test
     public void testBishopMoveFinder() {
 
         final Position from = Position.E4;
-        final Bishop bishop = board.setPiece(new Bishop(Color.WHITE), from);
+        final Bishop bishop = board.setPiece(new Bishop(WHITE), from);
 
         Move[] moves = board.getPotentialMoves(bishop);
         Board.createVisualized(moves).print(bishop.getColor());
@@ -257,18 +263,37 @@ public class BoardTests {
     public void testQueenMoveFinder() {
 
         final Position from = Position.C5;
-        final Queen queen = board.setPiece(new Queen(Color.WHITE), from);
+        final Queen queen = board.setPiece(new Queen(WHITE), from);
 
         Move[] moves = board.getPotentialMoves(queen);
+<<<<<<< HEAD
         Board.createVisualized(moves).print(queen.getColor());
 
         Assertions.assertEquals(26, moves.length, "The moves found are " +
+=======
+        Assertions.assertEquals(25, moves.length, "The moves found are " +
+>>>>>>> 6995aca39bc1c8079e965a80af0f216d7d8c0a7c
                 Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
     }
 
     @Test
     public void testKingInCheck() {
-        Assertions.assertFalse(board.isInCheck(Color.WHITE));
-        Assertions.assertFalse(board.isInCheck(Color.BLACK));
+        Assertions.assertFalse(board.isInCheck(WHITE));
+        Assertions.assertFalse(board.isInCheck(BLACK));
+
+        final Rook rook = board.setPiece(new Rook(WHITE), Position.E5);
+        Assertions.assertFalse(board.isInCheck(BLACK));
+
+        board.setEmpty(Position.E7);
+
+        final Move[] moves = board.getPotentialMoves(rook);
+        System.out.println("lol the rook has literally " + moves.length);
+        System.out.println(Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+
+        board.print();
+
+        Assertions.assertTrue(board.isInCheck(BLACK));
+
+
     }
 }

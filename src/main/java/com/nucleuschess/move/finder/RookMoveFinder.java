@@ -42,6 +42,6 @@ public final class RookMoveFinder extends AbstractMoveFinder<Rook> {
                 .map(p -> new Move(board.getMoveCounter() + 1, piece, from, p, false))
                 .forEach(moves::add);
 
-        return moves.stream().filter(m -> board.check(piece, m)).toArray(Move[]::new);
+        return moves.toArray(Move[]::new);
     }
 }

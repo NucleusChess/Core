@@ -188,8 +188,8 @@ public final class Board {
     public boolean isInCheck(Color color) {
         final Position kingPosition = getKing(color);
 
-        for (Piece piece : positionPieceMap.values().stream().filter(p -> !p.getColor().equals(color)).collect(Collectors.toList())) {
-            if (Arrays.stream(getPotentialMoves(piece)).map(Move::getTo).anyMatch(p -> p.equals(kingPosition))) {
+        for (Piece piece : positionPieceMap.values().stream().filter(p -> p != null && !p.getColor().equals(color)).collect(Collectors.toList())) {
+            if (Arrays.stream(getPotentialMoves(piece)).filter(m -> check(piece, m)).map(Move::getTo).anyMatch(p -> p.equals(kingPosition))) {
                 return true;
             }
         }

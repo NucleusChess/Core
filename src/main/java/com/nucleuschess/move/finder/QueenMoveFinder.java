@@ -40,6 +40,7 @@ public final class QueenMoveFinder extends AbstractMoveFinder<Queen> {
         positions.addAll(Arrays.asList(horizontal));
         positions.addAll(Arrays.asList(vertical));
         positions.addAll(Arrays.asList(diagonal));
+        positions.remove(from);
 
         return positions.stream().map(p -> new Move(board.getMoveCounter() + 1, piece, from, p, false)).toArray(Move[]::new);
     }
