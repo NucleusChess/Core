@@ -199,7 +199,6 @@ class BoardTests {
         Assertions.assertFalse(board.check(pawn, new Move(1, pawn, from, Position.E4, false)));
     }
 
-    @Disabled
     @Test
     void testKingInCheck() {
         Assertions.assertFalse(board.isInCheck(WHITE));
@@ -212,8 +211,6 @@ class BoardTests {
 
         final Move[] moves = board.getPotentialMoves(rook);
         System.out.println(Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
-
-        board.print();
 
         Assertions.assertTrue(board.isInCheck(BLACK));
     }
