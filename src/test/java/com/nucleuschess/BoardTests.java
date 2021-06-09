@@ -4,6 +4,7 @@ import com.nucleuschess.board.Board;
 import com.nucleuschess.board.Position;
 import com.nucleuschess.move.Move;
 import com.nucleuschess.piece.*;
+import com.nucleuschess.util.SimpleDisplayNameGenerator;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
@@ -26,6 +27,7 @@ import static com.nucleuschess.Color.WHITE;
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+@DisplayNameGeneration(SimpleDisplayNameGenerator.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BoardTests {
 
@@ -194,79 +196,103 @@ public class BoardTests {
         Assertions.assertFalse(board.check(pawn, new Move(1, pawn, from, Position.E4, false)));
     }
 
-    @Test
-    public void testPawnMoveFinder() {
-        final Position from = Position.E2;
-        final Pawn pawn = board.getPiece(from);
+    @DisplayName("Move Finder Tests")
+    @Nested
+    class MoveFinderTests {
 
-        Move[] moves = board.getPotentialMoves(pawn);
-        Assertions.assertEquals(4, moves.length);
+        @DisplayName("Pawn")
+        @Test
+        public void testPawnMoveFinder() {
+            final Position from = Position.E2;
+            final Pawn pawn = board.getPiece(from);
 
-        board.move(pawn, Position.E3);
+            Move[] moves = board.getPotentialMoves(pawn);
+            Assertions.assertEquals(4, moves.length);
 
-        moves = board.getPotentialMoves(pawn);
-        Board.createVisualized(pawn, board.getPosition(pawn), moves).print(pawn.getColor(), board.getPosition(pawn));
+            board.move(pawn, Position.E3);
 
-        Assertions.assertEquals(4, moves.length);
-    }
+            moves = board.getPotentialMoves(pawn);
+            Board.createVisualized(pawn, board.getPosition(pawn), moves).print(pawn.getColor(), board.getPosition(pawn));
 
-    @Test
-    public void testKnightMoveFinder() {
-        final Position from = Position.B1;
-        final Knight knight = board.getPiece(from);
+            Assertions.assertEquals(4, moves.length);
+        }
 
-        Move[] moves = board.getPotentialMoves(knight);
-        Assertions.assertEquals(3, moves.length);
+        @DisplayName("Knight")
+        @Test
+        public void testKnightMoveFinder() {
+            final Position from = Position.B1;
+            final Knight knight = board.getPiece(from);
 
-        board.move(knight, Position.C3);
+            Move[] moves = board.getPotentialMoves(knight);
+            Assertions.assertEquals(3, moves.length);
 
-        moves = board.getPotentialMoves(knight);
-        Board.createVisualized(knight, board.getPosition(knight), moves).print(knight.getColor(), board.getPosition(knight));
+            board.move(knight, Position.C3);
 
-        Assertions.assertEquals(8, moves.length);
-    }
+            moves = board.getPotentialMoves(knight);
+            Board.createVisualized(knight, board.getPosition(knight), moves).print(knight.getColor(), board.getPosition(knight));
 
-    @Test
-    public void testRookMoveFinder() {
-        final Position from = Position.A1;
-        final Rook rook = board.getPiece(from);
+            Assertions.assertEquals(8, moves.length);
+        }
 
-        Move[] moves = board.getPotentialMoves(rook);
-        Assertions.assertEquals(14, moves.length, "The moves found are " +
-                Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+        @DisplayName("Bishop")
+        @Test
+        public void testBishopMoveFinder() {
 
-        board.setEmpty(Position.A2);
+            final Position from = Position.E4;
+            final Bishop bishop = board.setPiece(new Bishop(WHITE), from);
 
-        moves = board.getPotentialMoves(rook);
-        Board.createVisualized(rook, board.getPosition(rook), moves).print(rook.getColor(), board.getPosition(rook));
+            Move[] moves = board.getPotentialMoves(bishop);
+            Board.createVisualized(bishop, board.getPosition(bishop), moves).print(bishop.getColor(), board.getPosition(bishop));
 
-        Assertions.assertEquals(14, moves.length);
-    }
+            Assertions.assertEquals(13, moves.length, "The moves found are " +
+                    Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+        }
 
-    @Test
-    public void testBishopMoveFinder() {
+        @DisplayName("Rook")
+        @Test
+        public void testRookMoveFinder() {
+            final Position from = Position.A1;
+            final Rook rook = board.getPiece(from);
 
-        final Position from = Position.E4;
-        final Bishop bishop = board.setPiece(new Bishop(WHITE), from);
+            Move[] moves = board.getPotentialMoves(rook);
+            Assertions.assertEquals(14, moves.length, "The moves found are " +
+                    Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
 
-        Move[] moves = board.getPotentialMoves(bishop);
-        Board.createVisualized(bishop, board.getPosition(bishop), moves).print(bishop.getColor(), board.getPosition(bishop));
+            board.setEmpty(Position.A2);
 
-        Assertions.assertEquals(13, moves.length, "The moves found are " +
-                Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
-    }
+            moves = board.getPotentialMoves(rook);
+            Board.createVisualized(rook, board.getPosition(rook), moves).print(rook.getColor(), board.getPosition(rook));
 
-    @Test
-    public void testQueenMoveFinder() {
+            Assertions.assertEquals(14, moves.length);
+        }
 
-        final Position from = Position.C5;
-        final Queen queen = board.setPiece(new Queen(WHITE), from);
+        @DisplayName("Queen")
+        @Test
+        public void testQueenMoveFinder() {
 
-        Move[] moves = board.getPotentialMoves(queen);
-        Board.createVisualized(queen, board.getPosition(queen), moves).print(queen.getColor(), board.getPosition(queen));
+            final Position from = Position.C5;
+            final Queen queen = board.setPiece(new Queen(WHITE), from);
 
-        Assertions.assertEquals(25, moves.length, "The moves found are " +
-        Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+            Move[] moves = board.getPotentialMoves(queen);
+            Board.createVisualized(queen, board.getPosition(queen), moves).print(queen.getColor(), board.getPosition(queen));
+
+            Assertions.assertEquals(25, moves.length, "The moves found are " +
+                    Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+        }
+
+        @DisplayName("King")
+        @Test
+        public void testKingMoveFinder() {
+
+            final Position from = Position.E1;
+            final King king = board.setPiece(new King(WHITE), from);
+
+            Move[] moves = board.getPotentialMoves(king);
+            Board.createVisualized(king, board.getPosition(king), moves).print(king.getColor(), board.getPosition(king));
+
+            Assertions.assertEquals(5, moves.length, "The moves found are " +
+                    Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+        }
     }
 
     @Disabled

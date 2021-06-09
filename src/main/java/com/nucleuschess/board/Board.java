@@ -158,8 +158,7 @@ public final class Board {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <T extends Piece> T setPiece(Piece piece, Position position) {
+    public <T extends Piece> T setPiece(T piece, Position position) {
         positionPieceMap.put(position, piece);
         return (T) piece;
     }
