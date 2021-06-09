@@ -27,6 +27,10 @@ import static com.nucleuschess.Color.WHITE;
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+/**
+ * JUnit-IntelliJ IDEA has an oddity where it does not show the display name unless the IntelliJ IDEA test runner is selected.
+ * |=> Settings > Build, Execution, Deployment > BuildTools > Gradle > "Run tests using: IntelliJ IDEA"
+ */
 @DisplayNameGeneration(SimpleDisplayNameGenerator.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BoardTests {
