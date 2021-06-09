@@ -159,7 +159,9 @@ class BoardTests {
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.E1, false);
 
+        Board.createVisualized(piece, from, new Move[] { move }).print(piece.getColor(), move.getFrom());
         Assertions.assertFalse(board.check(piece, move));
+
     }
 
     @Test
@@ -168,6 +170,7 @@ class BoardTests {
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.A6, false);
 
+        Board.createVisualized(piece, from, new Move[] { move }).print(piece.getColor(), move.getFrom());
         Assertions.assertFalse(board.check(piece, move));
     }
 

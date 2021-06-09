@@ -41,8 +41,17 @@ public final class RookMoveChecker extends AbstractMoveChecker<Rook> {
 
             System.out.println("Obstructing piece is from type " + obstruction.getName() + ", color=" + obstruction.getColor());
             return obstruction.getColor() != piece.getColor();
+        } else if (isVertical(move) && board.hasObstructionVertically(move.getFrom(), move.getTo().getRank())) {
+
+            final Piece obstruction = board.getObstructionVertically(move.getFrom(), move.getTo().getRank());
+            if (obstruction == null) {
+                throw new IllegalStateException("Obstruction is found but object is null");
+            }
+
+            System.out.println("Obstructing piece is from type " + obstruction.getName() + ", color=" + obstruction.getColor());
+            return obstruction.getColor() != piece.getColor();
         }
 
-        return !isVertical(move) || !board.hasObstructionVertically(move.getFrom(), move.getTo().getRank());
+        return true;
     }
 }

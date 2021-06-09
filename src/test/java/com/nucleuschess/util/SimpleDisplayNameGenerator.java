@@ -1,6 +1,5 @@
 package com.nucleuschess.util;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGenerator;
 
 import java.lang.reflect.Method;
