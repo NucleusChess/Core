@@ -41,7 +41,7 @@ public final class Board {
     @SuppressWarnings("FieldMayBeFinal")
     private int moveCounter;
 
-    private final Map<Position, Piece> positionPieceMap;
+    private Map<Position, Piece> positionPieceMap;
 
     // Move checkers
     private final KingMoveChecker kingMoveChecker;
@@ -80,8 +80,13 @@ public final class Board {
         this.setupBoard();
     }
 
-    public static Board createVisualized(Piece fromWhich, Position from, Move[] moves) {
-        final Board tempBoard = new Board();
+    public Board(Board b) {
+        this();
+        this.positionPieceMap = b.positionPieceMap;
+    }
+
+    public static Board createVisualized(Board b, Piece fromWhich, Position from, Move[] moves) {
+        final Board tempBoard = b;
         tempBoard.setPiece(fromWhich, from);
 
         Arrays.stream(moves).forEach(m -> {
@@ -160,7 +165,7 @@ public final class Board {
 
     public <T extends Piece> T setPiece(T piece, Position position) {
         positionPieceMap.put(position, piece);
-        return (T) piece;
+        return piece;
     }
 
     public void setEmpty(Position position) {
@@ -377,7 +382,8 @@ public final class Board {
 
                 if (whichFrom != null && p == whichFrom) {
                     System.out.print(Ansi.YELLOW + getPiece(p).getCode() + " " + Ansi.RESET);
-                } else System.out.print(((getPiece(p).getColor() != null ? (getPiece(p).getColor() == BLACK ? Ansi.BLUE : Ansi.RED) : Ansi.GREEN)) + getPiece(p).getCode() + " " + Ansi.RESET);
+                } else
+                    System.out.print(((getPiece(p).getColor() != null ? (getPiece(p).getColor() == BLACK ? Ansi.BLUE : Ansi.RED) : Ansi.GREEN)) + getPiece(p).getCode() + " " + Ansi.RESET);
             });
 
             System.out.println("| " + j);

@@ -23,4 +23,9 @@ public abstract class AbstractMoveChecker<T extends Piece> implements MoveChecke
     public AbstractMoveChecker(Board board) {
         this.board = board;
     }
+
+    protected boolean isOwnObstruction() {
+        return true;
+    }
+
 }
