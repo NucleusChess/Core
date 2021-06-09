@@ -16,14 +16,14 @@ import static com.nucleuschess.Color.WHITE;
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
   This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU Affero General Public License as published
+  it under the terms of the GNU Affero General  License as published
   by the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU Affero General Public License for more details.
-  You should have received a copy of the GNU Affero General Public License
+  GNU Affero General  License for more details.
+  You should have received a copy of the GNU Affero General  License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
@@ -33,24 +33,23 @@ import static com.nucleuschess.Color.WHITE;
  */
 @DisplayNameGeneration(SimpleDisplayNameGenerator.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class BoardTests {
+class BoardTests {
 
     private static Board board;
     private static Random random;
 
     @BeforeEach
-    public void createBoard() {
+    void createBoard() {
         board = new Board();
     }
 
     @BeforeAll
-    public static void initializeRandom() {
+    static void initializeRandom() {
         random = new Random();
     }
 
     @Test
-    @Order(1)
-    public void checkPieces() {
+    void checkPieces() {
         final int[] ranks = {1, 2, 7, 8};
         final int rank = ranks[random.nextInt(ranks.length)];
 
@@ -63,8 +62,7 @@ public class BoardTests {
     }
 
     @Test
-    @Order(2)
-    public void checkBoard() {
+    void checkBoard() {
         Assertions.assertNotNull(board);
         final String[] expected = {
                 "RNBQKBNR",
@@ -90,8 +88,7 @@ public class BoardTests {
     }
 
     @Test
-    @Order(3)
-    public void checkFile() {
+    void checkFile() {
         final Position[] positions = Position.valuesOf('d');
 
         Assertions.assertNotNull(positions);
@@ -106,7 +103,7 @@ public class BoardTests {
     }
 
     @Test
-    public void checkRank() {
+    void checkRank() {
         final Position[] positions = Position.valuesOf(1);
 
         Assertions.assertNotNull(positions);
@@ -121,8 +118,7 @@ public class BoardTests {
     }
 
     @Test
-    @Order(4)
-    public void checkPartialFile() {
+    void checkPartialFile() {
 
         final Position[] positions = board.getPositionsVertically(Position.C3, 7);
         Assertions.assertNotNull(positions);
@@ -136,7 +132,7 @@ public class BoardTests {
     }
 
     @Test
-    public void checkPartialRank() {
+    void checkPartialRank() {
         final Position[] positions = board.getPositionsHorizontally(Position.C8, 8);
         Assertions.assertNotNull(positions);
         Assertions.assertEquals(6, positions.length);
@@ -149,7 +145,7 @@ public class BoardTests {
     }
 
     @Test
-    public void testPawn() {
+    void testPawn() {
         final Position from = Position.D2;
         final Pawn piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.D4, false);
@@ -158,7 +154,7 @@ public class BoardTests {
     }
 
     @Test
-    public void testHorizontalRookCollision() {
+    void testHorizontalRookCollision() {
         final Position from = Position.A1;
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.E1, false);
@@ -167,7 +163,7 @@ public class BoardTests {
     }
 
     @Test
-    public void testVerticalRookCollision() {
+    void testVerticalRookCollision() {
         final Position from = Position.A1;
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.A6, false);
@@ -176,7 +172,7 @@ public class BoardTests {
     }
 
     @Test
-    public void testNormalRookMovement() {
+    void testNormalRookMovement() {
         final Position from = Position.A1;
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.A6, false);
@@ -188,7 +184,7 @@ public class BoardTests {
     }
 
     @Test
-    public void testOpening() {
+    void testOpening() {
         final Position from = Position.E2;
         final Pawn pawn = board.getPiece(from);
 
@@ -200,13 +196,36 @@ public class BoardTests {
         Assertions.assertFalse(board.check(pawn, new Move(1, pawn, from, Position.E4, false)));
     }
 
+    @Test
+    void testKingInCheck() {
+//        Assertions.assertFalse(board.isInCheck(WHITE));
+//        Assertions.assertFalse(board.isInCheck(BLACK));
+//
+//        final Rook rook = board.setPiece(new Rook(WHITE), Position.E5);
+//        Assertions.assertFalse(board.isInCheck(BLACK));
+//
+//        board.setEmpty(Position.E7);
+//
+//        final Move[] moves = board.getPotentialMoves(rook);
+//        System.out.println("lol the rook has literally " + moves.length);
+//        System.out.println(Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
+//
+//        board.print();
+//
+//        Assertions.assertTrue(board.isInCheck(BLACK));
+
+        Assertions.fail();
+    }
+
     @DisplayName("Move Finder Tests")
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     @Nested
     class MoveFinderTests {
 
         @DisplayName("Pawn")
+        @Order(1)
         @Test
-        public void testPawnMoveFinder() {
+        void testPawnMoveFinder() {
             final Position from = Position.E2;
             final Pawn pawn = board.getPiece(from);
 
@@ -222,8 +241,9 @@ public class BoardTests {
         }
 
         @DisplayName("Knight")
+        @Order(2)
         @Test
-        public void testKnightMoveFinder() {
+        void testKnightMoveFinder() {
             final Position from = Position.B1;
             final Knight knight = board.getPiece(from);
 
@@ -239,8 +259,9 @@ public class BoardTests {
         }
 
         @DisplayName("Bishop")
+        @Order(3)
         @Test
-        public void testBishopMoveFinder() {
+        void testBishopMoveFinder() {
 
             final Position from = Position.E4;
             final Bishop bishop = board.setPiece(new Bishop(WHITE), from);
@@ -253,8 +274,9 @@ public class BoardTests {
         }
 
         @DisplayName("Rook")
+        @Order(4)
         @Test
-        public void testRookMoveFinder() {
+        void testRookMoveFinder() {
             final Position from = Position.A1;
             final Rook rook = board.getPiece(from);
 
@@ -271,8 +293,9 @@ public class BoardTests {
         }
 
         @DisplayName("Queen")
+        @Order(5)
         @Test
-        public void testQueenMoveFinder() {
+        void testQueenMoveFinder() {
 
             final Position from = Position.C5;
             final Queen queen = board.setPiece(new Queen(WHITE), from);
@@ -285,8 +308,9 @@ public class BoardTests {
         }
 
         @DisplayName("King")
+        @Order(6)
         @Test
-        public void testKingMoveFinder() {
+        void testKingMoveFinder() {
 
             final Position from = Position.E1;
             final King king = board.setPiece(new King(WHITE), from);
@@ -297,27 +321,5 @@ public class BoardTests {
             Assertions.assertEquals(5, moves.length, "The moves found are " +
                     Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
         }
-    }
-
-    @Disabled
-    @Test
-    public void testKingInCheck() {
-        Assertions.assertFalse(board.isInCheck(WHITE));
-        Assertions.assertFalse(board.isInCheck(BLACK));
-
-        final Rook rook = board.setPiece(new Rook(WHITE), Position.E5);
-        Assertions.assertFalse(board.isInCheck(BLACK));
-
-        board.setEmpty(Position.E7);
-
-        final Move[] moves = board.getPotentialMoves(rook);
-        System.out.println("lol the rook has literally " + moves.length);
-        System.out.println(Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
-
-        board.print();
-
-        Assertions.assertTrue(board.isInCheck(BLACK));
-
-
     }
 }
