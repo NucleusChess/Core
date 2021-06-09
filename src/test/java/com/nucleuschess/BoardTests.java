@@ -208,7 +208,6 @@ class BoardTests {
         board.setEmpty(Position.E7);
 
         final Move[] moves = board.getPotentialMoves(rook);
-        System.out.println("lol the rook has literally " + moves.length);
         System.out.println(Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
 
         board.print();
