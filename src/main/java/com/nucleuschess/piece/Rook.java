@@ -1,7 +1,5 @@
 package com.nucleuschess.piece;
 
-import com.nucleuschess.Color;
-
 /*
   Copyright (C) 2020-2021, Wouter Kistemaker.
   This program is free software: you can redistribute it and/or modify
@@ -15,6 +13,8 @@ import com.nucleuschess.Color;
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+import com.nucleuschess.Color;
 
 /**
  * Class representing the Rook, which can move horizontally and vertically

@@ -85,8 +85,8 @@ public final class Board {
         this.positionPieceMap = b.positionPieceMap;
     }
 
-    public static Board createVisualized(Board b, Piece fromWhich, Position from, Move[] moves) {
-        final Board tempBoard = b;
+    public static Board createVisualized(Piece fromWhich, Position from, Move[] moves) {
+        final Board tempBoard = new Board();
         tempBoard.setPiece(fromWhich, from);
 
         Arrays.stream(moves).forEach(m -> {

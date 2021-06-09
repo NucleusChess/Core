@@ -159,7 +159,7 @@ class BoardTests {
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.E1, false);
 
-        Board.createVisualized(board, piece, from, new Move[]{move}).print(piece.getColor(), move.getFrom());
+        Board.createVisualized(piece, from, new Move[]{move}).print(piece.getColor(), move.getFrom());
         Assertions.assertFalse(board.check(piece, move));
 
     }
@@ -170,7 +170,7 @@ class BoardTests {
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.A6, false);
 
-        Board.createVisualized(board, piece, from, new Move[]{move}).print(piece.getColor(), move.getFrom());
+        Board.createVisualized(piece, from, new Move[]{move}).print(piece.getColor(), move.getFrom());
         Assertions.assertFalse(board.check(piece, move));
     }
 
@@ -233,7 +233,7 @@ class BoardTests {
             board.move(pawn, Position.E3);
 
             moves = board.getPotentialMoves(pawn);
-            Board.createVisualized(board, pawn, board.getPosition(pawn), moves).print(pawn.getColor(), board.getPosition(pawn));
+            Board.createVisualized(pawn, board.getPosition(pawn), moves).print(pawn.getColor(), board.getPosition(pawn));
 
             Assertions.assertEquals(4, moves.length);
         }
@@ -251,7 +251,7 @@ class BoardTests {
             board.move(knight, Position.C3);
 
             moves = board.getPotentialMoves(knight);
-            Board.createVisualized(board, knight, board.getPosition(knight), moves).print(knight.getColor(), board.getPosition(knight));
+            Board.createVisualized(knight, board.getPosition(knight), moves).print(knight.getColor(), board.getPosition(knight));
 
             Assertions.assertEquals(8, moves.length);
         }
@@ -265,7 +265,7 @@ class BoardTests {
             final Bishop bishop = board.setPiece(new Bishop(WHITE), from);
 
             Move[] moves = board.getPotentialMoves(bishop);
-            Board.createVisualized(board, bishop, board.getPosition(bishop), moves).print(bishop.getColor(), board.getPosition(bishop));
+            Board.createVisualized(bishop, board.getPosition(bishop), moves).print(bishop.getColor(), board.getPosition(bishop));
 
             Assertions.assertEquals(13, moves.length, "The moves found are " +
                     Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
@@ -285,7 +285,7 @@ class BoardTests {
             board.setEmpty(Position.A2);
 
             moves = board.getPotentialMoves(rook);
-            Board.createVisualized(board, rook, board.getPosition(rook), moves).print(rook.getColor(), board.getPosition(rook));
+            Board.createVisualized(rook, board.getPosition(rook), moves).print(rook.getColor(), board.getPosition(rook));
 
             Assertions.assertEquals(14, moves.length);
         }
@@ -299,7 +299,7 @@ class BoardTests {
             final Queen queen = board.setPiece(new Queen(WHITE), from);
 
             Move[] moves = board.getPotentialMoves(queen);
-            Board.createVisualized(board, queen, board.getPosition(queen), moves).print(queen.getColor(), board.getPosition(queen));
+            Board.createVisualized(queen, board.getPosition(queen), moves).print(queen.getColor(), board.getPosition(queen));
 
             Assertions.assertEquals(25, moves.length, "The moves found are " +
                     Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
@@ -314,7 +314,7 @@ class BoardTests {
             final King king = board.setPiece(new King(WHITE), from);
 
             Move[] moves = board.getPotentialMoves(king);
-            Board.createVisualized(board, king, board.getPosition(king), moves).print(king.getColor(), board.getPosition(king));
+            Board.createVisualized(king, board.getPosition(king), moves).print(king.getColor(), board.getPosition(king));
 
             Assertions.assertEquals(5, moves.length, "The moves found are " +
                     Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
@@ -332,15 +332,14 @@ class BoardTests {
             final Move move = new Move(1, rook, Position.C4, Position.H4, false);
 
             Assertions.assertTrue(board.check(rook, move));
-            board.setPiece(new Pawn(BLACK), Position.E4);
+            final Pawn pawn = board.setPiece(new Pawn(BLACK), Position.E4);
             Assertions.assertFalse(board.check(rook, move));
+            Board.createVisualized(rook, Position.C4, new Move[] { move, new Move(2, pawn, Position.E4, Position.E4, false) }).print();
 
-            Board.createVisualized(board, rook, Position.C4, new Move[]{move}).print(WHITE, Position.C4);
-
-            final Move secondMove = new Move(2, rook, Position.C4, Position.C8, false);
+            final Move secondMove = new Move(3, rook, Position.C4, Position.C8, false);
             Assertions.assertFalse(board.check(rook, secondMove));
 
-            Board.createVisualized(board, rook, Position.C4, new Move[]{secondMove}).print(WHITE, Position.C4);
+            Board.createVisualized(rook, Position.C4, new Move[]{secondMove}).print();
         }
 
     }
