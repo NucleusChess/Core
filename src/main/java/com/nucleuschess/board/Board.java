@@ -326,27 +326,27 @@ public final class Board {
 
     // -----------------------------------------------------------------
 
-    public void move(String userID, String piece, String position) {
-        final Optional<Session> optSession = Core.getSessions().stream().filter(s -> s.getId().equalsIgnoreCase(userID)).findAny();
-
-        if (optSession.isEmpty()) {
-            throw new IllegalStateException("No session for specified user-id.");
-        }
-
-        try {
-            final JsonObject obj = new JsonObject();
-            obj.addProperty("position", position);
-            obj.addProperty("piece", piece);
-            obj.addProperty("color", "BLACK");
-
-            final String json = Core.getGson().toJson(obj);
-
-            optSession.get().getBasicRemote().sendText(json);
-            System.out.println("Sent move (" + position + ", " + piece + ") to " + userID);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void move(String userID, String piece, String position) {
+//        final Optional<Session> optSession = Core.getSessions().stream().filter(s -> s.getId().equalsIgnoreCase(userID)).findAny();
+//
+//        if (optSession.isEmpty()) {
+//            throw new IllegalStateException("No session for specified user-id.");
+//        }
+//
+//        try {
+//            final JsonObject obj = new JsonObject();
+//            obj.addProperty("position", position);
+//            obj.addProperty("piece", piece);
+//            obj.addProperty("color", "BLACK");
+//
+//            final String json = Core.getGson().toJson(obj);
+//
+//            optSession.get().getBasicRemote().sendText(json);
+//            System.out.println("Sent move (" + position + ", " + piece + ") to " + userID);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void print(Color which, Position whichFrom) {
         if (which != null) {
