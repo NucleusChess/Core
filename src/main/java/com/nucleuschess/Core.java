@@ -3,6 +3,7 @@ package com.nucleuschess;
 import com.google.gson.Gson;
 import com.nucleuschess.board.Board;
 import com.nucleuschess.net.BasicEndpoint;
+import com.nucleuschess.net.SessionManager;
 import jakarta.websocket.Session;
 import org.glassfish.tyrus.server.Server;
 
@@ -25,11 +26,13 @@ import java.util.Set;
 public class Core {
 
     private static final Gson gson = new Gson();
-    private static final Set<Session> sessions = new HashSet<>();
 
+    private static SessionManager sessionManager;
     private static Board board;
 
     public static void main(String[] args) {
+        sessionManager = new SessionManager();
+
         final Server server = new Server("localhost", 9000, "/", null, BasicEndpoint.class);
 
         try {
@@ -56,16 +59,8 @@ public class Core {
         return board;
     }
 
-    public static void addSession(Session session) {
-        sessions.add(session);
-    }
-
-    public static void removeSession(Session session) {
-        sessions.remove(session);
-    }
-
-    public static Set<Session> getSessions() {
-        return sessions;
+    public static SessionManager getSessionManager() {
+        return sessionManager;
     }
 
     public static Gson getGson() {

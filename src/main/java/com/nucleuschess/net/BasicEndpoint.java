@@ -22,7 +22,7 @@ public class BasicEndpoint {
 
     @OnOpen
     public void onOpen(Session session) {
-        Core.addSession(session);
+        Core.getSessionManager().addSession(session);
         System.out.println("[" + session.getId() + "] Connected");
     }
 
@@ -33,7 +33,7 @@ public class BasicEndpoint {
 
     @OnClose
     public void onClose(Session session, CloseReason reason) {
-        Core.removeSession(session);
+        Core.getSessionManager().removeSession(session);
         System.out.println("[" + session.getId() + "] Disconnected: " + reason);
     }
 
