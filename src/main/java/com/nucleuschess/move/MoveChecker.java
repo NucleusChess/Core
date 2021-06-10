@@ -1,5 +1,8 @@
-package com.nucleuschess.move;/*
-  Copyright (C) 2020-2021, Wouter Kistemaker.
+package com.nucleuschess.move;
+import com.nucleuschess.piece.Piece;
+
+/*
+  Copyright (C) 2021, NucleusChess.
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as published
   by the Free Software Foundation, either version 3 of the License, or
@@ -11,9 +14,6 @@ package com.nucleuschess.move;/*
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-import com.nucleuschess.piece.Piece;
-
 public interface MoveChecker<T extends Piece> {
 
     boolean check(T piece, Move move);

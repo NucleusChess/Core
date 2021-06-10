@@ -1,5 +1,11 @@
-package com.nucleuschess.piece;/*
-  Copyright (C) 2020-2021, Wouter Kistemaker.
+package com.nucleuschess.piece;
+
+import com.nucleuschess.Color;
+
+import java.util.UUID;
+
+/*
+  Copyright (C) 2021, NucleusChess.
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as published
   by the Free Software Foundation, either version 3 of the License, or
@@ -11,11 +17,6 @@ package com.nucleuschess.piece;/*
   You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-import com.nucleuschess.Color;
-
-import java.util.UUID;
-
 public abstract class Piece {
 
     private final UUID uuid;

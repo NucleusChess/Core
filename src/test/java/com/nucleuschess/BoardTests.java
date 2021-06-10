@@ -14,16 +14,16 @@ import static com.nucleuschess.Color.BLACK;
 import static com.nucleuschess.Color.WHITE;
 
 /*
-  Copyright (C) 2020-2021, Wouter Kistemaker.
+  Copyright (C) 2021, NucleusChess.
   This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU Affero General  License as published
+  it under the terms of the GNU Affero General Public License as published
   by the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU Affero General  License for more details.
-  You should have received a copy of the GNU Affero General  License
+  GNU Affero General Public License for more details.
+  You should have received a copy of the GNU Affero General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
@@ -145,21 +145,12 @@ class BoardTests {
     }
 
     @Test
-    void testPawn() {
-        final Position from = Position.D2;
-        final Pawn piece = board.getPiece(from);
-        final Move move = new Move(1, piece, from, Position.D4, false);
-
-        Assertions.assertTrue(board.check(piece, move));
-    }
-
-    @Test
     void testHorizontalRookCollision() {
         final Position from = Position.A1;
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.E1, false);
 
-        Board.createVisualized(piece, from, new Move[]{move}).print(piece.getColor(), move.getFrom());
+        Board.createVisualized(piece, from, move);
         Assertions.assertFalse(board.check(piece, move));
 
     }
@@ -170,7 +161,7 @@ class BoardTests {
         final Rook piece = board.getPiece(from);
         final Move move = new Move(1, piece, from, Position.A6, false);
 
-        Board.createVisualized(piece, from, new Move[]{move}).print(piece.getColor(), move.getFrom());
+        Board.createVisualized(piece, from, move);
         Assertions.assertFalse(board.check(piece, move));
     }
 
@@ -194,7 +185,6 @@ class BoardTests {
         Assertions.assertTrue(board.check(pawn, new Move(1, pawn, from, Position.E4, false)));
 
         board.move(pawn, Position.E4);
-        board.print();
         // This should now be false after the move was executed (!) because the same move would mean from E4-> E4 which is illegal
         Assertions.assertFalse(board.check(pawn, new Move(1, pawn, from, Position.E4, false)));
     }
@@ -233,7 +223,7 @@ class BoardTests {
             board.move(pawn, Position.E3);
 
             moves = board.getPotentialMoves(pawn);
-            Board.createVisualized(pawn, board.getPosition(pawn), moves).print(pawn.getColor(), board.getPosition(pawn));
+            Board.createVisualized(pawn, board.getPosition(pawn), moves);
 
             Assertions.assertEquals(4, moves.length);
         }
@@ -251,7 +241,7 @@ class BoardTests {
             board.move(knight, Position.C3);
 
             moves = board.getPotentialMoves(knight);
-            Board.createVisualized(knight, board.getPosition(knight), moves).print(knight.getColor(), board.getPosition(knight));
+            Board.createVisualized(knight, board.getPosition(knight), moves);
 
             Assertions.assertEquals(8, moves.length);
         }
@@ -265,7 +255,7 @@ class BoardTests {
             final Bishop bishop = board.setPiece(new Bishop(WHITE), from);
 
             Move[] moves = board.getPotentialMoves(bishop);
-            Board.createVisualized(bishop, board.getPosition(bishop), moves).print(bishop.getColor(), board.getPosition(bishop));
+            Board.createVisualized(bishop, board.getPosition(bishop), moves);
 
             Assertions.assertEquals(13, moves.length, "The moves found are " +
                     Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
@@ -285,7 +275,7 @@ class BoardTests {
             board.setEmpty(Position.A2);
 
             moves = board.getPotentialMoves(rook);
-            Board.createVisualized(rook, board.getPosition(rook), moves).print(rook.getColor(), board.getPosition(rook));
+            Board.createVisualized(rook, board.getPosition(rook), moves);
 
             Assertions.assertEquals(14, moves.length);
         }
@@ -299,7 +289,7 @@ class BoardTests {
             final Queen queen = board.setPiece(new Queen(WHITE), from);
 
             Move[] moves = board.getPotentialMoves(queen);
-            Board.createVisualized(queen, board.getPosition(queen), moves).print(queen.getColor(), board.getPosition(queen));
+            Board.createVisualized(queen, board.getPosition(queen), moves);
 
             Assertions.assertEquals(25, moves.length, "The moves found are " +
                     Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
@@ -314,7 +304,7 @@ class BoardTests {
             final King king = board.setPiece(new King(WHITE), from);
 
             Move[] moves = board.getPotentialMoves(king);
-            Board.createVisualized(king, board.getPosition(king), moves).print(king.getColor(), board.getPosition(king));
+            Board.createVisualized(king, board.getPosition(king), moves);
 
             Assertions.assertEquals(5, moves.length, "The moves found are " +
                     Arrays.toString(Arrays.stream(moves).map(Move::getTo).map(Position::name).toArray(String[]::new)));
@@ -326,6 +316,44 @@ class BoardTests {
     @Nested
     class MoveCheckerTests {
 
+        @DisplayName("Pawn")
+        @Order(1)
+        @Test
+        void testPawnChecker() {
+            final Position from = Position.D2;
+            final Pawn piece = board.getPiece(from);
+            final Move move = new Move(1, piece, from, Position.D4, false);
+
+            Assertions.assertTrue(board.check(piece, move));
+            Board.createVisualized(piece, from, move);
+        }
+
+        @DisplayName("Knight")
+        @Order(2)
+        @Test
+        void testKnightChecker() {
+            final Position from = Position.B1;
+            final Knight piece = board.getPiece(from);
+            final Move move = new Move(1, piece, from, Position.C3, false);
+
+            Assertions.assertTrue(board.check(piece, move));
+            Board.createVisualized(piece, from, move);
+        }
+
+        @DisplayName("Bishop")
+        @Order(3)
+        @Test
+        void testBishopChecker() {
+            final Position from = Position.C1;
+            final Bishop piece = board.getPiece(from);
+            final Move move = new Move(1, piece, from, Position.H6, false);
+
+            Assertions.assertFalse(board.check(piece, move));
+            Board.createVisualized(piece, from, move);
+        }
+
+        @DisplayName("Rook")
+        @Order(4)
         @Test
         void testRookChecker() {
             final Rook rook = board.setPiece(new Rook(WHITE), Position.C4);
@@ -334,13 +362,26 @@ class BoardTests {
             Assertions.assertTrue(board.check(rook, move));
             final Pawn pawn = board.setPiece(new Pawn(BLACK), Position.E4);
             Assertions.assertFalse(board.check(rook, move));
-            Board.createVisualized(rook, Position.C4, new Move[] { move, new Move(2, pawn, Position.E4, Position.E4, false) }).print();
+            Board.createVisualized(rook, Position.C4, move, new Move(2, pawn, Position.E4, Position.E4, false));
 
             final Move secondMove = new Move(3, rook, Position.C4, Position.C8, false);
             Assertions.assertFalse(board.check(rook, secondMove));
 
-            Board.createVisualized(rook, Position.C4, new Move[]{secondMove}).print();
+            Board.createVisualized(rook, Position.C4, secondMove);
         }
 
+        @DisplayName("Queen")
+        @Order(5)
+        @Test
+        void testQueenChecker() {
+            Assertions.fail("Not implemented yet.");
+        }
+
+        @DisplayName("King")
+        @Order(6)
+        @Test
+        void testKingChecker() {
+            Assertions.fail("Not implemented yet.");
+        }
     }
 }

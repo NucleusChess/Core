@@ -17,7 +17,7 @@ import static com.nucleuschess.Color.BLACK;
 import static com.nucleuschess.Color.WHITE;
 
 /*
-  Copyright (C) 2020-2021, Wouter Kistemaker.
+  Copyright (C) 2021, NucleusChess.
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as published
   by the Free Software Foundation, either version 3 of the License, or
@@ -32,9 +32,6 @@ import static com.nucleuschess.Color.WHITE;
 
 /**
  * Class representing the Chess-board, with all the squares gathered in a {@link Set<Position>}
- *
- * @author Wouter Kistemaker
- * @since 1.0-SNAPSHOT
  */
 public final class Board {
 
@@ -85,7 +82,7 @@ public final class Board {
         this.positionPieceMap = b.positionPieceMap;
     }
 
-    public static Board createVisualized(Piece fromWhich, Position from, Move[] moves) {
+    public static void createVisualized(Piece fromWhich, Position from, Move... moves) {
         final Board tempBoard = new Board();
         tempBoard.setPiece(fromWhich, from);
 
@@ -119,7 +116,7 @@ public final class Board {
             }
         });
 
-        return tempBoard;
+        tempBoard.print(fromWhich.getColor(), from);
     }
 
     public boolean isEmpty(Position position) {
@@ -349,10 +346,6 @@ public final class Board {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void print() {
-        print(null, null);
     }
 
     public void print(Color which, Position whichFrom) {

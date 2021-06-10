@@ -1,10 +1,22 @@
 package com.nucleuschess.net;
 
-import com.google.gson.JsonObject;
 import com.nucleuschess.Core;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 
+/*
+  Copyright (C) 2021, NucleusChess.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published
+  by the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 @ServerEndpoint("/")
 public class BasicEndpoint {
 
@@ -17,28 +29,6 @@ public class BasicEndpoint {
     @OnMessage
     public void onMessage(String message, Session session) {
         System.out.println("[" + session.getId() + "] " + message);
-
-        if (message.matches("\\{.+}")) {
-            final JsonObject obj = Core.getGson().fromJson(message, JsonObject.class);
-
-            switch (obj.get("position").getAsString()) {
-                case "e4":
-                    Core.getBoard().move(session.getId(), "P", "c5");
-                    break;
-                case "f3":
-                    Core.getBoard().move(session.getId(), "P", "d6");
-                    break;
-                case "cxd4":
-                    Core.getBoard().move(session.getId(), "P", "c5");
-                    break;
-                case "Nxd4":
-                    Core.getBoard().move(session.getId(), "N", "f5");
-                    break;
-                case "c3":
-                    Core.getBoard().move(session.getId(), "P", "a6");
-                    break;
-            }
-        }
     }
 
     @OnClose
